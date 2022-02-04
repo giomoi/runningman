@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="0.6"
+    android:orientation="vertical"
+    android:stateListAnimator="@null">
+
+    <RelativeLayout
+        android:id="@+id/rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtTicker"
+                style="@style/textTopFormat"
+                android:background="@color/th_color"
+                android:text="Code"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/txtPriceCurrent"
+                style="@style/textTopFormat"
+                android:background="@color/th_color"
+                android:text="Price"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/txtPriceTarget"
+                style="@style/textTopFormat"
+                android:background="@color/th_color"
+                android:text="Target"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/txtBookValue"
+                style="@style/textTopFormat"
+                android:background="@color/th_color"
+                android:text="GTSS"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/txtOwe"
+                style="@style/textTopFormat"
+                android:background="@color/th_color"
+                android:text="Nợ"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/txtContent"
+                style="@style/textTopFormat"
+                android:layout_weight="3"
+                android:background="@color/th_color"
+                android:text="Nhận xét"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rl_bottom"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@+id/rl_top">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:background="@android:color/transparent"
+            android:backgroundTint="@color/colorTab"
+            android:src="@drawable/floating_plus"
+            app:rippleColor="@color/white" />
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recylerVuewResult"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbars="vertical" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
+
+    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    android:orientation="vertical">-->
+
+    <!--    <LinearLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:orientation="horizontal">-->
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/txtTicker"-->
+    <!--            android:background="@color/th_color"-->
+    <!--            style="@style/textTopFormat"-->
+    <!--            android:textColor="@color/white"-->
+    <!--            android:text="CK"/>-->
+    <!--        <TextView-->
+    <!--            android:background="@color/th_color"-->
+    <!--            android:id="@+id/txtPriceCurrent"-->
+    <!--            style="@style/textTopFormat"-->
+    <!--            android:textColor="@color/white"-->
+    <!--            android:text="Price"/>-->
+    <!--        <TextView-->
+    <!--            android:background="@color/th_color"-->
+    <!--            android:id="@+id/txtBookValue"-->
+    <!--            style="@style/textTopFormat"-->
+    <!--            android:textColor="@color/white"-->
+    <!--            android:text="GTSS"/>-->
+    <!--        <TextView-->
+    <!--            android:background="@color/th_color"-->
+    <!--            android:id="@+id/txtOwe"-->
+    <!--            style="@style/textTopFormat"-->
+    <!--            android:textColor="@color/white"-->
+    <!--            android:text="Nợ"/>-->
+    <!--        <TextView-->
+    <!--            android:background="@color/th_color"-->
+    <!--            android:id="@+id/txtContent"-->
+    <!--            style="@style/textTopFormat"-->
+    <!--            android:textColor="@color/white"-->
+    <!--            android:layout_weight="3"-->
+    <!--            android:text="Nhận xét"/>-->
+    <!--    </LinearLayout>-->
+
+
+    <!--    <android.support.v4.widget.SwipeRefreshLayout-->
+    <!--        android:id="@+id/swipeRefreshLayout"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content">-->
+
+    <!--            <android.support.v7.widget.RecyclerView-->
+    <!--                android:id="@+id/recylerVuewResult"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content">-->
+
+    <!--            </android.support.v7.widget.RecyclerView>-->
+
+    <!--    </android.support.v4.widget.SwipeRefreshLayout>-->
+
+    <!--    <LinearLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent">-->
+
+    <!--        <android.support.design.widget.FloatingActionButton-->
+    <!--            android:id="@+id/fab"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_gravity="end|bottom"-->
+    <!--            android:src="@drawable/floating_plus"-->
+    <!--            android:contentDescription="@string/float_action_add"-->
+    <!--            android:layout_margin="16dp" />-->
+
+    <!--    </LinearLayout>-->
+
+
+    <!--</LinearLayout>-->

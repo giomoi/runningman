@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainFrameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TabHost
+        android:id="@+id/base_tabhost"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/base_layout_title"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/colorPrimary"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <RelativeLayout
+                        android:id="@+id/layoutTitleMain"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:visibility="visible">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+
+                            <Button
+                                android:id="@+id/btnSearch"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="2"
+                                android:background="@drawable/search_final_stock"
+                                android:gravity="center"
+                                android:paddingLeft="5dp"
+                                android:textColor="#fff"
+                                android:visibility="gone" />
+
+                            <Button
+                                android:id="@+id/btnUnit"
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_margin="10dp"
+                                android:layout_weight="2"
+                                android:background="@color/blue"
+                                android:textAllCaps="false"
+                                android:gravity="center"
+                                android:paddingLeft="5dp"
+                                android:paddingRight="5dp"
+                                android:textSize="12sp"
+                                android:text="OK"
+                                android:textColor="#fff"/>
+
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/txtMainTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:cursorVisible="false"
+                            android:gravity="center"
+                            android:text="@string/tab_home"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="#FFF000"
+                            android:textSize="30dp"
+                            android:textStyle="bold" />
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="5dp">
+
+                            <Button
+                                android:id="@+id/btnListStock"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/list_finacial_stock"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:textColor="#fff"
+                                android:textSize="14sp"
+                                android:visibility="gone" />
+
+                            <Button
+                                android:id="@+id/btnExchange"
+                                android:layout_width="75dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/blue"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:text="+"
+                                android:textColor="#fff"
+                                android:textSize="12sp" />
+                        </RelativeLayout>
+                    </RelativeLayout>
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/base_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <FrameLayout
+                    android:id="@android:id/tabcontent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></FrameLayout>
+
+                <RelativeLayout
+                    android:id="@+id/base_body"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <vn.co.vns.runningman.customerview.ViewPagerNoTouch
+                        android:id="@+id/mainViewPager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_above="@+id/layout_tab_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"></vn.co.vns.runningman.customerview.ViewPagerNoTouch>
+
+                    <FrameLayout
+                        android:id="@+id/base_body_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"></FrameLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_tab_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:animateLayoutChanges="false"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/layout_bottom_priceboard"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/th_color_bg"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/th_color" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/th_color" />
+
+                                <TextView
+                                    android:id="@+id/txtStatus"
+                                    style="@style/TextView_Stock"
+                                    android:text="TT"
+                                    android:textColor="@color/white" />
+
+                                <TextView
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/th_color" />
+
+                                <TextView
+                                    android:id="@+id/txtPrice1"
+                                    style="@style/TextView_Stock"
+                                    android:text="P1"
+                                    android:textColor="@color/white" />
+
+                                <TextView
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/th_color" />
+
+                                <TextView
+                                    android:id="@+id/txtVolume1"
+                                    style="@style/TextView_Stock2"
+                                    android:text="Vol1"
+                                    android:textColor="@color/white" />
+
+                                <TextView
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/th_color" />
+
+                                <TextView
+                                    android:id="@+id/txtPrice2"
+                                    style="@style/TextView_Stock"
+                                    android:text="P2"
+                                    android:textColor="@color/white" />
+
+                                <TextView
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/th_color" />
+
+                                <TextView
+                                    android:id="@+id/txtVolume2"
+                                    style="@style/TextView_Stock2"
+                                    android:text="Vol2"
+                                    android:textColor="@color/white" />
+
+                                <TextView
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/th_color" />
+
+                                <TextView
+                                    android:id="@+id/txtPrice3"
+                                    style="@style/TextView_Stock"
+                                    android:text="P3"
+                                    android:textColor="@color/white" />
+
+                                <TextView
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/th_color" />
+
+                                <TextView
+                                    android:id="@+id/txtVolume3"
+                                    style="@style/TextView_Stock2"
+                                    android:text="Vol3"
+                                    android:textColor="@color/white" />
+
+                                <TextView
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/th_color" />
+
+                                <TextView
+                                    android:id="@+id/txtNN"
+                                    style="@style/TextView_Stock"
+                                    android:text="NN"
+                                    android:textColor="@color/white" />
+
+                                <TextView
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/th_color" />
+                                <!--<TextView-->
+                                <!--style="@style/TextView_Stock"-->
+                                <!--android:id="@+id/txtLowPrice" android:text="Low" android:textColor="@color/white"/>-->
+                                <!--<TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>-->
+                                <!--<TextView-->
+                                <!--style="@style/TextView_Stock2"-->
+                                <!--android:id="@+id/txtTotalWeight" android:text="Total" android:textColor="@color/white"/>-->
+                                <!--<TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>-->
+                                <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+                                <!--style="@style/TextView_Stock"-->
+                                <!--android:id="@+id/txtNNBuying" android:text="NN" android:textColor="@color/white"/>-->
+                                <TextView
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/th_color" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/th_color" />
+
+                        </LinearLayout>
+
+                        <TabWidget
+                            android:id="@android:id/tabs"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentLeft="true"
+                            android:background="@color/colorPrimary"></TabWidget>
+                    </LinearLayout>
+                </RelativeLayout>
+            </FrameLayout>
+        </LinearLayout>
+
+    </TabHost>
+
+    <LinearLayout
+        android:id="@+id/layoutMainTutorial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
+        <!--<LinearLayout-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="60dp"-->
+        <!--android:background="@drawable/tutorial_arrow"-->
+        <!--android:layout_gravity="center|bottom"-->
+        <!--android:gravity="center"-->
+        <!--android:id="@+id/layout_tutorial_arrow"-->
+        <!--android:layout_marginBottom="20dp">-->
+
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@drawable/tutorial_frame"-->
+        <!--android:id="@+id/layout_tutorial_frame"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--&gt;-->
+        <!--</LinearLayout>-->
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/layoutBlockClick"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"></LinearLayout>
+
+</FrameLayout>

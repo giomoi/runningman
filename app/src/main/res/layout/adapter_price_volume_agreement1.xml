@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:orientation="vertical">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:descendantFocusability="blocksDescendants"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/textTopFormat"
+            android:layout_weight="2"
+            android:id="@+id/txtDate"/>
+          <TextView
+              style="@style/textTopFormat"
+              android:layout_weight="2"
+              android:id="@+id/txtPriceClose"/>
+
+        <TextView
+            style="@style/textTopFormat"
+            android:layout_weight="4"
+            android:id="@+id/txtRateIndex"/>
+        <TextView
+            style="@style/textTopFormat"
+            android:layout_weight="1"
+            android:id="@+id/txtVolume"/>
+
+        <TextView
+            style="@style/textTopFormat"
+            android:layout_weight="2"
+            android:id="@+id/txtValue"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

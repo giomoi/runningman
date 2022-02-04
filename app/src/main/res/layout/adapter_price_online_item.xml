@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <TextView android:layout_width="match_parent" android:layout_height="1dp"
+              android:textAppearance="?android:attr/textAppearanceMedium"
+              android:background="@color/td_color"
+              android:id="@+id/textView3" android:layout_marginTop="5dp"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/td_color"/>
+        <TextView
+            android:id="@+id/txtCodeStock"
+            style="@style/TextView_Stock"
+            android:textColor="@color/white" />
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/td_color"/>
+        <TextView
+            style="@style/TextView_Stock"
+            android:id="@+id/txtTopPrice" android:textColor="@color/purple"/>
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/td_color"/>
+        <TextView
+            style="@style/TextView_Stock"
+            android:id="@+id/txtBottomPrice" android:textColor="@color/blue"/>
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/td_color"/>
+        <TextView
+            style="@style/TextView_Stock"
+            android:id="@+id/txtTCPrice" android:textColor="@color/yellow"/>
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/td_color"/>
+        <TextView
+            style="@style/TextView_Stock"
+            android:id="@+id/txtKhopLenhPrice" android:textColor="@color/white"/>
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/td_color"/>
+        <TextView
+            style="@style/TextView_Stock"
+            android:id="@+id/txtKhopLenhWeight" android:textColor="@color/white"/>
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/td_color"/>
+        <TextView
+            style="@style/TextView_Stock"
+            android:id="@+id/txtGapPrice" android:textColor="@color/white"/>
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/td_color"/>
+        <TextView
+            style="@style/TextView_Stock"
+            android:id="@+id/txtHighPrice" android:textColor="@color/white"/>
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/td_color"/>
+        <TextView
+            style="@style/TextView_Stock"
+            android:id="@+id/txtLowPrice" android:textColor="@color/white"/>
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/td_color"/>
+        <TextView
+            style="@style/TextView_Stock2"
+            android:id="@+id/txtTotalWeight" android:textColor="@color/white"/>
+        <!--<TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/td_color"/>-->
+        <!--<TextView-->
+            <!--style="@style/TextView_Stock"-->
+            <!--android:id="@+id/txtNNBuySell" android:textColor="@color/green"/>-->
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/td_color"/>
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:background="@color/td_color"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/td_color"/>
+        <TextView
+            android:id="@+id/txtBuy"
+            style="@style/TextView_Stock"
+            android:text="Buy"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/td_color" />
+
+        <TextView
+            android:id="@+id/txtPriceBuy3"
+            style="@style/TextView_Stock"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/td_color" />
+
+        <TextView
+            android:id="@+id/txtWeighBuy3"
+            style="@style/TextView_Stock2"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/td_color" />
+
+        <TextView
+            android:id="@+id/txtPriceBuy2"
+            style="@style/TextView_Stock"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/td_color" />
+
+        <TextView
+            android:id="@+id/txtWeighBuy2"
+            style="@style/TextView_Stock2"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/td_color" />
+
+        <TextView
+            android:id="@+id/txtPriceBuy1"
+            style="@style/TextView_Stock"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/td_color" />
+
+        <TextView
+            android:id="@+id/txtWeighBuy1"
+            style="@style/TextView_Stock2"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/td_color" />
+
+        <TextView
+            style="@style/TextView_Stock"
+            android:id="@+id/txtNNBuying" android:textColor="@color/green"/>
+
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/td_color"/>
+    </LinearLayout>
+
+    <TextView android:layout_width="match_parent" android:layout_height="1dp"
+              android:textAppearance="?android:attr/textAppearanceMedium"
+              android:background="@color/td_color"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/td_color"/>
+        <TextView
+            android:id="@+id/txtSell"
+            style="@style/TextView_Stock"
+            android:text="Sell" android:textColor="@color/white"/>
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/td_color"/>
+        <TextView
+            style="@style/TextView_Stock"
+            android:id="@+id/txtPriceSell1" android:textColor="@color/white"/>
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/td_color"/>
+        <TextView
+            style="@style/TextView_Stock2"
+            android:id="@+id/txtWeighSell1" android:textColor="@color/white"/>
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/td_color"/>
+        <TextView
+            style="@style/TextView_Stock"
+            android:id="@+id/txtPriceSell2" android:textColor="@color/white"/>
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/td_color"/>
+        <TextView
+            style="@style/TextView_Stock2"
+            android:id="@+id/txtWeighSell2" android:textColor="@color/white"/>
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/td_color"/>
+        <TextView
+            style="@style/TextView_Stock"
+            android:id="@+id/txtPriceSell3" android:textColor="@color/white"/>
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/td_color"/>
+        <TextView
+            style="@style/TextView_Stock2"
+            android:id="@+id/txtWeighSell3" android:textColor="@color/white"/>
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/td_color" />
+        <TextView
+            style="@style/TextView_Stock"
+            android:id="@+id/txtNNSelling" android:textColor="@color/green"/>
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/td_color"/>
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:background="@color/td_color" android:layout_marginBottom="5dp"/>
+</LinearLayout>

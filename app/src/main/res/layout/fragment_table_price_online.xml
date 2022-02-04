@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" android:background="#000">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:gravity="center"
+                android:layout_weight="2"
+                android:id="@+id/txtCKName" android:textSize="12sp"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:id="@+id/txtPointIndex" android:textSize="12sp"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:gravity="center"
+                android:layout_weight="2"
+                android:id="@+id/txtRateIndex" android:textSize="12sp"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:gravity="center"
+                android:layout_weight="2"
+                android:id="@+id/txtTotaVolume" android:textSize="12sp"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:id="@+id/txtTotalValue" android:textSize="12sp"
+                android:textColor="@color/white"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Top CK:"
+        android:visibility="gone"
+        android:id="@+id/txtTopCK" android:textColor="@color/white" android:textSize="12sp"
+        android:layout_marginLeft="5dp"/>
+    <TextView android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/th_color"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/th_color_bg"
+        android:gravity="center">
+
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>
+        <TextView
+            style="@style/TextView_Stock"
+            android:id="@+id/txtCodeStock" android:text="CK" android:textColor="@color/white"/>
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>
+        <TextView
+            style="@style/TextView_Stock"
+            android:id="@+id/txtTopPrice" android:text="CE" android:textColor="@color/white"/>
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>
+        <TextView
+            style="@style/TextView_Stock"
+            android:id="@+id/txtBottomPrice" android:text="FL" android:textColor="@color/white"/>
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>
+        <TextView
+            style="@style/TextView_Stock"
+            android:id="@+id/txtTCPrice" android:text="TC" android:textColor="@color/white"/>
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>
+        <TextView
+            style="@style/TextView_Stock"
+            android:id="@+id/txtKhopLenhPrice" android:text="P" android:textColor="@color/white"/>
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>
+        <TextView
+            style="@style/TextView_Stock"
+            android:id="@+id/txtKhopLenhWeight" android:text="KL"
+            android:textColor="@color/white"/>
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>
+        <TextView
+            style="@style/TextView_Stock"
+            android:id="@+id/txtGapPrice" android:text="+ / -" android:textColor="@color/white"/>
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>
+        <TextView
+            style="@style/TextView_Stock"
+            android:id="@+id/txtHighPrice" android:text="High" android:textColor="@color/white"/>
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>
+        <TextView
+            style="@style/TextView_Stock"
+            android:id="@+id/txtLowPrice" android:text="Low" android:textColor="@color/white"/>
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>
+        <TextView
+            style="@style/TextView_Stock2"
+            android:id="@+id/txtTotalWeight" android:text="Total" android:textColor="@color/white"/>
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>
+        <!--<TextView-->
+            <!--style="@style/TextView_Stock"-->
+            <!--android:id="@+id/txtNNBuying" android:text="NN" android:textColor="@color/white"/>-->
+        <TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>
+    </LinearLayout>
+    <TextView android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/th_color"/>
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listPriceOnline"
+        android:overScrollMode="never"/>
+
+    <!--<TextView android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/th_color"/>-->
+    <!--<LinearLayout-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--&gt;-->
+
+        <!--<TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>-->
+        <!--<TextView-->
+            <!--style="@style/TextView_Stock"-->
+            <!--android:id="@+id/txtStatus" android:text="TT" android:textColor="@color/white"/>-->
+        <!--<TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>-->
+        <!--<TextView-->
+            <!--style="@style/TextView_Stock"-->
+            <!--android:id="@+id/txtPrice1" android:text="P1" android:textColor="@color/white"/>-->
+        <!--<TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>-->
+        <!--<TextView-->
+            <!--style="@style/TextView_Stock2"-->
+            <!--android:id="@+id/txtVolume1" android:text="Vol1" android:textColor="@color/white"/>-->
+        <!--<TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>-->
+        <!--<TextView-->
+            <!--style="@style/TextView_Stock"-->
+            <!--android:id="@+id/txtPrice2" android:text="P2" android:textColor="@color/white"/>-->
+        <!--<TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>-->
+        <!--<TextView-->
+            <!--style="@style/TextView_Stock2"-->
+            <!--android:id="@+id/txtVolume2" android:text="Vol2" android:textColor="@color/white"/>-->
+        <!--<TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>-->
+        <!--<TextView-->
+            <!--style="@style/TextView_Stock"-->
+            <!--android:id="@+id/txtPrice3" android:text="P3"-->
+            <!--android:textColor="@color/white"/>-->
+        <!--<TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>-->
+        <!--<TextView-->
+            <!--style="@style/TextView_Stock2"-->
+            <!--android:id="@+id/txtVolume3" android:text="Vol3" android:textColor="@color/white"/>-->
+        <!--<TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>-->
+        <!--<TextView-->
+            <!--style="@style/TextView_Stock"-->
+            <!--android:id="@+id/txtNN" android:text="NN" android:textColor="@color/white"/>-->
+        <!--<TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>-->
+        <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+            <!--&lt;!&ndash;style="@style/TextView_Stock"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:id="@+id/txtLowPrice" android:text="Low" android:textColor="@color/white"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;<TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+            <!--&lt;!&ndash;style="@style/TextView_Stock2"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:id="@+id/txtTotalWeight" android:text="Total" android:textColor="@color/white"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;<TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash;<TextView&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;style="@style/TextView_Stock"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/txtNNBuying" android:text="NN" android:textColor="@color/white"/>&ndash;&gt;-->
+        <!--<TextView android:layout_width="1dp" android:layout_height="match_parent" android:background="@color/th_color"/>-->
+    <!--</LinearLayout>-->
+    <!--<TextView android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/th_color"/>-->
+</LinearLayout>

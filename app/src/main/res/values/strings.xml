@@ -1,0 +1,64 @@
+<resources>
+    <string name="app_name">Messenger</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="float_action_add">Add</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <!--Title Application-->
+    <string name="title_listtop_bigvolume_screen">Top 10 big volume</string>
+    <string name="dialog_disconect_download_error">Disconnect internet or Download error.</string>
+
+    <string name="tab_home">Home</string>
+    <string name="tab_home_hnx">Minh Vuong</string>
+    <string name="tab_home_hn">Minh Nhat</string>
+    <string name="tab_home_bigvolume">Big volume</string>
+    <string name="tab_home_breakout">Break out</string>
+    <string name="tab_home_breakoutvolume">Break out volume</string>
+    <string name="tab_analytic">Analytic</string>
+    <string name="tab_online">Online</string>
+    <string name="tab_finacial">Finacial</string>
+    <string name="tab_result">Result</string>
+    <string name="tab_setting">Setting</string>
+    <string name="content_disconnect_internet">Disconnect internet, Relogin please !</string>
+
+    <!--Dialog-->
+    <string name="button_ok">Đồng ý</string>
+    <string name="button_cancel">Huỷ</string>
+    <string name="button_close">Đóng</string>
+    <string name="title_tick_ticker">Cập nhật mã theo dõi</string>
+    <string name="title_view_tick_ticker">Chi tiết mã theo dõi</string>
+    <string name="common_content_add">Đã thêm thành công</string>
+    <string name="common_content_update">Đã cập  thành công</string>
+    <string name="common_content_delete">Đã cập nhật thành công</string>xoá
+    <string name="common_content_error">Có lỗi, Đề nghị bạn thử lại.</string>
+
+    <string name="txt_title_vuong">Minh Vương</string>
+    <string name="txt_title_nhat">Minh Nhật</string>
+
+    <!--Setting screen-->
+    <string name="notification">Bật thông báo:</string>
+    <string name="price_board">Chọn bảng giá:</string>
+    <string name="number_days">Chọn số ngày:</string>
+
+    <!--Main screen-->
+    <string name="txt_updated">Updated</string>
+    <string name="txt_updating">Updating</string>
+    <string name="txt_not_ok">Not Ok</string>
+    <string name="txt_unit_100">Unit:100</string>
+    <string name="txt_unit_10">Unit:10</string>
+    <string name="txt_unit_n">N</string>
+    <string name="txt_unit_v">V</string>
+    <string name="txt_plus">+</string>
+    <string name="txt_muinus">-</string>
+
+</resources>

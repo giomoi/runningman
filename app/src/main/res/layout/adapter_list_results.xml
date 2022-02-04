@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/txtTicker"
+        style="@style/textTopFormat"/>
+    <TextView
+        android:id="@+id/txtPriceCurrent"
+        style="@style/textTopFormat"/>
+    <TextView
+        android:id="@+id/txtPriceTarget"
+        style="@style/textTopFormat"/>
+    <TextView
+        android:id="@+id/txtBookValue"
+        style="@style/textTopFormat"/>
+    <TextView
+        android:id="@+id/txtOwe"
+        style="@style/textTopFormat"/>
+    <TextView
+        android:id="@+id/txtContent"
+        style="@style/textTopFormat"
+        android:layout_weight="3"/>
+
+</LinearLayout>

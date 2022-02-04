@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:descendantFocusability="blocksDescendants"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/textTopFormat"
+            android:id="@+id/ticker"/>
+        <TextView
+            style="@style/textTopFormat"
+            android:layout_weight="2"
+            android:id="@+id/date_current"/>
+        <TextView
+            style="@style/textTopFormat"
+            android:id="@+id/price_current"/>
+        <TextView
+            style="@style/textTopFormat"
+            android:inputType="numberDecimal"
+            android:id="@+id/price_higest_price"/>
+        <TextView
+            style="@style/textTopFormat"
+            android:layout_weight="2"
+            android:id="@+id/date_higest_price"/>
+
+        <!--<TextView android:id="@+id/rate"-->
+            <!--style="@style/textTopFormat" />-->
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/rl_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp">
+
+            <RelativeLayout
+                android:id="@+id/rl_required"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:id="@+id/rl_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/txtTicker"
+                        android:layout_width="@dimen/label_format_dimen"
+                        android:layout_height="@dimen/height_format_dimen"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerInParent="true"
+                        android:text="Code(*): " />
+
+                    <EditText
+                        android:id="@+id/editTicker"
+                        android:layout_width="@dimen/edit_format_dimen"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/txtTicker"
+                        android:layout_toRightOf="@+id/txtTicker"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/txtPrice"
+                        android:layout_width="@dimen/label_format_dimen"
+                        android:layout_height="@dimen/height_format_dimen"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/editTicker"
+                        android:text="Current price: " />
+
+                    <EditText
+                        android:id="@+id/editPriceCurrent"
+                        android:layout_width="@dimen/edit_format_dimen"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/txtPrice"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rl_1">
+
+                    <TextView
+                        android:id="@+id/txtPriceTarget"
+                        android:layout_width="@dimen/label_format_dimen"
+                        android:layout_height="@dimen/height_format_dimen"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text="Target price(*):" />
+
+                    <EditText
+                        android:id="@+id/editPriceTarget"
+                        android:layout_width="@dimen/edit_format_dimen"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toEndOf="@+id/txtPriceTarget"
+                        android:layout_toRightOf="@+id/txtPriceTarget"
+                        android:textSize="14sp" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/not_required"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rl_required">
+
+                <RelativeLayout
+                    android:id="@+id/rl_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/txtOwe"
+                        android:layout_width="@dimen/label_format_dimen"
+                        android:layout_height="@dimen/height_format_dimen"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerInParent="true"
+                        android:text="Đòn bẩy: " />
+
+                    <EditText
+                        android:id="@+id/editOwe"
+                        android:layout_width="@dimen/edit_format_dimen"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/txtOwe"
+                        android:layout_toRightOf="@+id/txtOwe"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/txtBookValue"
+                        android:layout_width="@dimen/label_format_dimen"
+                        android:layout_height="@dimen/height_format_dimen"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toEndOf="@+id/editOwe"
+                        android:layout_toRightOf="@+id/editOwe"
+                        android:text="GTSS: " />
+
+                    <EditText
+                        android:id="@+id/editBookValue"
+                        android:layout_width="@dimen/edit_format_dimen"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/txtBookValue"
+                        android:layout_toRightOf="@+id/txtBookValue"
+                        android:textSize="14sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rl_3">
+
+                    <TextView
+                        android:id="@+id/txtEPSYear"
+                        android:layout_width="@dimen/label_format_dimen"
+                        android:layout_height="@dimen/height_format_dimen"
+                        android:layout_alignBaseline="@+id/txtEPSQuaterYear"
+                        android:layout_alignBottom="@+id/txtEPSQuaterYear"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:text="EPS năm: " />
+
+                    <EditText
+                        android:id="@+id/editEPSYear"
+                        android:layout_width="@dimen/edit_format_dimen"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/txtEPSYear"
+                        android:layout_toRightOf="@+id/txtEPSYear"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/txtEPSQuaterYear"
+                        android:layout_width="@dimen/label_format_dimen"
+                        android:layout_height="@dimen/height_format_dimen"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toEndOf="@+id/editEPSYear"
+                        android:layout_toRightOf="@+id/editEPSYear"
+                        android:text="EPS qúy:" />
+
+                    <EditText
+                        android:id="@+id/editQuaterYear"
+                        android:layout_width="@dimen/edit_format_dimen"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/txtEPSQuaterYear"
+                        android:layout_toRightOf="@+id/txtEPSQuaterYear"
+                        android:textSize="14sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rl_4">
+
+                    <TextView
+                        android:id="@+id/txtOrganization"
+                        android:layout_width="@dimen/label_format_dimen"
+                        android:layout_height="@dimen/height_format_dimen"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:text="Tổ chức:" />
+
+                    <EditText
+                        android:id="@+id/editOrganization"
+                        android:layout_width="@dimen/edit_format_dimen"
+                        android:layout_height="@dimen/height_format_dimen"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/txtOrganization"
+                        android:layout_toRightOf="@+id/txtOrganization"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/txtRoom"
+                        android:layout_width="@dimen/label_format_dimen"
+                        android:layout_height="@dimen/height_format_dimen"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toEndOf="@+id/editOrganization"
+                        android:layout_toRightOf="@+id/editOrganization"
+                        android:text="Tỷ lệ NN:" />
+
+                    <EditText
+                        android:id="@+id/editRoom"
+                        android:layout_width="@dimen/edit_format_dimen"
+                        android:layout_height="@dimen/height_format_dimen"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/txtRoom"
+                        android:layout_toRightOf="@+id/txtRoom"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/lr_6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rl_5">
+
+                    <TextView
+                        android:id="@+id/txtContent"
+                        android:layout_width="@dimen/label_format_dimen"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:text="Nội dung: " />
+
+                    <EditText
+                        android:id="@+id/editContent"
+                        android:layout_width="250dp"
+                        android:layout_height="60dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/txtContent"
+                        android:layout_toRightOf="@+id/txtContent"
+                        android:gravity="top|left"
+                        android:inputType="textMultiLine"
+                        android:lines="4"
+                        android:maxLines="6"
+                        android:minLines="2"
+                        android:textSize="14sp" />
+
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_top"
+            android:gravity="center"
+            android:layout_margin="20dp">
+
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/btnOk"
+                android:text="@string/button_cancel" />
+
+            <Button
+                android:id="@+id/btnOk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="@string/button_ok" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

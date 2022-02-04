@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <RelativeLayout
+            android:id="@+id/rl_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/rl_required"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:id="@+id/rl_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/height_format_dimen">
+
+                    <TextView
+                        android:id="@+id/txtTicker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_alignParentLeft="true"
+                        android:text="Code(*): " />
+
+                    <TextView
+                        android:id="@+id/txtValueTicker"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/txtTicker"
+                        android:layout_toEndOf="@+id/txtTicker" />
+
+                    <TextView
+                        android:id="@+id/txtPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_toRightOf="@+id/txtValueTicker"
+                        android:layout_marginLeft="5dp"
+                        android:text="Giá hiện tại: "/>
+
+                    <TextView
+                        android:id="@+id/txtPriceCurrent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/txtPrice"
+                        android:text="15.75"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/height_format_dimen"
+                    android:layout_below="@+id/rl_1">
+
+                        <TextView
+                            android:id="@+id/txtPriceTarget"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:text="Giá đích(*):"/>
+
+                        <TextView
+                            android:id="@+id/txtValuePriceTarget"
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:textSize="14sp"
+                            android:layout_alignParentTop="true"
+                            android:layout_toEndOf="@+id/txtPriceTarget"
+                            android:layout_toRightOf="@+id/txtPriceTarget"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/not_required"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rl_required">
+
+                <RelativeLayout
+                    android:id="@+id/rl_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/height_format_dimen">
+
+                    <TextView
+                        android:id="@+id/txtOwe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_alignParentLeft="true"
+                        android:text="Đòn bẩy: " />
+
+                    <TextView
+                        android:id="@+id/txtValueOwe"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/txtOwe"
+                        android:layout_toEndOf="@+id/txtOwe" />
+
+                    <TextView
+                        android:id="@+id/txtBookValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@+id/txtValueOwe"
+                        android:layout_toEndOf="@+id/txtValueOwe"
+                        android:text="GTSS: " />
+
+                    <TextView
+                        android:id="@+id/txtValueBookValue"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/txtBookValue"
+                        android:layout_toEndOf="@+id/txtBookValue" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/height_format_dimen"
+                    android:layout_below="@+id/rl_3">
+
+                    <TextView
+                        android:id="@+id/txtEPSYear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="EPS năm: "
+                        android:layout_alignBaseline="@+id/txtEPSQuaterYear"
+                        android:layout_alignBottom="@+id/txtEPSQuaterYear"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
+
+                    <TextView
+                        android:id="@+id/txtValueEPSYear"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/txtEPSYear"
+                        android:layout_toEndOf="@+id/txtEPSYear" />
+
+                    <TextView
+                        android:id="@+id/txtEPSQuaterYear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@+id/txtValueEPSYear"
+                        android:layout_toEndOf="@+id/txtValueEPSYear"
+                        android:text="EPS qúy:"/>
+
+                    <TextView
+                        android:id="@+id/txtValueQuaterYear"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/txtEPSQuaterYear"
+                        android:layout_toEndOf="@+id/txtEPSQuaterYear" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/height_format_dimen"
+                    android:layout_below="@+id/rl_4">
+
+                    <TextView
+                        android:id="@+id/txtOrganization"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tổ chức:"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
+
+                    <TextView
+                        android:id="@+id/txtValueOrganization"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/txtOrganization"
+                        android:layout_toEndOf="@+id/txtOrganization" />
+
+                    <TextView
+                        android:id="@+id/txtRoom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/txtValueOrganization"
+                        android:layout_toEndOf="@+id/txtValueOrganization"
+                        android:text="Tỷ lệ NN:"/>
+
+                    <TextView
+                        android:id="@+id/txtValueRoom"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/txtRoom"
+                        android:layout_toEndOf="@+id/txtRoom" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/lr_6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rl_5">
+
+                    <TextView
+                        android:id="@+id/txtContent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nội dung: "
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
+
+                    <TextView
+                        android:id="@+id/txtValueContent"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:lines="4"
+                        android:minLines="2"
+                        android:gravity="top|left"
+                        android:maxLines="10"
+                        android:textSize="14sp"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/txtContent"
+                        android:layout_toEndOf="@+id/txtContent" />
+
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_top">
+
+            <Button
+                android:id="@+id/btnClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/button_close"/>
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>
