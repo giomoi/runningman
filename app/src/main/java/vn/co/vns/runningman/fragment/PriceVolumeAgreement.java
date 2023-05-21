@@ -146,7 +146,7 @@ public class PriceVolumeAgreement extends Fragment {
                 for (Element s : trTable1) {
                     Elements rowTable = s.getElementsByTag("tr");
                     for (Element tr : rowTable) {
-                        if (tr.toString().contains("id=\"ctl00_ContentPlaceHolder1_ctl03_rptData2_ctl01_itemTR\"")) {
+                        if (tr.toString().contains("id=\"ContentPlaceHolder1_ctl03_rptData2_itemTR_0\"")) {
                             Elements colTable = tr.getElementsByTag("td");
 
                             for (int i = 0; i < colTable.size(); i++) {
@@ -166,7 +166,12 @@ public class PriceVolumeAgreement extends Fragment {
                                     if (countRow == 1) {
                                         Log.d("Value:", item.select("td").text() + " : " + objInforVolumeValueStockIndex.getVolumeClose());
                                         Integer prevVolume = Integer.parseInt(item.select("td").html().toString().replaceAll("&nbsp;", "").replaceAll(",", "").trim());
-                                        Integer currentVolume = Integer.parseInt(objInforVolumeValueStockIndex.getVolumeClose().replaceFirst("\\s++$", "").replaceAll(",", ""));
+                                        Integer currentVolume;
+                                        if (objInforVolumeValueStockIndex.getVolumeClose() != null) {
+                                            currentVolume = Integer.parseInt(objInforVolumeValueStockIndex.getVolumeClose().replaceFirst("\\s++$", "").replaceAll(",", ""));
+                                        } else {
+                                            currentVolume = 0;
+                                        }
                                         double rateVolume = (currentVolume - prevVolume) * 100.0 / currentVolume;
                                         objInforVolumeValueStockIndex.setVolumeRate(String.format("%2.02f", rateVolume) + "%");
                                     }
@@ -190,9 +195,15 @@ public class PriceVolumeAgreement extends Fragment {
                                     if (countRow == 1) {
                                         Log.d("Value:", item.select("td").text() + " : " + objInforVolumeValueStockIndex.getVolumeClose());
                                         Long prevValue = Long.parseLong(item.select("td").html().toString().replaceAll("&nbsp;", "").replaceAll(",", "").trim());
-                                        Long currentValue = Long.valueOf(objInforVolumeValueStockIndex.getValueClose().replaceFirst("\\s++$", "").replaceAll(",", ""));
-                                        double rateValue = (currentValue - prevValue) * 100.0 / currentValue;
-                                        objInforVolumeValueStockIndex.setValueRate(String.format("%2.02f", rateValue) + "%");
+                                        double currentValue;
+                                        if (objInforVolumeValueStockIndex.getValueClose() != null) {
+                                            currentValue = Long.valueOf(objInforVolumeValueStockIndex.getValueClose().replaceFirst("\\s++$", "").replaceAll(",", ""));
+                                            double rateValue = (currentValue - prevValue) * 100.0 / currentValue;
+                                            objInforVolumeValueStockIndex.setValueRate(String.format("%2.02f", rateValue) + "%");
+                                        } else {
+                                            currentValue = 0.0;
+                                        }
+
                                     }
                                     if (countRow <= 10) {
                                         valueAver10 = valueAver10 + Long.parseLong(item.select("td").html().toString().replaceAll("&nbsp;", "").replaceAll(",", "").trim());
@@ -233,9 +244,16 @@ public class PriceVolumeAgreement extends Fragment {
                         String number = finalAverValue1.toString().substring(0, finalAverValue1.toString().length() - 9);
                         double amount = Double.parseDouble(number);
                         String valuerAver = String.format("%,.0f", amount);
-
-                        txtVolume.setText(objInforVolumeValueStockIndex.getVolumeClose().substring(0, objInforVolumeValueStockIndex.getVolumeClose().length() - 9) + "-TB10: " + finalAverVolume1.toString().substring(0, finalAverVolume1.toString().length() - 6)); //+ " TB 20: "+ finalAverVolume2.toString().substring(0,finalAverVolume2.toString().length()-6)
-                        txtValue.setText(objInforVolumeValueStockIndex.getValueClose().substring(0, objInforVolumeValueStockIndex.getValueClose().length() - 13) + "-TB10: " + valuerAver.replace(".", ","));
+                        if (objInforVolumeValueStockIndex.getVolumeClose() != null) {
+                            txtVolume.setText(objInforVolumeValueStockIndex.getVolumeClose().substring(0, objInforVolumeValueStockIndex.getVolumeClose().length() - 9) + "-TB10: " + finalAverVolume1.toString().substring(0, finalAverVolume1.toString().length() - 6)); //+ " TB 20: "+ finalAverVolume2.toString().substring(0,finalAverVolume2.toString().length()-6)
+                        } else {
+                            txtVolume.setText("0");
+                        }
+                        if (objInforVolumeValueStockIndex.getVolumeClose() != null) {
+                            txtValue.setText(objInforVolumeValueStockIndex.getValueClose().substring(0, objInforVolumeValueStockIndex.getValueClose().length() - 13) + "-TB10: " + valuerAver.replace(".", ","));
+                        } else {
+                            txtValue.setText("0");
+                        }
                     } else {
                         String number = finalAverValue2.toString().substring(0, finalAverValue2.toString().length() - 9);
                         double amount = Double.parseDouble(number);
@@ -247,15 +265,23 @@ public class PriceVolumeAgreement extends Fragment {
                     double indexClose = 0;
                     double indexOpen = 0;
                     try {
-                        indexClose = f.parse(objInforVolumeValueStockIndex.getPriceClose().replaceAll(",", "").replace(".", ",")).doubleValue(); // myNumber now contains 20
-                        indexOpen = f.parse(objInforVolumeValueStockIndex.getPriceOpen().replaceAll(",", "").replace(".", ",")).doubleValue();
+                        if (objInforVolumeValueStockIndex.getPriceClose() != null) {
+                            indexClose = f.parse(objInforVolumeValueStockIndex.getPriceClose().replaceAll(",", "").replace(".", ",")).doubleValue(); // myNumber now contains 20
+                        } else {
+                            indexClose = 0;
+                        }
+                        if (objInforVolumeValueStockIndex.getPriceOpen() != null) {
+                            indexOpen = f.parse(objInforVolumeValueStockIndex.getPriceOpen().replaceAll(",", "").replace(".", ",")).doubleValue();
+                        } else {
+                            indexOpen = 0;
+                        }
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
                     txtRateVolume.setText(objInforVolumeValueStockIndex.getVolumeRate());
                     txtRateValue.setText(objInforVolumeValueStockIndex.getValueRate());
-                    Log.d("Rate: ", objInforVolumeValueStockIndex.getRate());
-                    if (objInforVolumeValueStockIndex.getRate().contains("-")) {
+//                    Log.d("Rate: ", objInforVolumeValueStockIndex.getRate() != null ? objInforVolumeValueStockIndex.getRate() :0);
+                    if (objInforVolumeValueStockIndex.getRate()!=null && objInforVolumeValueStockIndex.getRate().contains("-")) {
                         setColorIndex(Color.RED);
                     } else if (indexClose < indexOpen) {
                         setColorIndex(Color.GREEN);
@@ -301,7 +327,7 @@ public class PriceVolumeAgreement extends Fragment {
         recyclerView = mMainView.findViewById(R.id.recycleTop);
         lnStockIndex = mMainView.findViewById(R.id.lnStockIndex);
         lnBuySellStockIndex = mMainView.findViewById(R.id.lnBuySellStockIndex);
-        mSwipeRefresh=mMainView.findViewById(R.id.mSwipeRefresh);
+        mSwipeRefresh = mMainView.findViewById(R.id.mSwipeRefresh);
         mSwipeRefresh.setEnabled(false);
 
         priceVolumeAgrementAdapter = new PriceVolumeAgrementAdapter(getActivity(), listInforBuySellStockIndex);
@@ -312,14 +338,12 @@ public class PriceVolumeAgreement extends Fragment {
         recyclerView.setAdapter(priceVolumeAgrementAdapter);
         linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
 //        if(SharedPreference.getInstance().getBoolean("exchange",true)) { //Default
-        if (thread.getState() == Thread.State.NEW)
-        {
+        if (thread.getState() == Thread.State.NEW) {
             thread.start();
         }
 //        thread.start();
 //        }else{
-        if (resetThread.getState() == Thread.State.NEW)
-        {
+        if (resetThread.getState() == Thread.State.NEW) {
             resetThread.start();
         }
 //        resetThread.start();
@@ -381,7 +405,7 @@ public class PriceVolumeAgreement extends Fragment {
         }
         tempObj.setValue(String.valueOf(totalValue10), 11);
         double averValue10 = totalValue10 / 10;
-        tempObj.setValue(String.valueOf((Double.parseDouble(listInforIndex.get(posObj).getValueTransit().replaceAll("\\s", "").replaceAll(",", "")) - averValue10)*100/averValue10), 12);
+        tempObj.setValue(String.valueOf((Double.parseDouble(listInforIndex.get(posObj).getValueTransit().replaceAll("\\s", "").replaceAll(",", "")) - averValue10) * 100 / averValue10), 12);
         rateValue10 = totalValue10 / 10;
         return tempObj;
     }

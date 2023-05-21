@@ -53,24 +53,13 @@ import static vn.co.vns.runningman.util.Constant.optionPriceboard;
  * Created by thanhnv on 12/9/16.
  */
 public class FragmentTablePriceOnline extends Fragment {
-    @InjectView(R.id.listPriceOnline)
-    RecyclerView listPriceOnline;
-    @InjectView(R.id.txtTopCK)
-    TextView txtTopCK;
-    @InjectView(R.id.txtCKName)
-    TextView txtCKName;
-    @InjectView(R.id.txtCodeStock)
-    TextView txtCodeStock;
-    @InjectView(R.id.txtGapPrice)
-    TextView txtGapPrice;
-    @InjectView(R.id.txtPointIndex)
-    TextView txtPointIndex;
-    @InjectView(R.id.txtRateIndex)
-    TextView txtRateIndex;
-    @InjectView(R.id.txtTotaVolume)
-    TextView txtTotaVolume;
-    @InjectView(R.id.txtTotalValue)
-    TextView txtTotalValue;
+    private RecyclerView listPriceOnline;
+    private TextView txtCodeStock;
+    private TextView txtTopCK;
+    private TextView txtCKName;
+    private TextView txtGapPrice;
+    private TextView txtPointIndex, txtRateIndex, txtTotaVolume, txtTotalValue;
+
     private String TAG = getClass().getSimpleName().toUpperCase();
     private ArrayList<String> listCK = new ArrayList<>();
     private ProgressDialog mProgressDialog;
@@ -81,8 +70,7 @@ public class FragmentTablePriceOnline extends Fragment {
     private boolean isSortColorRate = false;
     private boolean isBindData = false;
     private PriceOnlineAdapter mainAdapter;
-    private String urlString = "https://iboard.ssi.com.vn/bang-gia/hose";
-    //    private String urlString="http://liveboard.cafef.vn/";
+    private String urlString = Constant.URL_SSI_HSX;
     private ArrayList<StockObject> listStockTransition = new ArrayList<>();
     private String strSpecial = "";
 
@@ -117,6 +105,20 @@ public class FragmentTablePriceOnline extends Fragment {
         }
     });
 
+    private void initView(View mMainView) {
+        listPriceOnline = (RecyclerView) mMainView.findViewById(R.id.listPriceOnline);
+        txtCodeStock = (TextView) mMainView.findViewById(R.id.txtCodeStock);
+        txtTopCK = (TextView) mMainView.findViewById(R.id.txtTopCK);
+        txtCKName = (TextView) mMainView.findViewById(R.id.txtCKName);
+        txtGapPrice = (TextView) mMainView.findViewById(R.id.txtGapPrice);
+        txtPointIndex = (TextView) mMainView.findViewById(R.id.txtPointIndex);
+        txtPointIndex = (TextView) mMainView.findViewById(R.id.txtPointIndex);
+        txtTotalValue = (TextView) mMainView.findViewById(R.id.txtTotalValue);
+        txtTotaVolume = (TextView) mMainView.findViewById(R.id.txtTotaVolume);
+        txtRateIndex = (TextView) mMainView.findViewById(R.id.txtRateIndex);
+
+    }
+
     public static FragmentTablePriceOnline newInstance(String urlString) {
         Bundle args = new Bundle();
         args.putString("StringURL", urlString);
@@ -140,7 +142,7 @@ public class FragmentTablePriceOnline extends Fragment {
         try {
             Document doc = Jsoup.parse(fullHtml);
             if (SharedPreference.getInstance().getString("priceTable", "cafef").equalsIgnoreCase("cafef")) {
-                Elements trTable = doc.select("table#myTable");
+                Elements trTable = doc.select("table#stock-price-table-fix");
                 if (trTable.size() > 0) {
                     for (Element s : trTable) {
                         Elements rowTable = s.getElementsByTag("tr");
@@ -195,12 +197,14 @@ public class FragmentTablePriceOnline extends Fragment {
                 }
                 resultIndex.add(newObjectIndex);
             } else {
-                Elements trTable = doc.select("table#table-table-scroll");
+                Elements trTable = doc.select("table#priceboardContentTable");
+                Elements tbody = trTable.select("tbody#priceboardContentTableBody");
                 if (trTable.size() > 0) {
                     for (Element s : trTable) {
                         Elements rowTable = s.getElementsByTag("tr");
                         for (Element tr : rowTable) {
-                            if (tr.toString().contains("class=\"invisible\"")) {
+//                            if (tr.toString().contains("class=\"invisible\"")) {
+                            if(tr.toString().contains("elected=\"false\" style=\"width: 100%;\" role=\"row\"")){
                                 Elements colTable = tr.getElementsByTag("td");
                                 StockObject newObject = creatStockObject(colTable);
                                 if (!"".equalsIgnoreCase(newObject.getTopPrice())) {
@@ -243,7 +247,7 @@ public class FragmentTablePriceOnline extends Fragment {
                 int typIndex = (urlString != null && urlString.contains("Hnx")) ? 2 : 0;
                 setIndex(resultIndex, typIndex);
                 if (SharedPreference.getInstance().getInt("orderby", Constant.SORT_TIKER) == Constant.SORT_RATE) {
-                    sortStockRate(result);
+//                    sortStockRate(result);
                     txtCodeStock.setTextColor(getResources().getColor(R.color.white));
                     txtGapPrice.setTextColor(getResources().getColor(R.color.green));
                 } else if (SharedPreference.getInstance().getInt("orderby", Constant.SORT_TIKER) == Constant.SORT_PRIORITY) {
@@ -305,14 +309,14 @@ public class FragmentTablePriceOnline extends Fragment {
         txtRateIndex.setTextColor(color);
     }
 
-    private void sortStockRate(ArrayList<StockObject> listStock) {
-        Collections.sort(listStock, new Comparator<StockObject>() {
-            @Override
-            public int compare(StockObject o1, StockObject o2) {
-                return Float.compare(o2.getRate(), o1.getRate());
-            }
-        });
-    }
+//    private void sortStockRate(ArrayList<StockObject> listStock) {
+//        Collections.sort(listStock, new Comparator<StockObject>() {
+//            @Override
+//            public int compare(StockObject o1, StockObject o2) {
+//                return Float.compare(o2.getRate(), o1.getRate());
+//            }
+//        });
+//    }
 
     private void sortStockPriority(ArrayList<StockObject> listStock) {
         Collections.sort(listStock, new Comparator<StockObject>() {
@@ -333,9 +337,9 @@ public class FragmentTablePriceOnline extends Fragment {
         View mMainView = inflater.inflate(R.layout.fragment_table_price_online, null);
         mMainView.setTag(TAG);
 
-        ButterKnife.inject(this, mMainView);
+//        ButterKnife.inject(this, mMainView);
+        initView(mMainView);
         buildView();
-
         MainActivity.layoutPriceboard.setVisibility(View.VISIBLE);
         if (urlString != null && urlString.contains("Hnx")) {
             optionPriceboard = "Hnx";
@@ -426,7 +430,7 @@ public class FragmentTablePriceOnline extends Fragment {
             @Override
             public void onClick(View view) {
                 SharedPreference.getInstance().putInt("orderby", Constant.SORT_RATE);
-                sortStockRate(listStockTransition);
+//                sortStockRate(listStockTransition);
                 mainAdapter.setListItem(listStockTransition, optionPriceboard);
                 txtCodeStock.setTextColor(getResources().getColor(R.color.white));
                 txtGapPrice.setTextColor(getResources().getColor(R.color.green));

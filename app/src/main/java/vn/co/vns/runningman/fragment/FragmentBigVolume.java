@@ -204,8 +204,8 @@ public class FragmentBigVolume extends Fragment{
             //
             Date before7Day=Utils.addDays(currentDateTime,-7);
 
-            String urlDay = "http://images1.cafef.vn/data/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
-            String urlAllDay = "http://images1.cafef.vn/data/" + dayJP + "/CafeF.SolieuGD.Upto" + dayVN + ".zip";
+            String urlDay = Constant.URI+"/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
+            String urlAllDay = Constant.URI+"/" + dayJP + "/CafeF.SolieuGD.Upto" + dayVN + ".zip";
             if(SharedPreference.getInstance(getContext()).getInt("updatedStock",0)!=1) {
 //                SharedPreference.getInstance(getContext()).putInt("updatedStock",1);
                 if (Constant.maxDay == null) { // chua co gi insert tu dau
@@ -215,8 +215,8 @@ public class FragmentBigVolume extends Fragment{
                         while (!Utils.exists(getContext(), urlDay)) {
                             dayJP = Utils.getDateJP(Utils.addDays(Utils.convertStringToDateString(dayJP), -1));
                             dayVN = Utils.convertDate(dayJP);
-                            urlDay = "http://images1.cafef.vn/data/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
-                            urlAllDay = "http://images1.cafef.vn/data/" + dayJP + "/CafeF.SolieuGD.Upto" + dayVN + ".zip";
+                            urlDay = Constant.URI+"/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
+                            urlAllDay = Constant.URI+"/" + dayJP + "/CafeF.SolieuGD.Upto" + dayVN + ".zip";
                             if (Utils.exists(getContext(), urlDay)) {
                                 new DownloadAsyncTask(getActivity(), urlAllDay, urlDay).execute();
                             }
@@ -227,7 +227,7 @@ public class FragmentBigVolume extends Fragment{
                     if (!Constant.maxDay.equalsIgnoreCase(currentDateJP)) {
                         if ((Utils.convertStringToDateString(Constant.maxDay).compareTo(before7Day) < 0)) {
                             //Qua 7 ngay
-                            urlAllDay = "http://images1.cafef.vn/data/" + dayJP + "/CafeF.SolieuGD.Upto" + dayVN + ".zip";
+                            urlAllDay = Constant.URI+"/" + dayJP + "/CafeF.SolieuGD.Upto" + dayVN + ".zip";
                             if (Utils.exists(getContext(), urlDay) && Utils.exists(getContext(),urlAllDay)) { // Ton tai link cua ngay hm nay
                                 db.deleteDataTable("STOCK_BIG_VOLUME");
                                 new DownloadAsyncTask(getActivity(), urlAllDay, urlDay).execute();
@@ -235,8 +235,8 @@ public class FragmentBigVolume extends Fragment{
                                 while (!Utils.exists(getContext(), urlDay ) || !Utils.exists(getContext(),urlAllDay)) {
                                     dayJP = Utils.getDateJP(Utils.addDays(Utils.convertStringToDateString(dayJP), -1));
                                     dayVN = Utils.convertDate(dayJP);
-                                    urlDay = "http://images1.cafef.vn/data/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
-                                    urlAllDay = "http://images1.cafef.vn/data/" + dayJP + "/CafeF.SolieuGD.Upto" + dayVN + ".zip";
+                                    urlDay = Constant.URI+"/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
+                                    urlAllDay = Constant.URI+"/" + dayJP + "/CafeF.SolieuGD.Upto" + dayVN + ".zip";
                                     if (Utils.exists(getContext(), urlDay) && Utils.exists(getContext(),urlAllDay)) {
                                         new DownloadAsyncTask(getActivity(), urlAllDay, urlDay).execute();
                                     }
@@ -255,7 +255,7 @@ public class FragmentBigVolume extends Fragment{
                                     new DownloadSingleFile(getActivity(), urlDay).execute();
                                     Log.i("Date download: ", dateDownload);
                                 }
-                                urlDay = "http://images1.cafef.vn/data/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
+                                urlDay = Constant.URI+"/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
                             }
                         }
                     }

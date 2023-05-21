@@ -261,7 +261,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
                         if (SharedPreference.getInstance().getString("priceTable", "cafef").equalsIgnoreCase("cafef")) {
                             fg = new FragmentTablePriceOnline().newInstance(Constant.URL_CAFFEF_HSX);
                         } else {
-                            fg = new FragmentTablePriceOnline().newInstance("https://iboard.ssi.com.vn/bang-gia/hose");
+                            fg = new FragmentTablePriceOnline().newInstance(Constant.URL_SSI_HSX);
                         }
                     }
                     if (SharedPreference.getInstance().getString("priceTable", "cafef").equalsIgnoreCase("cafef")) {
@@ -286,7 +286,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         int hourofday = cal.get(Calendar.HOUR_OF_DAY);
         dayJP = (hourofday > 14) ? Constant.nowDay : Constant.beforeDay;
         dayVN = Utils.convertDate(dayJP);
-        String urlDay = "http://images1.cafef.vn/data/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
+        String urlDay = Constant.URI+"/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
         String dateDownload = Constant.maxDay;
         Constant.dateTransition = Constant.maxDay;
         if (dateDownload != null) {
@@ -303,7 +303,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
                 }
                 dayJP = Utils.getDateJP(Utils.addDays(Utils.convertStringToDateString(dayJP), -1));
                 dayVN = Utils.convertDate(dayJP);
-                urlDay = "http://images1.cafef.vn/data/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
+                urlDay = Constant.URI+"/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
             }
             if (SharedPreference.getInstance().getInt("updatedStock", 0) == 1) {
                 btnUnit.setText(getString(R.string.txt_updating));

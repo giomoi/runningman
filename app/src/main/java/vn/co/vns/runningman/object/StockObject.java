@@ -31,7 +31,7 @@ public class StockObject {
     private String TotalWeight;
     private String NNBuying;
     private String NNSelling;
-    private Float Rate;
+    private String Rate;
     private Integer priorityOrder = 0;
 
     public StockObject() {
@@ -230,11 +230,11 @@ public class StockObject {
         this.NNSelling = NNSelling;
     }
 
-    public Float getRate() {
+    public String getRate() {
         return Rate;
     }
 
-    public void setRate(Float rate) {
+    public void setRate(String rate) {
         Rate = rate;
     }
 
@@ -287,51 +287,52 @@ public class StockObject {
                 return;
             case 11:
                 KhopLenhWeight = valuePrice;
-                Rate = ((Float.valueOf(("".equalsIgnoreCase(KhopLenhPrice)) ? "0" : KhopLenhPrice) - Float.valueOf(("".equalsIgnoreCase(TCPrice)) ? "0" : TCPrice)) * 100) / (Float.valueOf(("".equalsIgnoreCase(TCPrice) ? "0" : TCPrice)));
+                Rate = valuePrice;
+//                Rate = ((Float.valueOf(("".equalsIgnoreCase(KhopLenhPrice)) ? "0" : KhopLenhPrice) - Float.valueOf(("".equalsIgnoreCase(TCPrice)) ? "0" : TCPrice)) * 100) / (Float.valueOf(("".equalsIgnoreCase(TCPrice) ? "0" : TCPrice)));
                 return;
             case 12:
                 GapPrice = valuePrice;
                 return;
-            case 13:
+            case 14:
                 SellingPrice1 = valuePrice;
                 return;
-            case 14:
+            case 15:
                 SellingWeight1 = valuePrice;
                 return;
-            case 15:
+            case 16:
                 SellingPrice2 = valuePrice;
                 return;
-            case 16:
+            case 17:
                 SellingWeight2 = valuePrice;
                 return;
-            case 17:
+            case 18:
                 SellingPrice3 = valuePrice;
                 return;
-            case 18:
+            case 19:
                 SellingWeight3 = valuePrice;
                 return;
-            case 19:
+            case 22:
                 HighPrice = valuePrice;
                 return;
-            case 20:
+            case 23:
                 LowPrice = valuePrice;
                 return;
-            case 21:
-                return;
-            case 22:
+//            case 24:
+//                return;
+            case 20:
                 TotalWeight = valuePrice;
                 return;
-            case 23:
-                NNBuying = valuePrice;
-                return;
             case 24:
-                NNSelling = valuePrice;
-                return;
-            case 27:
                 NNBuying = valuePrice;
                 return;
-            case 28:
+            case 25:
                 NNSelling = valuePrice;
+                return;
+//            case 27:
+//                NNBuying = valuePrice;
+//                return;
+//            case 28:
+//                NNSelling = valuePrice;
             default:
                 break;
         }
@@ -373,43 +374,43 @@ public class StockObject {
             case 9:
                 BuyingWeight1 = valuePrice;
                 return;
-            case 10:
+//            case 10:
 //                if(valuePrice!="")
 //                    Rate=Float.valueOf(valuePrice);
 //                else
 //                    Rate=0.0f;
 //                Rate = ((Float.valueOf(("".equalsIgnoreCase(KhopLenhPrice)) ? "0" : KhopLenhPrice) - Float.valueOf(("".equalsIgnoreCase(TCPrice)) ? "0" : TCPrice)) * 100) / (Float.valueOf(("".equalsIgnoreCase(TCPrice) ? "0" : TCPrice)));
+//                return;
+            case 10:
+                KhopLenhPrice = valuePrice;
+//                Rate = ((Float.valueOf(("".equalsIgnoreCase(KhopLenhPrice)) ? "0" : KhopLenhPrice) - Float.valueOf(("".equalsIgnoreCase(TCPrice)) ? "0" : TCPrice)) * 100) / (Float.valueOf(("".equalsIgnoreCase(TCPrice) ? "0" : TCPrice)));
                 return;
             case 11:
-                KhopLenhPrice = valuePrice;
-                Rate = ((Float.valueOf(("".equalsIgnoreCase(KhopLenhPrice)) ? "0" : KhopLenhPrice) - Float.valueOf(("".equalsIgnoreCase(TCPrice)) ? "0" : TCPrice)) * 100) / (Float.valueOf(("".equalsIgnoreCase(TCPrice) ? "0" : TCPrice)));
-                return;
-            case 12:
                 KhopLenhWeight = valuePrice;
 //                Rate = ((Float.valueOf(("".equalsIgnoreCase(KhopLenhPrice)) ? "0" : KhopLenhPrice) - Float.valueOf(("".equalsIgnoreCase(TCPrice)) ? "0" : TCPrice)) * 100) / (Float.valueOf(("".equalsIgnoreCase(TCPrice) ? "0" : TCPrice)));
                 return;
-            case 13:
+            case 12:
                 TotalWeight = valuePrice;
                 return;
-            case 14:
+            case 13:
                 SellingPrice1 = valuePrice;
                 return;
-            case 15:
+            case 14:
                 SellingWeight1 = valuePrice;
                 return;
-            case 16:
+            case 15:
                 SellingPrice2 = valuePrice;
                 return;
-            case 17:
+            case 16:
                 SellingWeight2 = valuePrice;
                 return;
-            case 18:
+            case 17:
                 SellingPrice3 = valuePrice;
                 return;
-            case 19:
+            case 18:
                 SellingWeight3 = valuePrice;
                 return;
-            case 21:
+            case 19:
                 HighPrice = valuePrice;
                 return;
             case 22:

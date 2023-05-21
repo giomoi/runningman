@@ -11,8 +11,10 @@ import vn.co.vns.runningman.object.StockBigVolume;
  * Created by thanhnv on 10/4/16.
  */
 public class Constant {
+
+    public static final String URI="https://cafef1.mediacdn.vn/data/ami_data";
     public static final String[] URL = {
-            "http://images1.cafef.vn/data/20161003/CafeF.SolieuGD.Raw.Upto03102016.zip", //Chua Dieu chinh
+            URI+"/20161003/CafeF.SolieuGD.Raw.Upto03102016.zip", //Chua Dieu chinh
 //                                        "http://images1.cafef.vn/data/20161003/CafeF.SolieuGD.Raw.03102016.zip", //Chua dieu chinh
             // "http://images1.cafef.vn/data/20161003/CafeF.SolieuGD.Upto03102016.zip",    //dieu chinh
 //                                        "http://images1.cafef.vn/data/20161003/CafeF.SolieuGD.03102016.zip",     //Dieu chinh
@@ -29,7 +31,7 @@ public class Constant {
     public static final String[] URL_DAY = {
 //                                "http://images1.cafef.vn/data/20161003/CafeF.SolieuGD.Raw.03102016.z
 // ip", //Chua dieu chinh hang ngay
-            "http://images1.cafef.vn/data/20161003/CafeF.SolieuGD.03102016.zip",        //Da dieu chinh hang ngay
+            "https://cafef1.mediacdn.vn/data/ami_data/20161003/CafeF.SolieuGD.03102016.zip",        //Da dieu chinh hang ngay
     };
 
     public static ArrayList<StockBigVolume> arrayStockBigVolume = new ArrayList<>();
@@ -83,9 +85,12 @@ public class Constant {
     public static final String TICK_DELETE_RESOURCE = "%1$sdeleteTickTicker/%2$s";
     public static String STOCK_DATE_TRANSITION_RESOURCE = "%1$sgetDateTransition";
 
-    public static String URL_SSI_HSX = "http://banggia.ssi.com.vn/Hose.aspx";
-    public static String URL_SSI_HNX = "http://banggia.ssi.com.vn/Hnx.aspx";
-    public static String URL_CAFFEF_HSX = "http://liveboard.cafef.vn/";
-    public static String URL_CAFFEF_HNX = "http://liveboard.cafef.vn/?center=2";
+    public static String URL_SSI_HSX = "http://priceboard.bsc.com.vn/chi-so/hose";
+    public static String URL_SSI_HNX = "http://priceboard.bsc.com.vn/chi-so/hnx";
+    public static String URL_CAFFEF_HSX = "https://banggia.vps.com.vn/chung-khoan/HOSE";
+    public static String URL_CAFFEF_HNX = "https://banggia.vps.com.vn/chung-khoan/HNX";
+
+//    public static String URL_CAFFEF_HSX = "http://liveboard.cafef.vn/";
+//    public static String URL_CAFFEF_HNX = "http://liveboard.cafef.vn/?center=2";
 }
 

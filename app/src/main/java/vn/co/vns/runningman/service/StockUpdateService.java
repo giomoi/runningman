@@ -31,8 +31,8 @@ public class StockUpdateService extends Service {
     private String TAG = StockUpdateService.class.getSimpleName();
     private PowerManager.WakeLock mScreenWakeLock;
     private String dirPath = "";
-    private String urlAllDay = "http://images1.cafef.vn/data/20200409/CafeF.SolieuGD.Upto09042020.zip";
-    private String urlDay = "http://images1.cafef.vn/data/20200409/CafeF.SolieuGD.09042020.zip";
+    private String urlAllDay = Constant.URI+"/20200409/CafeF.SolieuGD.Upto09042020.zip";
+    private String urlDay = Constant.URI+"/20200409/CafeF.SolieuGD.09042020.zip";
     //    private String url3 =
     private String fileName = "CafeF.SolieuGD.Upto09042020.zip";
     //    private String fileName= "CafeF.SolieuGD.09042020.zip";
@@ -113,8 +113,8 @@ public class StockUpdateService extends Service {
         Constant.maxDay = db.getMaxDayUpdate();
         dayJP = (hourofday > 14) ? Constant.nowDay : Constant.beforeDay;
         dayVN = Utils.convertDate(dayJP);
-        urlDay = "http://images1.cafef.vn/data/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
-        urlAllDay = "http://images1.cafef.vn/data/" + dayJP + "/CafeF.SolieuGD.Upto" + dayVN + ".zip";
+        urlDay = Constant.URI+"/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
+        urlAllDay = Constant.URI+"/" + dayJP + "/CafeF.SolieuGD.Upto" + dayVN + ".zip";
         Date currentDateTime = new Date();
         Date before7Day = Utils.addDays(currentDateTime, -7);
         dirPath = getRootDirPath(getApplicationContext());
@@ -132,8 +132,8 @@ public class StockUpdateService extends Service {
                 while (!Utils.exists(getApplicationContext(), urlAllDay)) {
                     dayJP = Utils.getDateJP(Utils.addDays(Utils.convertStringToDateString(dayJP), -1));
                     dayVN = Utils.convertDate(dayJP);
-                    urlAllDay = "http://images1.cafef.vn/data/" + dayJP + "/CafeF.SolieuGD.Upto" + dayVN + ".zip";
-                    urlDay = "http://images1.cafef.vn/data/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
+                    urlAllDay = Constant.URI+"/" + dayJP + "/CafeF.SolieuGD.Upto" + dayVN + ".zip";
+                    urlDay = Constant.URI+"/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
                     if (Utils.exists(getApplicationContext(), urlAllDay)) {
                         fileName = urlAllDay.substring(urlAllDay.lastIndexOf("/") + 1);
                         boolean isSucess =Downloader.downloadFiles(getApplicationContext(),urlAllDay,urlDay);
@@ -177,7 +177,7 @@ public class StockUpdateService extends Service {
                             }
                             Log.i(TAG, "Date download: " + dateDownload);
                         }
-                        urlDay = "http://images1.cafef.vn/data/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
+                        urlDay = Constant.URI+"/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
                     }
                     if (!isDownload) stopSelf();
                 }

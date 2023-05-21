@@ -29,13 +29,13 @@ public class MainActivityAdapter extends FragmentStatePagerAdapter {
             if (SharedPreference.getInstance().getString("priceTable", "cafef").equalsIgnoreCase("cafef")) {
                 items.add(FragmentTablePriceOnline.newInstance(Constant.URL_CAFFEF_HSX));
             } else {
-                items.add(FragmentTablePriceOnline.newInstance("https://iboard.ssi.com.vn/bang-gia/hose"));
+                items.add(FragmentTablePriceOnline.newInstance(Constant.URL_SSI_HSX));
             }
         } else {
             if (SharedPreference.getInstance().getString("priceTable", "cafef").equalsIgnoreCase("cafef")) {
                 items.add(FragmentTablePriceOnline.newInstance(Constant.URL_CAFFEF_HNX));
             } else {
-                items.add(FragmentTablePriceOnline.newInstance("https://iboard.ssi.com.vn/bang-gia/hnx"));
+                items.add(FragmentTablePriceOnline.newInstance(Constant.URL_SSI_HNX));
             }
         }
 //        items.add(FragmentAnalytic.newInstance());
