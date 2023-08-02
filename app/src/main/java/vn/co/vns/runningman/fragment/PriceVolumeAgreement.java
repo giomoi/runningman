@@ -58,7 +58,7 @@ public class PriceVolumeAgreement extends Fragment {
         public void run() {
             Document doc = null;
             try {
-                doc = Jsoup.connect("http://s.cafef.vn/Lich-su-giao-dich-VNINDEX-1.chn#data").get();
+                doc = Jsoup.connect("https://s.cafef.vn/Lich-su-giao-dich-VNINDEX-1.chn#data").get();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -96,13 +96,13 @@ public class PriceVolumeAgreement extends Fragment {
         public void run() {
             Document doc = null;
             try {
-                doc = Jsoup.connect("http://s.cafef.vn/Lich-su-giao-dich-VNINDEX-2.chn#data").get();
+                doc = Jsoup.connect("https://s.cafef.vn/Lich-su-giao-dich-VNINDEX-2.chn#data").get();
 //                doc = Jsoup.connect("https://dulieu.mbs.com.vn/vi/OverviewMarket/StatisticsCode?stockCode=VNIndex&catID=1").get();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            Elements trTable = doc.select("table[class=GirdTable]");
+            Elements trTable = doc.select("#GirdTable2");
             if (trTable.size() > 0) {
                 for (Element s : trTable) {
                     Elements rowTable = s.getElementsByTag("tr");
@@ -132,7 +132,7 @@ public class PriceVolumeAgreement extends Fragment {
             long averValue20 = 0;
             final InforVolumeValueStockIndex objInforVolumeValueStockIndex = new InforVolumeValueStockIndex();
             try {
-                doc1 = Jsoup.connect("http://s.cafef.vn/Lich-su-giao-dich-VNINDEX-1.chn#data").get();
+                doc1 = Jsoup.connect("https://s.cafef.vn/Lich-su-giao-dich-VNINDEX-1.chn#data").get();
             } catch (IOException e) {
                 e.printStackTrace();
             }
