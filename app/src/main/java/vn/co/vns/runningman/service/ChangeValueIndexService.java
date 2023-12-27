@@ -26,7 +26,7 @@ import vn.co.vns.runningman.util.Singleton;
 import vn.co.vns.runningman.util.Utils;
 
 public class ChangeValueIndexService extends Service {
-    private String TAG=ChangeValueIndexService.class.getSimpleName();
+    private String TAG = ChangeValueIndexService.class.getSimpleName();
     private ArrayList<InforStockIndex> listInforStockIndex = new ArrayList<>();
     private static final String ANDROID_CHANNEL_ID = "com.xxxx.Location.Channel";
     private static final int NOTIFICATION_ID = 555;
@@ -34,7 +34,7 @@ public class ChangeValueIndexService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d(TAG,"onCreate");
+        Log.d(TAG, "onCreate");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Notification.Builder builder = new Notification.Builder(this, ANDROID_CHANNEL_ID)
                     .setContentTitle(getString(R.string.app_name))
@@ -56,9 +56,8 @@ public class ChangeValueIndexService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG,"onStartCommand");
-        if (resetThread.getState() == Thread.State.NEW)
-        {
+        Log.d(TAG, "onStartCommand");
+        if (resetThread.getState() == Thread.State.NEW) {
             resetThread.start();
         }
         return super.onStartCommand(intent, flags, startId);
@@ -67,8 +66,8 @@ public class ChangeValueIndexService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(TAG,"onDestroy");
-        if(resetThread!=null) resetThread.interrupt();
+        Log.d(TAG, "onDestroy");
+        if (resetThread != null) resetThread.interrupt();
     }
 
     @Nullable
@@ -123,7 +122,12 @@ public class ChangeValueIndexService extends Service {
                                     if (countRow == 1) {
                                         Log.d("Value:", item.select("td").text() + " : " + objInforVolumeValueStockIndex.getVolumeClose());
                                         Integer prevVolume = Integer.parseInt(item.select("td").html().toString().replaceAll("&nbsp;", "").replaceAll(",", "").trim());
-                                        Integer currentVolume = Integer.parseInt(objInforVolumeValueStockIndex.getVolumeClose().replaceFirst("\\s++$", "").replaceAll(",", ""));
+                                        Integer currentVolume;
+                                        if (objInforVolumeValueStockIndex.getVolumeClose() != null) {
+                                            currentVolume = Integer.parseInt(objInforVolumeValueStockIndex.getVolumeClose().replaceFirst("\\s++$", "").replaceAll(",", ""));
+                                        } else {
+                                            currentVolume = 0;
+                                        }
                                         double rateVolume = (currentVolume - prevVolume) * 100.0 / currentVolume;
                                         objInforVolumeValueStockIndex.setVolumeRate(String.format("%2.02f", rateVolume) + "%");
                                     }
@@ -147,7 +151,13 @@ public class ChangeValueIndexService extends Service {
                                     if (countRow == 1) {
                                         Log.d("Value:", item.select("td").text() + " : " + objInforVolumeValueStockIndex.getVolumeClose());
                                         Long prevValue = Long.parseLong(item.select("td").html().toString().replaceAll("&nbsp;", "").replaceAll(",", "").trim());
-                                        Long currentValue = Long.valueOf(objInforVolumeValueStockIndex.getValueClose().replaceFirst("\\s++$", "").replaceAll(",", ""));
+                                        Long currentValue;
+                                        if (objInforVolumeValueStockIndex.getVolumeClose() != null) {
+                                            currentValue = Long.valueOf(objInforVolumeValueStockIndex.getValueClose().replaceFirst("\\s++$", "").replaceAll(",", ""));
+//                                            currentValue = Integer.parseInt(objInforVolumeValueStockIndex.getVolumeClose().replaceFirst("\\s++$", "").replaceAll(",", ""));
+                                        } else {
+                                            currentValue = 0L;
+                                        }
                                         double rateValue = (currentValue - prevValue) * 100.0 / currentValue;
                                         objInforVolumeValueStockIndex.setValueRate(String.format("%2.02f", rateValue) + "%");
                                     }
@@ -182,13 +192,14 @@ public class ChangeValueIndexService extends Service {
             String number = finalAverValue1.toString().substring(0, finalAverValue1.toString().length() - 9);
             double amount = Double.parseDouble(number);
             String valuerAver = String.format("%,.0f", amount);
-
-            String content= objInforVolumeValueStockIndex.getDateTransit() +": "
-                    +objInforVolumeValueStockIndex.getValueClose().substring(0, objInforVolumeValueStockIndex.getValueClose().length() - 13)
-                    + " - TB10: "+ valuerAver.replace(".", ",")
-                    + " :Rate: " + objInforVolumeValueStockIndex.getValueRate();
-            Utils.pushNotification(getApplicationContext(),content);
-            stopSelf();
+            if (objInforVolumeValueStockIndex.getValueClose() != null) {
+                String content = objInforVolumeValueStockIndex.getDateTransit() + ": "
+                        + objInforVolumeValueStockIndex.getValueClose().substring(0, objInforVolumeValueStockIndex.getValueClose().length() - 13)
+                        + " - TB10: " + valuerAver.replace(".", ",")
+                        + " :Rate: " + objInforVolumeValueStockIndex.getValueRate();
+                Utils.pushNotification(getApplicationContext(), content);
+                stopSelf();
+            }
         }
     });
 
