@@ -89,7 +89,7 @@ public class ChangeValueIndexService extends Service {
             long averValue20 = 0;
             final InforVolumeValueStockIndex objInforVolumeValueStockIndex = new InforVolumeValueStockIndex();
             try {
-                doc1 = Jsoup.connect("http://s.cafef.vn/Lich-su-giao-dich-VNINDEX-1.chn#data").get();
+                doc1 = Jsoup.connect("https://s.cafef.vn/lich-su-giao-dich-symbol-vnindex/trang-1-0-tab-1.chn").get();
             } catch (IOException e) {
                 e.printStackTrace();
             }

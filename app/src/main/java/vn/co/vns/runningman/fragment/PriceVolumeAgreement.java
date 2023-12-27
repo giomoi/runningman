@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -58,7 +60,7 @@ public class PriceVolumeAgreement extends Fragment {
         public void run() {
             Document doc = null;
             try {
-                doc = Jsoup.connect("https://s.cafef.vn/Lich-su-giao-dich-VNINDEX-1.chn#data").get();
+                doc = Jsoup.connect("https://s.cafef.vn/lich-su-giao-dich-symbol-vnindex/trang-1-0-tab-1.chn").get();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -96,13 +98,13 @@ public class PriceVolumeAgreement extends Fragment {
         public void run() {
             Document doc = null;
             try {
-                doc = Jsoup.connect("https://s.cafef.vn/Lich-su-giao-dich-VNINDEX-2.chn#data").get();
+                doc = Jsoup.connect("https://s.cafef.vn/lich-su-giao-dich-symbol-vnindex/trang-1-0-tab-2.chn").get();
 //                doc = Jsoup.connect("https://dulieu.mbs.com.vn/vi/OverviewMarket/StatisticsCode?stockCode=VNIndex&catID=1").get();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            Elements trTable = doc.select("#GirdTable2");
+            Elements trTable = doc.select("table.GirdTable");
             if (trTable.size() > 0) {
                 for (Element s : trTable) {
                     Elements rowTable = s.getElementsByTag("tr");
@@ -132,7 +134,7 @@ public class PriceVolumeAgreement extends Fragment {
             long averValue20 = 0;
             final InforVolumeValueStockIndex objInforVolumeValueStockIndex = new InforVolumeValueStockIndex();
             try {
-                doc1 = Jsoup.connect("https://s.cafef.vn/Lich-su-giao-dich-VNINDEX-1.chn#data").get();
+                doc1 = Jsoup.connect("https://s.cafef.vn/lich-su-giao-dich-symbol-vnindex/trang-1-0-tab-1.chn").get();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -421,11 +423,7 @@ public class PriceVolumeAgreement extends Fragment {
             lnStockIndex.setVisibility(View.VISIBLE);
             priceVolumeAgrementAdapter.updatePriceVolumeAgrementAdapter(getActivity(), getListInforStockIndexFull(listInforStockIndex, 10));
         }
-
         priceVolumeAgrementAdapter.notifyDataSetChanged();
         recyclerView.setAdapter(priceVolumeAgrementAdapter);
-
     }
-
-
 }
