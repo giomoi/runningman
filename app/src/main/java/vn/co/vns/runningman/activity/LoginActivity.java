@@ -19,10 +19,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.NotificationCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -44,6 +40,11 @@ import vn.co.vns.runningman.dialog.Dialog;
 import vn.co.vns.runningman.util.Utils;
 
 import static android.Manifest.permission.READ_CONTACTS;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.snackbar.Snackbar;
 
 /**
  * A login screen that offers login via email/password.

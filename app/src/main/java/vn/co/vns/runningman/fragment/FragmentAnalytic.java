@@ -2,8 +2,6 @@ package vn.co.vns.runningman.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +9,9 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -23,7 +24,7 @@ import vn.co.vns.runningman.object.StockValue;
 /**
  * Created by thanhnv on 11/25/16.
  */
-public class FragmentAnalytic extends Fragment{
+public class FragmentAnalytic extends Fragment {
     private View mMainView;
     private WebView mainWebview;
     public static String stockAnalyticID;
@@ -40,8 +41,6 @@ public class FragmentAnalytic extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mMainView = inflater.inflate(R.layout.fragment_analytic, null);
         mMainView.setTag("FragmentAnalytic");
-//        buildView();
-//
         return mMainView;
     }
 

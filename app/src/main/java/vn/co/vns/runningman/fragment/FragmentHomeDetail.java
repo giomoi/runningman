@@ -2,17 +2,18 @@ package vn.co.vns.runningman.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
 
 import vn.co.vns.runningman.R;
 
 /**
  * Created by thanhnv on 11/28/16.
  */
-public class FragmentHomeDetail extends Fragment{
+public class FragmentHomeDetail extends Fragment {
     private static final String KEY_POSITION="position";
 
     public static FragmentHomeDetail newInstance(int position) {

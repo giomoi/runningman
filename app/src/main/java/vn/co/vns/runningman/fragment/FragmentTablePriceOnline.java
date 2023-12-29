@@ -2,12 +2,7 @@ package vn.co.vns.runningman.fragment;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
@@ -36,8 +31,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.regex.Pattern;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 import vn.co.vns.runningman.R;
 import vn.co.vns.runningman.activity.MainActivity;
 import vn.co.vns.runningman.adapter.PriceOnlineAdapter;
@@ -48,6 +41,11 @@ import vn.co.vns.runningman.util.Constant;
 import vn.co.vns.runningman.util.SharedPreference;
 
 import static vn.co.vns.runningman.util.Constant.optionPriceboard;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by thanhnv on 12/9/16.

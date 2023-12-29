@@ -5,9 +5,10 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -18,10 +19,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import vn.co.vns.runningman.R;
-import vn.co.vns.runningman.object.InforBuySellStockIndex;
 import vn.co.vns.runningman.object.InforStockIndex;
 import vn.co.vns.runningman.object.InforVolumeValueStockIndex;
-import vn.co.vns.runningman.util.SharedPreference;
 import vn.co.vns.runningman.util.Singleton;
 import vn.co.vns.runningman.util.Utils;
 
@@ -202,14 +201,4 @@ public class ChangeValueIndexService extends Service {
             }
         }
     });
-
-    private InforStockIndex creatStockIndexObject(Elements td) {
-        InforStockIndex objInforStockIndex = new InforStockIndex();
-        for (int i = 0; i < td.size(); i++) {
-            Element item = td.get(i);
-            Log.d("Value:", item.select("td").toString());
-            objInforStockIndex.setValue(item.select("td").text(), i);
-        }
-        return objInforStockIndex;
-    }
 }

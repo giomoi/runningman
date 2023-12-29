@@ -2,8 +2,6 @@ package vn.co.vns.runningman.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +12,9 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import vn.co.vns.runningman.R;
 import vn.co.vns.runningman.activity.MainActivity;
 import vn.co.vns.runningman.util.SharedPreference;
@@ -21,7 +22,7 @@ import vn.co.vns.runningman.util.SharedPreference;
 /**
  * Created by thanhnv on 11/25/16.
  */
-public class FragmentSetting extends Fragment{
+public class FragmentSetting extends Fragment {
 
     private View mMainView;
     private Spinner spinAverIndex;

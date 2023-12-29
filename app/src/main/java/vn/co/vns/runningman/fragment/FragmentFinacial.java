@@ -2,13 +2,14 @@ package vn.co.vns.runningman.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import vn.co.vns.runningman.R;
 import vn.co.vns.runningman.activity.MainActivity;
@@ -17,7 +18,7 @@ import vn.co.vns.runningman.adapter.FinacialAdapter;
 /**
  * Created by thanhnv on 11/25/16.
  */
-public class FragmentFinacial extends Fragment{
+public class FragmentFinacial extends Fragment {
     private View mMainView;
     private ViewPager pager;
 

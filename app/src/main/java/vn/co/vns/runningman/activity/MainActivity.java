@@ -10,8 +10,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +20,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import java.util.Calendar;
 
@@ -46,8 +47,6 @@ import vn.co.vns.runningman.util.SharedPreference;
 import vn.co.vns.runningman.util.Singleton;
 import vn.co.vns.runningman.util.Utils;
 
-//import android.support.v7.app.AppCompatActivity;
-
 /**
  * Created by thanhnv on 11/25/16.
  */
@@ -67,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
     private PriceVolumeAgreement fragment;
     private FrameLayout frmBaseBody;
     private BroadcastReceiver updateUIReciver;
-    private String TAG=MainActivity.class.getSimpleName();
+    private String TAG = MainActivity.class.getSimpleName();
 //    public static Intent intentStockOnlineServices;
 
     private ICompleteDownloadTicker handleCompleteTicker = new ICompleteDownloadTicker() {
@@ -104,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         //Show notification stock Start 09:15
         notificationPeriodicalStockCeBigVolumn();
         //Show notification when change break out about value 40%
-        if(!SharedPreference.getInstance(this).getBoolean("isChangeValue",false)) {
+        if (!SharedPreference.getInstance(this).getBoolean("isChangeValue", false)) {
             periodicalChangeValueIndex();
         }
         //Notification 16h:00 the value of increase or decrease of 40% compared to 10-day average
@@ -143,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         //set that timer as a RTC Wakeup to alarm manager object
         alarmRecerverChangeValueIndex.setRepeating(AlarmManager.RTC_WAKEUP, timeStart.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingReceiverStart);
 //        alarmRecerverChangeValueIndex.setInexactRepeating(AlarmManager.RTC_WAKEUP, timeStart.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingReceiverStart);
-        SharedPreference.getInstance(this).putBoolean("isChangeValue",true);
+        SharedPreference.getInstance(this).putBoolean("isChangeValue", true);
     }
 
     private void periodicalUpdateStock() {
@@ -286,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         int hourofday = cal.get(Calendar.HOUR_OF_DAY);
         dayJP = (hourofday > 14) ? Constant.nowDay : Constant.beforeDay;
         dayVN = Utils.convertDate(dayJP);
-        String urlDay = Constant.URI+"/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
+        String urlDay = Constant.URI + "/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
         String dateDownload = Constant.maxDay;
         Constant.dateTransition = Constant.maxDay;
         if (dateDownload != null) {
@@ -303,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
                 }
                 dayJP = Utils.getDateJP(Utils.addDays(Utils.convertStringToDateString(dayJP), -1));
                 dayVN = Utils.convertDate(dayJP);
-                urlDay = Constant.URI+"/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
+                urlDay = Constant.URI + "/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
             }
             if (SharedPreference.getInstance().getInt("updatedStock", 0) == 1) {
                 btnUnit.setText(getString(R.string.txt_updating));

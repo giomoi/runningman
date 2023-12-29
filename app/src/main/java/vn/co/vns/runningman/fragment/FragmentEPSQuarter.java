@@ -1,12 +1,13 @@
 package vn.co.vns.runningman.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 
@@ -18,7 +19,7 @@ import vn.co.vns.runningman.object.StockVolumePriceAgreement;
 /**
  * Created by thanhnv on 11/28/16.
  */
-public class FragmentEPSQuarter extends Fragment{
+public class FragmentEPSQuarter extends Fragment {
     private View mMainView;
     private ListView lvBigVolume;
     private StockBigVolumeAdapter adapterTop;

@@ -1,13 +1,14 @@
 package vn.co.vns.runningman.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -26,7 +27,7 @@ import vn.co.vns.runningman.object.StockVolumePriceAgreement;
 /**
  * Created by thanhnv on 11/28/16.
  */
-public class FragmentEPSYear extends Fragment{
+public class FragmentEPSYear extends Fragment {
     private View mMainView;
     private ListView lvBigVolume;
     private StockBigVolumeAdapter adapterTop;
@@ -64,20 +65,6 @@ public class FragmentEPSYear extends Fragment{
                             }else {
                                 Elements colTableBusinessResult = tr.getElementsByTag("td");
                                 setValue(colTableBusinessResult,countRow);
-//                                //Net
-//                                if (tr.toString().contains("style=\"font-weight:bold\"")) {
-//                                    Elements colTableBusinessResult = tr.getElementsByTag("td");
-//                                    for (int j = 1; j <colTableBusinessResult.size(); j++) {
-//                                        listBusinessResults.get(j-1).setNetRevenue(Float.parseFloat(colTableBusinessResult.get(j).text().replace(",","").trim()));
-//                                    }
-//                                }
-//                                // profitAfterTax
-//                                if (tr.toString().contains("style=\"color:#003366\"")) {
-//                                    Elements colTableBusinessResult = tr.getElementsByTag("td");
-//                                    for (int j = 1; j <colTableBusinessResult.size(); j++) {
-//                                        listBusinessResults.get(j-1).setProfitAfterTax(Float.parseFloat(colTableBusinessResult.get(j).text().replace(",","").trim()));
-//                                    }
-//                                }
                                 Log.d("HTML: ",tr.toString());
                             }
                             countRow++;
@@ -146,23 +133,6 @@ public class FragmentEPSYear extends Fragment{
         mMainView = inflater.inflate(R.layout.fragment_eps_year, null);
         mMainView.setTag("FragmentHome");
 
-
-//        Thread thread = new Thread(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                Document doc = null;
-//                try {
-//                    doc = Jsoup.connect("http://liveboard.cafef.vn/?center=1").get();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                Elements newsHeadlines = doc.select("td .col_e .down-price");
-//                Log.d("ABC: ",newsHeadlines.toString());
-//            }
-//        });
-
-//        thread.start();
 
         MySQLiteHelper db= new MySQLiteHelper(getContext());
         ArrayList<StockVolumePriceAgreement> arrayStockVolumePrice=db.getListStockVolumePriceAgreement();

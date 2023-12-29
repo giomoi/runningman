@@ -1,9 +1,10 @@
 package vn.co.vns.runningman.adapter;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 
 import vn.co.vns.runningman.fragment.FragmentAccountingBalanceSheet;
 import vn.co.vns.runningman.fragment.FragmentBusinessResult;
@@ -17,7 +18,7 @@ import vn.co.vns.runningman.fragment.FragmentPE;
 /**
  * Created by thanhnv on 11/28/16.
  */
-public class FinacialAdapter extends FragmentPagerAdapter{
+public class FinacialAdapter extends FragmentPagerAdapter {
     private Context mContext=null;
 
     public FinacialAdapter(Context context, FragmentManager fm) {
