@@ -63,11 +63,9 @@ public class FragmentTablePriceOnline extends Fragment {
     private String TAG = getClass().getSimpleName().toUpperCase();
     private ArrayList<String> listCK = new ArrayList<>();
     private ProgressDialog mProgressDialog;
-    //private View mMainView;
     private WebView mainWebview;
     private String fullHtml = "";
     private boolean isRunningView = false;
-    private boolean isSortColorRate = false;
     private boolean isBindData = false;
     private PriceOnlineAdapter mainAdapter;
     private String urlString = Constant.URL_SSI_HSX;
@@ -143,8 +141,9 @@ public class FragmentTablePriceOnline extends Fragment {
             Document doc = Jsoup.parse(fullHtml);
             if (SharedPreference.getInstance().getString("priceTable", "cafef").equalsIgnoreCase("cafef")) {
                 Elements trTable = doc.select("table#stock-price-table-fix");
-                if (trTable.size() > 0) {
-                    for (Element s : trTable) {
+                Elements tbody = doc.select("tbody#stock-price-table-body");
+                if (tbody.size() > 0) {
+                    for (Element s : tbody) {
                         Elements rowTable = s.getElementsByTag("tr");
                         for (Element tr : rowTable) {
                             if (tr.toString().contains("rowspan=\"1\"")) {
@@ -204,7 +203,7 @@ public class FragmentTablePriceOnline extends Fragment {
                         Elements rowTable = s.getElementsByTag("tr");
                         for (Element tr : rowTable) {
 //                            if (tr.toString().contains("class=\"invisible\"")) {
-                            if(tr.toString().contains("elected=\"false\" style=\"width: 100%;\" role=\"row\"")){
+                            if (tr.toString().contains("style=\"\" role=\"row\"")) {
                                 Elements colTable = tr.getElementsByTag("td");
                                 StockObject newObject = creatStockObject(colTable);
                                 if (!"".equalsIgnoreCase(newObject.getTopPrice())) {
@@ -276,12 +275,6 @@ public class FragmentTablePriceOnline extends Fragment {
             txtCKName.setText(listIndex.get(typeIndex).getNameIndex());
             txtPointIndex.setText(listIndex.get(typeIndex).getPointIndex());
             txtRateIndex.setText(listIndex.get(typeIndex).getRateIndex());
-//        if(urlString!=null && urlString.contains("Hnx")){
-//            txtTotaVolume.setText("KL: " + listIndex.get(typeIndex).getWeighIndex().substring(0, 2) + " triệu");
-//            txtTotalValue.setText("GT: " + listIndex.get(typeIndex).getValueIndex().substring(0, 3) + " tỷ");
-//        }else{
-//            txtTotaVolume.setText("KL: " + listIndex.get(typeIndex).getWeighIndex());
-//            txtTotalValue.setText("GT: " + listIndex.get(typeIndex).getValueIndex() +" VND");
             if (listIndex.get(typeIndex).getWeighIndex().length() > 8) {
                 txtTotaVolume.setText("KL: " + listIndex.get(typeIndex).getWeighIndex().substring(0, listIndex.get(typeIndex).getWeighIndex().length() - 8) + " triệu");
                 if (SharedPreference.getInstance().getString("priceTable", "cafef").equalsIgnoreCase("cafef")) {
@@ -290,7 +283,6 @@ public class FragmentTablePriceOnline extends Fragment {
                     txtTotalValue.setText("GT: " + listIndex.get(typeIndex).getValueIndex().substring(0, listIndex.get(typeIndex).getValueIndex().length() - 4) + " tỷ VND");
                 }
             }
-// }
             String[] rateString = listIndex.get(typeIndex).getRateIndex().split("\\(");
             Log.d("Empty:", rateString[0]);
             Float ratePoint = Float.parseFloat((rateString[0].trim() != null && !rateString[0].trim().isEmpty() && !rateString[0].trim().equals("null")) ? rateString[0].trim() : "0");
@@ -336,8 +328,6 @@ public class FragmentTablePriceOnline extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mMainView = inflater.inflate(R.layout.fragment_table_price_online, null);
         mMainView.setTag(TAG);
-
-//        ButterKnife.inject(this, mMainView);
         initView(mMainView);
         buildView();
         MainActivity.layoutPriceboard.setVisibility(View.VISIBLE);
@@ -381,11 +371,6 @@ public class FragmentTablePriceOnline extends Fragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             urlString = bundle.getString("StringURL");
-//            if(urlString!=null && urlString.contains("Hnx")){
-//                txtCKName.setText("Bảng giá HNX");
-//            }else{
-//                txtCKName.setText("Bảng giá HOSE Stock");
-//            }
         }
         mainWebview = new WebView(getContext());
         mainWebview.getSettings().setJavaScriptEnabled(true);
@@ -619,41 +604,4 @@ public class FragmentTablePriceOnline extends Fragment {
         }
     }
 
-    private class RetrieveFeedTask extends AsyncTask<String, String, ArrayList<StockObject>> {
-
-        @Override
-        protected ArrayList<StockObject> doInBackground(String... params) {
-//            isRunningView = true;
-            isBindData = true;
-            ArrayList<StockObject> result = new ArrayList<>();
-            try {
-                Document doc = Jsoup.parse(fullHtml);
-                Elements trTable = doc.select("table#tableQuote");
-                if (trTable.size() > 0) {
-                    for (Element s : trTable) {
-                        Elements rowTable = s.getElementsByTag("tr");
-                        for (Element tr : rowTable) {
-                            if (tr.toString().contains("style=\"height: 21px;\"")) {
-                                Elements colTable = tr.getElementsByTag("td");
-                                StockObject newObject = creatStockObject(colTable);
-                                showNotificationCode(newObject);
-                                result.add(newObject);
-                            }
-                        }
-                    }
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<StockObject> stockObjects) {
-            super.onPostExecute(stockObjects);
-            mainAdapter.setListItem(stockObjects, optionPriceboard);
-            isBindData = false;
-        }
-    }
 }

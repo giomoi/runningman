@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
             @Override
             public void onReceive(Context context, Intent intent) {
                 //UI update here
-                btnUnit.setText("Updated");
+                btnUnit.setText(context.getString(R.string.txt_updated));
             }
         };
         registerReceiver(updateUIReciver, filter);
