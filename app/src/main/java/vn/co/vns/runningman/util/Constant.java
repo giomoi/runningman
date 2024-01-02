@@ -86,8 +86,8 @@ public class Constant {
     public static String STOCK_DATE_TRANSITION_RESOURCE = "%1$sgetDateTransition";
 
 
-    public static String URL_OTHER_HSX = "https://stockboard.sbsc.com.vn/exchange/hsx";
-    public static String URL_OTHER_HNX = "https://stockboard.sbsc.com.vn/exchange/hnx";
+    public static String URL_OTHER_HSX = "https://banggia.vndirect.com.vn/chung-khoan/hose";
+    public static String URL_OTHER_HNX = "https://banggia.vndirect.com.vn/chung-khoan/hnx";
 //    public static String URL_OTHER_HSX = "https://banggia.dnse.com.vn/hsx";
 //    public static String URL_OTHER_HNX = "https://banggia.dnse.com.vn/hnx";
     public static String URL_DEFAULT_HSX = "https://banggia.vps.com.vn/chung-khoan/HOSE";

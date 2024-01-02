@@ -194,20 +194,20 @@ public class FragmentTablePriceOnline extends Fragment {
                 }
                 resultIndex.add(newObjectIndex);
             } else {
-                Elements trTable = doc.select("table.table-content");
+                Elements trTable = doc.select("table#banggia-khop-lenh");
                 if (trTable.size() > 0) {
                     for (Element s : trTable) {
                         Elements rowTable = s.getElementsByTag("tr");
                         for (Element tr : rowTable) {
 //                            if (tr.toString().contains("class=\"invisible\"")) {
-                            if (tr.toString().contains("ListItemEven")) {
+//                            if (tr.toString().contains("ListItem")) {
                                 Elements colTable = tr.getElementsByTag("td");
                                 StockObject newObject = creatStockObject(colTable);
-                                if (!"".equalsIgnoreCase(newObject.getTopPrice())) {
+                                if (!"".equalsIgnoreCase(newObject.getCodeStock())) {
                                     showNotificationCode(newObject);
                                     result.add(newObject);
                                 }
-                            }
+//                            }
                         }
                         if (listStockTransition.size() == 0) {
                             listStockTransition = result;
@@ -453,9 +453,10 @@ public class FragmentTablePriceOnline extends Fragment {
 
     private StockObject creatStockObject(Elements td) {
         StockObject object = new StockObject();
-        for (int i = 0; i < td.size(); i++) {
-            Element item = td.get(i);
-            object.setValue(item.select("td").text(), i);
+        Elements span = td.select("span");
+        for (int i = 0; i < span.size(); i++) {
+//            Element item = td.get(i);
+            object.setValue(span.get(i).text(), i);
         }
         return object;
     }
