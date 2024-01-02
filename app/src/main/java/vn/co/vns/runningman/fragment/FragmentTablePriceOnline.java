@@ -66,7 +66,7 @@ public class FragmentTablePriceOnline extends Fragment {
     private boolean isRunningView = false;
     private boolean isBindData = false;
     private PriceOnlineAdapter mainAdapter;
-    private String urlString = Constant.URL_SSI_HSX;
+    private String urlString = Constant.URL_OTHER_HSX;
     private ArrayList<StockObject> listStockTransition = new ArrayList<>();
     private String strSpecial = "";
 
@@ -194,14 +194,13 @@ public class FragmentTablePriceOnline extends Fragment {
                 }
                 resultIndex.add(newObjectIndex);
             } else {
-                Elements trTable = doc.select("table#priceboardContentTable");
-                Elements tbody = trTable.select("tbody#priceboardContentTableBody");
+                Elements trTable = doc.select("table.table-content");
                 if (trTable.size() > 0) {
                     for (Element s : trTable) {
                         Elements rowTable = s.getElementsByTag("tr");
                         for (Element tr : rowTable) {
 //                            if (tr.toString().contains("class=\"invisible\"")) {
-                            if (tr.toString().contains("style=\"\" role=\"row\"")) {
+                            if (tr.toString().contains("ListItemEven")) {
                                 Elements colTable = tr.getElementsByTag("td");
                                 StockObject newObject = creatStockObject(colTable);
                                 if (!"".equalsIgnoreCase(newObject.getTopPrice())) {
@@ -377,12 +376,12 @@ public class FragmentTablePriceOnline extends Fragment {
         mainWebview.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
-                if (resetThread.getState() == Thread.State.NEW) {
-                    resetThread.start();
-                }
-//                if(!resetThread.isAlive()) {
+//                if (resetThread.getState() == Thread.State.NEW) {
 //                    resetThread.start();
 //                }
+                if (!resetThread.isAlive()) {
+                    resetThread.start();
+                }
             }
         });
         mainWebview.loadUrl(urlString);

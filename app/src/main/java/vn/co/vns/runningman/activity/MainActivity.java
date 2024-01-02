@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -249,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
                         btnExchange.setText("V");
                         appTitle.setText(getResources().getString(R.string.txt_title_nhat));
                         if (SharedPreference.getInstance().getString("priceTable", "cafef").equalsIgnoreCase("cafef")) {
-                            fg = new FragmentTablePriceOnline().newInstance(Constant.URL_CAFFEF_HNX);
+                            fg = new FragmentTablePriceOnline().newInstance(Constant.URL_DEFAULT_HNX);
                         } else {
                             fg = new FragmentTablePriceOnline().newInstance("https://iboard.ssi.com.vn/bang-gia/hnx");
                         }
@@ -258,9 +257,9 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
                         btnExchange.setText("N");
                         appTitle.setText(getResources().getString(R.string.txt_title_vuong));
                         if (SharedPreference.getInstance().getString("priceTable", "cafef").equalsIgnoreCase("cafef")) {
-                            fg = new FragmentTablePriceOnline().newInstance(Constant.URL_CAFFEF_HSX);
+                            fg = new FragmentTablePriceOnline().newInstance(Constant.URL_DEFAULT_HSX);
                         } else {
-                            fg = new FragmentTablePriceOnline().newInstance(Constant.URL_SSI_HSX);
+                            fg = new FragmentTablePriceOnline().newInstance(Constant.URL_OTHER_HSX);
                         }
                     }
                     if (SharedPreference.getInstance().getString("priceTable", "cafef").equalsIgnoreCase("cafef")) {

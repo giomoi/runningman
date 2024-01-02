@@ -33,30 +33,30 @@ public class PriceOnlineAdapter extends RecyclerView.Adapter<PriceOnlineAdapter.
     private Context context;
     private String optionPriceboard;
     private int colorWhite = -1;
-    private int colorRed= -1;
-    private int colorGreen= -1;
-    private int colorYellow= -1;
-    private int colorBlue= -1;
-    private int colorPurple= -1;
+    private int colorRed = -1;
+    private int colorGreen = -1;
+    private int colorYellow = -1;
+    private int colorBlue = -1;
+    private int colorPurple = -1;
 
 
-    public PriceOnlineAdapter(Context context){
+    public PriceOnlineAdapter(Context context) {
         mContext = new WeakReference<Context>(context);
-        this.context=context;
+        this.context = context;
     }
 
-    public void setListItem(ArrayList<StockObject> stockObjects,String optionPriceboard) {
+    public void setListItem(ArrayList<StockObject> stockObjects, String optionPriceboard) {
         listItem.clear();
         listItem.addAll(stockObjects);
-        this.optionPriceboard=optionPriceboard;
+        this.optionPriceboard = optionPriceboard;
         notifyDataSetChanged();
     }
 
-    public void setListSortPriority(ArrayList<StockObject> stockObjects,String optionPriceboard){
+    public void setListSortPriority(ArrayList<StockObject> stockObjects, String optionPriceboard) {
         listItem.clear();
         listItem.addAll(stockObjects);
         sortStockPriority(listItem);
-        this.optionPriceboard=optionPriceboard;
+        this.optionPriceboard = optionPriceboard;
         notifyDataSetChanged();
 
     }
@@ -82,28 +82,28 @@ public class PriceOnlineAdapter extends RecyclerView.Adapter<PriceOnlineAdapter.
                 builder.setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int item) {
-                        if(item==0){
+                        if (item == 0) {
                             Log.d("Item 1:", String.valueOf(item));
                             SharedPreference.getInstance().putInt("orderby", Constant.SORT_PRIORITY);
-                            SharedPreference.getInstance().putString("list_priority",SharedPreference.getInstance().getString("list_priority","")+"," +listItem.get(position).getCodeStock());
-                            StockObject objTmp= new StockObject();
-                            objTmp=listItem.get(position);
+                            SharedPreference.getInstance().putString("list_priority", SharedPreference.getInstance().getString("list_priority", "") + "," + listItem.get(position).getCodeStock());
+                            StockObject objTmp = new StockObject();
+                            objTmp = listItem.get(position);
                             objTmp.setPriorityOrder(1);
-                            listItem.set(position,objTmp);
+                            listItem.set(position, objTmp);
                             sortStockPriority(listItem);
                             notifyDataSetChanged();
-                            Log.d("List: ",SharedPreference.getInstance().getString("list_priority",""));
-                        }else if(item==1){
+                            Log.d("List: ", SharedPreference.getInstance().getString("list_priority", ""));
+                        } else if (item == 1) {
                             Log.d("Item 2:", String.valueOf(item));
-                            Tick tick =new Tick();
+                            Tick tick = new Tick();
                             tick.setTicker(listItem.get(position).getCodeStock());
                             tick.setPriceCurrent(Float.parseFloat(listItem.get(position).getKhopLenhPrice()));
-                            new DialogTickTicker(context,context.getResources().getString(R.string.title_tick_ticker),tick).show();
+                            new DialogTickTicker(context, context.getResources().getString(R.string.title_tick_ticker), tick).show();
 //                            FragmentManager fragmentManager = ((MainActivity) context).getSupportFragmentManager();
 //                            FragmenTickTicker fragment = FragmenTickTicker.newInstance();
 //                            fragmentManager.beginTransaction().replace(R.id.base_container, fragment).commit();
 
-                        }else{
+                        } else {
                             Log.d("Item 3:", String.valueOf(item));
                         }
                     }
@@ -117,7 +117,7 @@ public class PriceOnlineAdapter extends RecyclerView.Adapter<PriceOnlineAdapter.
 
     }
 
-    public void sortStockPriority(ArrayList<StockObject> listStock){
+    public void sortStockPriority(ArrayList<StockObject> listStock) {
         Collections.sort(listStock, new Comparator<StockObject>() {
             @Override
             public int compare(StockObject o1, StockObject o2) {
@@ -202,7 +202,7 @@ public class PriceOnlineAdapter extends RecyclerView.Adapter<PriceOnlineAdapter.
             txtLowPrice.setText(item.getLowPrice());
             if (optionPriceboard.equalsIgnoreCase("HastcStockBoard")) {
                 txtTotalWeight.setText(item.getNNBuying());
-            }else{
+            } else {
                 txtTotalWeight.setText(item.getTotalWeight());
                 txtNNBuying.setText(item.getNNBuying());
                 txtNNSelling.setText(item.getNNSelling());
@@ -253,27 +253,27 @@ public class PriceOnlineAdapter extends RecyclerView.Adapter<PriceOnlineAdapter.
         }
 
         private int getColorItem(String itemCompare, String tcPrice, String top, String bottom) {
-            if(itemCompare.isEmpty()){
-                if(colorWhite == -1) {
+            if (itemCompare == null || itemCompare.isEmpty()) {
+                if (colorWhite == -1) {
                     colorWhite = ContextCompat.getColor(mContext.get(), R.color.white);
                 }
                 return colorWhite;
             }
-            if(itemCompare.equals(top)){
-                if(colorPurple == -1) {
+            if (itemCompare.equals(top)) {
+                if (colorPurple == -1) {
                     colorPurple = ContextCompat.getColor(mContext.get(), R.color.purple);
                 }
                 return colorPurple;
             }
-            if(itemCompare.equals(bottom)){
-                if(colorBlue == -1) {
+            if (itemCompare.equals(bottom)) {
+                if (colorBlue == -1) {
                     colorBlue = ContextCompat.getColor(mContext.get(), R.color.blue);
                 }
                 return colorBlue;
             }
             try {
-                if(itemCompare.equals("ATO") || itemCompare.equals("ATC")){
-                    if(colorWhite == -1) {
+                if (itemCompare.equals("ATO") || itemCompare.equals("ATC")) {
+                    if (colorWhite == -1) {
                         colorWhite = ContextCompat.getColor(mContext.get(), R.color.white);
                     }
                     return colorWhite;
@@ -281,23 +281,23 @@ public class PriceOnlineAdapter extends RecyclerView.Adapter<PriceOnlineAdapter.
                 float numberCompare = Float.valueOf(itemCompare.replace(",", "."));
                 float value = Float.valueOf(tcPrice.replace(",", "."));
                 if (numberCompare == value) {
-                    if(colorYellow == -1) {
+                    if (colorYellow == -1) {
                         colorYellow = ContextCompat.getColor(mContext.get(), R.color.yellow);
                     }
                     return colorYellow;
                 } else if (numberCompare > value) {
-                    if(colorGreen == -1) {
+                    if (colorGreen == -1) {
                         colorGreen = ContextCompat.getColor(mContext.get(), R.color.green);
                     }
                     return colorGreen;
                 }
-                if(colorRed == -1) {
+                if (colorRed == -1) {
                     colorRed = ContextCompat.getColor(mContext.get(), R.color.red);
                 }
                 return colorRed;
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
-                if(colorWhite == -1) {
+                if (colorWhite == -1) {
                     colorWhite = ContextCompat.getColor(mContext.get(), R.color.white);
                 }
                 return colorWhite;

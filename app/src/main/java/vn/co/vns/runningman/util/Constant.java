@@ -85,12 +85,13 @@ public class Constant {
     public static final String TICK_DELETE_RESOURCE = "%1$sdeleteTickTicker/%2$s";
     public static String STOCK_DATE_TRANSITION_RESOURCE = "%1$sgetDateTransition";
 
-    public static String URL_SSI_HSX = "http://priceboard.bsc.com.vn/chi-so/hose";
-    public static String URL_SSI_HNX = "http://priceboard.bsc.com.vn/chi-so/hnx";
-    public static String URL_CAFFEF_HSX = "https://banggia.vps.com.vn/chung-khoan/HOSE";
-    public static String URL_CAFFEF_HNX = "https://banggia.vps.com.vn/chung-khoan/HNX";
 
-//    public static String URL_CAFFEF_HSX = "http://liveboard.cafef.vn/";
-//    public static String URL_CAFFEF_HNX = "http://liveboard.cafef.vn/?center=2";
+    public static String URL_OTHER_HSX = "https://stockboard.sbsc.com.vn/exchange/hsx";
+    public static String URL_OTHER_HNX = "https://stockboard.sbsc.com.vn/exchange/hnx";
+//    public static String URL_OTHER_HSX = "https://banggia.dnse.com.vn/hsx";
+//    public static String URL_OTHER_HNX = "https://banggia.dnse.com.vn/hnx";
+    public static String URL_DEFAULT_HSX = "https://banggia.vps.com.vn/chung-khoan/HOSE";
+    public static String URL_DEFAULT_HNX = "https://banggia.vps.com.vn/chung-khoan/HNX";
+
 }
 

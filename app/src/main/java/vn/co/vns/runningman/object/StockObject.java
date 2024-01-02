@@ -250,42 +250,42 @@ public class StockObject {
         //valuePrice = valuePrice.replaceAll(",","");
         if (i > 28) return;
         switch (i) {
-            case 0:
+            case 1:
                 CodeStock = valuePrice;
                 if (SharedPreference.getInstance().getString("list_priority", "").contains(valuePrice))
                     priorityOrder = 1;
                 return;
-            case 1:
+            case 11:
                 TopPrice = valuePrice;
                 return;
-            case 2:
+            case 8:
                 BottomPrice = valuePrice;
                 return;
-            case 3:
+            case 9:
                 TCPrice = valuePrice;
                 return;
-            case 4:
+            case 10:
                 BuyingPrice3 = valuePrice;
                 return;
             case 5:
                 BuyingWeight3 = valuePrice;
                 return;
-            case 6:
+            case 0:
                 BuyingPrice2 = valuePrice;
                 return;
             case 7:
                 BuyingWeight2 = valuePrice;
                 return;
-            case 8:
+            case 2:
                 BuyingPrice1 = valuePrice;
                 return;
-            case 9:
+            case 3:
                 BuyingWeight1 = valuePrice;
                 return;
-            case 10:
+            case 4:
                 KhopLenhPrice = valuePrice;
                 return;
-            case 11:
+            case 6:
                 KhopLenhWeight = valuePrice;
                 Rate = valuePrice;
 //                Rate = ((Float.valueOf(("".equalsIgnoreCase(KhopLenhPrice)) ? "0" : KhopLenhPrice) - Float.valueOf(("".equalsIgnoreCase(TCPrice)) ? "0" : TCPrice)) * 100) / (Float.valueOf(("".equalsIgnoreCase(TCPrice) ? "0" : TCPrice)));
