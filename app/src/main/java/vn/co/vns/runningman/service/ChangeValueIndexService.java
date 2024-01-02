@@ -1,8 +1,12 @@
 package vn.co.vns.runningman.service;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
@@ -35,12 +39,7 @@ public class ChangeValueIndexService extends Service {
         super.onCreate();
         Log.d(TAG, "onCreate");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Notification.Builder builder = new Notification.Builder(this, ANDROID_CHANNEL_ID)
-                    .setContentTitle(getString(R.string.app_name))
-                    .setContentText("SmartTracker Running")
-                    .setAutoCancel(true);
-            Notification notification = builder.build();
-            startForeground(NOTIFICATION_ID, notification);
+            startMyOwnForeground();
         } else {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                     .setContentTitle(getString(R.string.app_name))
@@ -75,6 +74,27 @@ public class ChangeValueIndexService extends Service {
         return null;
     }
 
+    private void startMyOwnForeground(){
+        String NOTIFICATION_CHANNEL_ID = "com.example.simpleapp";
+        String channelName = "My Background Service";
+        NotificationChannel chan = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
+            chan.setLightColor(Color.BLUE);
+            chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            assert manager != null;
+            manager.createNotificationChannel(chan);
+        }
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+        Notification notification = notificationBuilder.setOngoing(true)
+//                .setSmallIcon(R.drawable.icon_1)
+                .setContentTitle("App is running in background")
+                .setPriority(NotificationManager.IMPORTANCE_MIN)
+                .setCategory(Notification.CATEGORY_SERVICE)
+                .build();
+        startForeground(NOTIFICATION_ID, notification);
+    }
 
     private Thread resetThread = new Thread(new Runnable() {
         @Override

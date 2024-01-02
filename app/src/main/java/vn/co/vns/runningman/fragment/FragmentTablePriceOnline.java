@@ -150,10 +150,10 @@ public class FragmentTablePriceOnline extends Fragment {
 //                                StockIndex newObjectIndex = new StockIndex(colTableIndex.get(0).text(), colTableIndex.get(1).text(), colTableIndex.get(2).text(), colTableIndex.get(3).text(), colTableIndex.get(4).text(), colTableIndex.get(5).text(), colTableIndex.get(6).text(), colTableIndex.get(7).text());
 //                                resultIndex.add(newObjectIndex);
                             }
-                            if (tr.toString().contains("odd") || tr.toString().contains("even")) {
+                            if (tr.toString().contains("price-item stock")) {
                                 Elements colTable = tr.getElementsByTag("td");
                                 StockObject newObject = creatStockObjectCafef(colTable);
-                                if (!"".equalsIgnoreCase(newObject.getTopPrice())) {
+                                if (!"".equalsIgnoreCase(newObject.getCodeStock())) {
                                     showNotificationCode(newObject);
                                     //Filter only stock 3 character
                                     if (newObject.getCodeStock().length() < 4)
@@ -463,9 +463,10 @@ public class FragmentTablePriceOnline extends Fragment {
 
     private StockObject creatStockObjectCafef(Elements td) {
         StockObject object = new StockObject();
-        for (int i = 0; i < td.size(); i++) {
-            Element item = td.get(i);
-            object.setValueCafef(i == 0 ? item.select("label").text() : item.select("td").text(), i);
+        Elements span = td.select("span");
+        Elements div = td.select("div.price-change-pc");
+        for (int i = 0; i < span.size(); i++) {
+            object.setValueCafef((i != 20) ? span.get(i).text() : div.text(), i);
         }
         return object;
     }
