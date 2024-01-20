@@ -41,10 +41,8 @@ import vn.co.vns.runningman.util.Singleton;
  */
 public class PriceVolumeAgreement extends Fragment {
     public static TextView txtVolume, txtValue, txtRateVolume, txtRateValue;
-    double totalValue10, rateValue10;
+    double rateValue10;
     private View mMainView;
-    private ListView lvBigVolume;
-    private StockBigVolumeAdapter adapterTop;
     private TextView txtDateTransit, txtIndex;
     private ArrayList<InforBuySellStockIndex> listInforBuySellStockIndex = new ArrayList<>();
     private ArrayList<InforStockIndex> listInforStockIndex = new ArrayList<>();

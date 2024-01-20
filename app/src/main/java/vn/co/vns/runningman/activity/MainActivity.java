@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
     private FrameLayout frmBaseBody;
     private BroadcastReceiver updateUIReciver;
     private String TAG = MainActivity.class.getSimpleName();
-//    public static Intent intentStockOnlineServices;
 
     private ICompleteDownloadTicker handleCompleteTicker = new ICompleteDownloadTicker() {
         @Override
@@ -82,17 +81,12 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        setTheme(R.style.Theme_AppCompat);
         super.onCreate(savedInstanceState);
         //this.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         SharedPreference.getInstance(getApplicationContext());
         SharedPreference.getInstance(getApplicationContext()).putString("list_priority", "");
-        //createCalendarOnlinePrice();
-//        if (this instanceof PriceAgreementCallback) {
-//            callback = (PriceAgreementCallback) this;
-//        }
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
