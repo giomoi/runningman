@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         AlarmManager alarmRecerverChangeValueIndex = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         //Create pending intent & register it to your alarm notifier class
         Intent intentChangeValueIndex = new Intent(this, SensorChangeValueIndexBoardcastReceiver.class);
-        PendingIntent pendingReceiverStart = PendingIntent.getBroadcast(this, 0, intentChangeValueIndex, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingReceiverStart = PendingIntent.getBroadcast(this, 0, intentChangeValueIndex, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         //set timer you want alarm to work (here I have set it to 7.20pm)
         Calendar timeStart = Calendar.getInstance();
         timeStart.setTimeInMillis(System.currentTimeMillis());
@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         AlarmManager alarmRecerverUpdateStock = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         //Create pending intent & register it to your alarm notifier class
         Intent intenUpdateStock = new Intent(this, SensorStockUpdateBoardcastReceiver.class);
-        PendingIntent pendingReceiverStart = PendingIntent.getBroadcast(this, 0, intenUpdateStock, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingReceiverStart = PendingIntent.getBroadcast(this, 0, intenUpdateStock, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         //set timer you want alarm to work (here I have set it to 7.20pm)
         Calendar timeStart = Calendar.getInstance();
         timeStart.set(Calendar.HOUR_OF_DAY, 16);
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         AlarmManager alarmRecerverStartNotification = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         //Create pending intent & register it to your alarm notifier class
         Intent intent0 = new Intent(this, SensorRestarterBroadcastReceiver.class);
-        PendingIntent pendingReceiverStart = PendingIntent.getBroadcast(this, 0, intent0, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingReceiverStart = PendingIntent.getBroadcast(this, 0, intent0, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         //set timer you want alarm to work (here I have set it to 7.20pm)
         Calendar timeStart = Calendar.getInstance();
         timeStart.set(Calendar.HOUR_OF_DAY, 9);
@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         AlarmManager alarmReceiverStopNotification = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         //Create pending intent & register it to your alarm notifier class
         Intent intentStopReceiver = new Intent(this, SensorStopBoardcastReceiver.class);
-        PendingIntent pendingReceiverStop = PendingIntent.getBroadcast(this, 0, intentStopReceiver, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingReceiverStop = PendingIntent.getBroadcast(this, 0, intentStopReceiver, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         //set timer you want alarm to work (here I have set it to 7.20pm)
         Calendar timeStop = Calendar.getInstance();
         timeStop.set(Calendar.HOUR_OF_DAY, 11);
@@ -244,7 +244,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
                         if (SharedPreference.getInstance().getString("priceTable", "cafef").equalsIgnoreCase("cafef")) {
                             fg = new FragmentTablePriceOnline().newInstance(Constant.URL_DEFAULT_HNX);
                         } else {
-                            fg = new FragmentTablePriceOnline().newInstance("https://iboard.ssi.com.vn/bang-gia/hnx");
+                            fg = new FragmentTablePriceOnline().newInstance(Constant.URL_OTHER_HSX);
                         }
                     } else {
                         SharedPreference.getInstance().putBoolean("ho", true);

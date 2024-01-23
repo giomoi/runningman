@@ -200,13 +200,13 @@ public class StockOnlineServices extends Service {
             Log.d(TAG, "chan" + transitUrl);
 //            wv.reload();
 //            wv.loadUrl("javascript:document.open();document.close();");
-            wv.loadUrl("http://liveboard.cafef.vn/");
+            wv.loadUrl(Constant.URL_DEFAULT_HSX);
 //            wv.reload();
         } else {
             Log.d(TAG, "le" + transitUrl);
 //            wv.reload();
 //            wv.loadUrl("javascript:document.open();document.close();");
-            wv.loadUrl("https://liveboard.cafef.vn/?center=2");
+            wv.loadUrl(Constant.URL_DEFAULT_HNX);
 //            wv.reload();
         }
         transitUrl = transitUrl + 1;

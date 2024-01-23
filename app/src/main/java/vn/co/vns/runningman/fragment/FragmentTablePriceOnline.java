@@ -390,16 +390,12 @@ public class FragmentTablePriceOnline extends Fragment {
         //
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         listPriceOnline.setLayoutManager(mLayoutManager);
-//        listOrderFragment.setItemAnimator(new DefaultItemAnimator());
-//        listPriceOnline.setHasFixedSize(true);
-//        listPriceOnline.setItemViewCacheSize(20);
         mainAdapter = new PriceOnlineAdapter(getContext());
         listPriceOnline.setAdapter(mainAdapter);
 
         txtCodeStock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                new DialogTickTicker(getContext(),getResources().getString(R.string.title_tick_ticker),"HAR").show();
                 SharedPreference.getInstance().putInt("orderby", Constant.SORT_TIKER);
                 sortStockName(listStockTransition);
                 mainAdapter.setListItem(listStockTransition, optionPriceboard);
@@ -495,7 +491,6 @@ public class FragmentTablePriceOnline extends Fragment {
         if (newObject.getTotalWeight().isEmpty() || newObject.getBuyingWeight1().isEmpty() || newObject.getBuyingWeight2().isEmpty() || newObject.getBuyingWeight3().isEmpty()) {
             return;
         }
-        double checkedPrice = Constant.valueToCompare * Double.valueOf(newObject.getTopPrice().replaceAll(",", "."));
         double buying1 = Double.valueOf(newObject.getBuyingPrice1().replaceAll(",", "."));
         double buying2 = Double.valueOf(newObject.getBuyingPrice2().replaceAll(",", "."));
         double buying3 = Double.valueOf(newObject.getBuyingPrice3().replaceAll(",", "."));
@@ -503,14 +498,10 @@ public class FragmentTablePriceOnline extends Fragment {
         double cePrice = Double.valueOf(newObject.getTopPrice().replaceAll(",", "."));
         double buyPrice1 = Double.valueOf(newObject.getBuyingPrice1().replaceAll(",", "."));
 
-//        double amountTotal = Constant.valueToCompare*Double.valueOf(newObject.getTotalWeight().replaceAll("\\.", "").replaceAll(",", ""));
         double amountTotal = Double.valueOf(newObject.getTotalWeight().replaceAll("\\.", "").replaceAll(",", ""));
         double amountSum = Double.valueOf(newObject.getBuyingWeight1().replaceAll("\\.", "").replaceAll(",", ""))
                 + Double.valueOf(newObject.getBuyingWeight2().replaceAll("\\.", "").replaceAll(",", ""))
                 + Double.valueOf(newObject.getBuyingWeight3().replaceAll("\\.", "").replaceAll(",", ""));
-//        double amountSum=Double.valueOf(newObject.getBuyingWeight1().replaceAll("\\.", "").replaceAll(",", ""));
-//        if((newObject.getBuyingPrice1().equals(newObject.getTopPrice())) && (buying1>checkedPrice && buying2>checkedPrice && buying3>checkedPrice) && (buying1 > tcPrice && buying2 > tcPrice && buying3 > tcPrice)
-        //Log.d(newObject.getCodeStock(),newObject.getBuyingPrice1()+":"+newObject.getTopPrice()+":"+buying1+":"+buying2+":"+buying3+":"+tcPrice);
         if ((newObject.getBuyingPrice1().equals(newObject.getTopPrice())) && (buying1 > tcPrice && buying2 > tcPrice && buying3 > tcPrice)
                 && amountSum >= amountTotal && cePrice == buyPrice1) {
             getActivity().runOnUiThread(new Runnable() {
@@ -539,7 +530,6 @@ public class FragmentTablePriceOnline extends Fragment {
                             Log.d("Special: ", SharedPreference.getInstance().getString("listSpecial", ""));
                             setAsLink(txtTopCK, strHTML);
                             Log.d("Top CK", strHTML);
-//                            txtTopCK.setText("Top CK: " + listCK.toString());
                             txtTopCK.setVisibility(View.VISIBLE);
                         } else {
                             txtTopCK.setVisibility(View.GONE);
@@ -583,7 +573,6 @@ public class FragmentTablePriceOnline extends Fragment {
         @SuppressWarnings("unused")
         public void processHTML(final String html) {
             // process the html as needed by the app
-//            if(html.length()>0 && html.contains("extraBuyVol") && !isRunningView) {
             if (html.length() > 0 && !isRunningView) {
                 //Log.i("HTML Length", html);
                 fullHtml = html;

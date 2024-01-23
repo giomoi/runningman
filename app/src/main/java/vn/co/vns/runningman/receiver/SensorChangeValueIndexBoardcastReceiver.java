@@ -13,8 +13,6 @@ public class SensorChangeValueIndexBoardcastReceiver extends BaseBoardcastReceiv
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         Log.i(SensorChangeValueIndexBoardcastReceiver.class.getSimpleName(), "Change value index Service! Oooooooooooooppppssssss!!!!");
-//        if (!isMyServiceRunning(StockUpdateService.class,context)) {
-        //            context.stopService(intentStockUpdateServices);
         if (SharedPreference.getInstance(context).getInt("updatedStock", 0) != 1) {
             Log.i(SensorChangeValueIndexBoardcastReceiver.class.getSimpleName(), "Stop Running! Oooooooooooooppppssssss!!!!");
             intentChangeValueIndexServices = new Intent(context, ChangeValueIndexService.class);
