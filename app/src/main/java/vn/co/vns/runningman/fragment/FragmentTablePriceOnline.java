@@ -144,12 +144,6 @@ public class FragmentTablePriceOnline extends Fragment {
                     for (Element s : tbody) {
                         Elements rowTable = s.getElementsByTag("tr");
                         for (Element tr : rowTable) {
-                            if (tr.toString().contains("rowspan=\"1\"")) {
-                                Log.d("OK: ", doc.select("span.idx_1").text());
-                                //Da lam toi day
-//                                StockIndex newObjectIndex = new StockIndex(colTableIndex.get(0).text(), colTableIndex.get(1).text(), colTableIndex.get(2).text(), colTableIndex.get(3).text(), colTableIndex.get(4).text(), colTableIndex.get(5).text(), colTableIndex.get(6).text(), colTableIndex.get(7).text());
-//                                resultIndex.add(newObjectIndex);
-                            }
                             if (tr.toString().contains("price-item stock")) {
                                 Elements colTable = tr.getElementsByTag("td");
                                 StockObject newObject = creatStockObjectCafef(colTable);
