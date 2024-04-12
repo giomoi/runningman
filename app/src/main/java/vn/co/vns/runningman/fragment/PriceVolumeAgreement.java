@@ -1,16 +1,25 @@
 package vn.co.vns.runningman.fragment;
 
+import android.app.ProgressDialog;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -51,6 +60,7 @@ public class PriceVolumeAgreement extends Fragment {
     private LinearLayoutManager linearLayoutManager;
     private LinearLayout lnBuySellStockIndex, lnStockIndex;
     private SwipeRefreshLayout mSwipeRefresh;
+    private final Handler uiHandler = new Handler();
 
     private Thread resetThread = new Thread(new Runnable() {
         @Override
@@ -96,7 +106,6 @@ public class PriceVolumeAgreement extends Fragment {
             Document doc = null;
             try {
                 doc = Jsoup.connect("https://s.cafef.vn/lich-su-giao-dich-symbol-vnindex/trang-1-0-tab-2.chn").get();
-//                doc = Jsoup.connect("https://dulieu.mbs.com.vn/vi/OverviewMarket/StatisticsCode?stockCode=VNIndex&catID=1").get();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -280,7 +289,7 @@ public class PriceVolumeAgreement extends Fragment {
                     txtRateVolume.setText(objInforVolumeValueStockIndex.getVolumeRate());
                     txtRateValue.setText(objInforVolumeValueStockIndex.getValueRate());
 //                    Log.d("Rate: ", objInforVolumeValueStockIndex.getRate() != null ? objInforVolumeValueStockIndex.getRate() :0);
-                    if (objInforVolumeValueStockIndex.getRate()!=null && objInforVolumeValueStockIndex.getRate().contains("-")) {
+                    if (objInforVolumeValueStockIndex.getRate() != null && objInforVolumeValueStockIndex.getRate().contains("-")) {
                         setColorIndex(Color.RED);
                     } else if (indexClose < indexOpen) {
                         setColorIndex(Color.GREEN);
@@ -328,7 +337,7 @@ public class PriceVolumeAgreement extends Fragment {
         lnBuySellStockIndex = mMainView.findViewById(R.id.lnBuySellStockIndex);
         mSwipeRefresh = mMainView.findViewById(R.id.mSwipeRefresh);
         mSwipeRefresh.setEnabled(false);
-
+        initWebview();
         priceVolumeAgrementAdapter = new PriceVolumeAgrementAdapter(getActivity(), listInforBuySellStockIndex);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
@@ -336,20 +345,318 @@ public class PriceVolumeAgreement extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(priceVolumeAgrementAdapter);
         linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-//        if(SharedPreference.getInstance().getBoolean("exchange",true)) { //Default
-        if (thread.getState() == Thread.State.NEW) {
-            thread.start();
-        }
-//        thread.start();
-//        }else{
-        if (resetThread.getState() == Thread.State.NEW) {
-            resetThread.start();
-        }
-//        resetThread.start();
+//        if (thread.getState() == Thread.State.NEW) {
+//            thread.start();
 //        }
+////        thread.start();
+////        }else{
+//        if (resetThread.getState() == Thread.State.NEW) {
+//            resetThread.start();
+//        }
+////        resetThread.start();
+////        }
 
         return mMainView;
     }
+
+    private String urlWeb = "https://s.cafef.vn/lich-su-giao-dich-symbol-vnindex/trang-1-0-tab-2.chn";
+    private ProgressDialog progressDialog;
+
+    boolean loadingFinished = true;
+    boolean redirect = false;
+
+    private void initWebview() {
+        progressDialog = ProgressDialog.show(getContext(), "Loading", "Please wait...", true);
+        progressDialog.setCancelable(false);
+        if (SharedPreference.getInstance().getBoolean("exchange", true)) { //Default
+            urlWeb = "https://s.cafef.vn/lich-su-giao-dich-symbol-vnindex/trang-1-0-tab-2.chn";
+            lnBuySellStockIndex.setVisibility(View.VISIBLE);
+            lnStockIndex.setVisibility(View.GONE);
+        } else {
+            urlWeb = "https://s.cafef.vn/lich-su-giao-dich-symbol-vnindex/trang-1-0-tab-1.chn";
+            lnBuySellStockIndex.setVisibility(View.GONE);
+            lnStockIndex.setVisibility(View.VISIBLE);
+        }
+        try {
+            final WebView browser = new WebView(getContext());
+            browser.setVisibility(View.INVISIBLE);
+            browser.setLayerType(View.LAYER_TYPE_NONE, null);
+            browser.getSettings().setJavaScriptEnabled(true);
+            browser.getSettings().setBlockNetworkImage(true);
+            browser.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+            browser.getSettings().setDomStorageEnabled(true);
+            browser.addJavascriptInterface(new JSHtmlInterface(), "JSBridge");
+            browser.loadUrl(urlWeb);
+            browser.setWebViewClient(new WebViewClient() {
+
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public boolean shouldOverrideUrlLoading(
+                        WebView view, WebResourceRequest request) {
+                    if (!loadingFinished) {
+                        redirect = true;
+                    }
+
+                    loadingFinished = false;
+                    browser.loadUrl(request.getUrl().toString());
+                    return true;
+                }
+
+                @Override
+                public void onPageStarted(
+                        WebView view, String url, Bitmap favicon) {
+                    super.onPageStarted(view, url, favicon);
+                    loadingFinished = false;
+                    //SHOW LOADING IF IT ISNT ALREADY VISIBLE
+                }
+
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    if (!redirect) {
+                        loadingFinished = true;
+                        browser.setVisibility(View.VISIBLE);
+                        browser.loadUrl("javascript:window.JSBridge.showHTML('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+                        progressDialog.dismiss();
+                        //HIDE LOADING IT HAS FINISHED
+                    } else {
+                        redirect = false;
+                    }
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private class JSHtmlInterface {
+        @android.webkit.JavascriptInterface
+        public void showHTML(String html) {
+            final String htmlContent = html;
+
+            uiHandler.post(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            Document doc = Jsoup.parse(htmlContent);
+                            Elements trTable = doc.select("table[class=owner-contents-table]");
+                            if (trTable.size() > 0) {
+                                for (Element s : trTable) {
+                                    Elements rowTable = s.getElementsByTag("tr");
+                                    for (Element tr : rowTable) {
+
+                                        if (tr.toString().contains("class=\"oddOwner\"")
+                                                || tr.toString().contains("class=\"evenOwner\"")) {
+                                            Elements colTable = tr.getElementsByTag("td");
+                                            if (SharedPreference.getInstance().getBoolean("exchange", true)) { //Default
+                                                InforBuySellStockIndex newObject = creatStockObject(colTable);
+                                                listInforBuySellStockIndex.add(newObject);
+                                                Log.d("InforBuySell: ", colTable.toString());
+                                            } else {
+                                                InforStockIndex objInforStockIndex = creatStockIndexObject(colTable);
+                                                listInforStockIndex.add(objInforStockIndex);
+                                                Log.d("Index value daily: ", colTable.toString());
+                                            }
+
+                                            Log.d("InforBuySell: ", colTable.toString());
+                                        }
+                                    }
+                                }
+                            }
+                            //Update index history.
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (SharedPreference.getInstance().getBoolean("exchange", true)) {
+                                        priceVolumeAgrementAdapter.notifyDataSetChanged();
+                                    } else {
+                                        priceVolumeAgrementAdapter.updatePriceVolumeAgrementAdapter(getActivity(), getListInforStockIndexFull(listInforStockIndex, 10));
+                                    }
+
+                                }
+                            });
+                            // get value of current day transition.
+                            final InforVolumeValueStockIndex objInforVolumeValueStockIndex = new InforVolumeValueStockIndex();
+                            Elements pIndexClose = doc.select("p[id=VN-Index]");
+                            objInforVolumeValueStockIndex.setValueIndexClose(pIndexClose.text());
+                            Elements pValueIndex = doc.select("p[id=GTGD-VN-Index]");
+                            objInforVolumeValueStockIndex.setValueIndex(pValueIndex.text());
+                            // Volume, value current
+//                            Document doc1 = null;
+//                            long averVolume10 = 0;
+//                            long averVolume20 = 0;
+//                            long averValue10 = 0;
+//                            long averValue20 = 0;
+//                            final InforVolumeValueStockIndex objInforVolumeValueStockIndex = new InforVolumeValueStockIndex();
+//                            try {
+//                                doc1 = Jsoup.connect("http://s.cafef.vn/Lich-su-giao-dich-VNINDEX-1.chn#data").get();
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                            }
+//                            Elements trTable1 = doc1.select("table[id=GirdTable2]");
+//                            int countRow = 0;
+//                            long volumeAver10 = 0;
+//                            long volumeAver20 = 0;
+//                            long valueAver10 = 0;
+//                            long valueAver20 = 0;
+//                            if (trTable1.size() > 0) {
+//                                for (Element s : trTable1) {
+//                                    Elements rowTable = s.getElementsByTag("tr");
+//                                    for (Element tr : rowTable) {
+//                                        if (tr.toString().contains("id=\"ContentPlaceHolder1_ctl03_rptData2_itemTR_0\"")) {
+//                                            Elements colTable = tr.getElementsByTag("td");
+//
+//                                            for (int i = 0; i < colTable.size(); i++) {
+//                                                Element item = colTable.get(i);
+//                                                Log.d("Value:", item.select("td").toString());
+//                                                objInforVolumeValueStockIndex.setValue(item.select("td").text(), i);
+//                                            }
+//                                            Log.d("VolumeValueStockIndex: ", colTable.toString());
+//                                        } else {
+//                                            Elements colTable = tr.getElementsByTag("td");
+//                                            for (int i = 0; i < colTable.size(); i++) {
+//                                                Element item = colTable.get(i);
+//                                                Log.d("Value:", item.select("td").toString());
+//                                                if (i == 4 && colTable.size() > 12) {
+//                                                    countRow++;
+//                                                    //caculate rate for volume
+//                                                    if (countRow == 1) {
+//                                                        Log.d("Value:", item.select("td").text() + " : " + objInforVolumeValueStockIndex.getVolumeClose());
+//                                                        Integer prevVolume = Integer.parseInt(item.select("td").html().toString().replaceAll("&nbsp;", "").replaceAll(",", "").trim());
+//                                                        Integer currentVolume;
+//                                                        if (objInforVolumeValueStockIndex.getVolumeClose() != null) {
+//                                                            currentVolume = Integer.parseInt(objInforVolumeValueStockIndex.getVolumeClose().replaceFirst("\\s++$", "").replaceAll(",", ""));
+//                                                        } else {
+//                                                            currentVolume = 0;
+//                                                        }
+//                                                        double rateVolume = (currentVolume - prevVolume) * 100.0 / currentVolume;
+//                                                        objInforVolumeValueStockIndex.setVolumeRate(String.format("%2.02f", rateVolume) + "%");
+//                                                    }
+//                                                    if (countRow <= 10) {
+//                                                        volumeAver10 = volumeAver10 + Integer.parseInt(item.select("td").html().toString().replaceAll("&nbsp;", "").replaceAll(",", "").trim());
+//                                                        if (countRow == 10) {
+//                                                            averVolume10 = volumeAver10 / 10;
+//                                                            objInforVolumeValueStockIndex.setAverVolume10(averVolume10);
+//                                                        }
+//                                                    }
+//                                                    if (countRow <= 20) {
+//                                                        volumeAver20 = volumeAver20 + Integer.parseInt(item.select("td").html().toString().replaceAll("&nbsp;", "").replaceAll(",", "").trim());
+//                                                        if (countRow == 19) {
+//                                                            averVolume20 = volumeAver20 / 19;
+//                                                            objInforVolumeValueStockIndex.setAverAverVolume20(averVolume20);
+//                                                        }
+//                                                    }
+//                                                }
+//                                                //Value
+//                                                if (i == 5 && colTable.size() > 12) {
+//                                                    if (countRow == 1) {
+//                                                        Log.d("Value:", item.select("td").text() + " : " + objInforVolumeValueStockIndex.getVolumeClose());
+//                                                        Long prevValue = Long.parseLong(item.select("td").html().toString().replaceAll("&nbsp;", "").replaceAll(",", "").trim());
+//                                                        double currentValue;
+//                                                        if (objInforVolumeValueStockIndex.getValueClose() != null) {
+//                                                            currentValue = Long.valueOf(objInforVolumeValueStockIndex.getValueClose().replaceFirst("\\s++$", "").replaceAll(",", ""));
+//                                                            double rateValue = (currentValue - prevValue) * 100.0 / currentValue;
+//                                                            objInforVolumeValueStockIndex.setValueRate(String.format("%2.02f", rateValue) + "%");
+//                                                        } else {
+//                                                            currentValue = 0.0;
+//                                                        }
+//
+//                                                    }
+//                                                    if (countRow <= 10) {
+//                                                        valueAver10 = valueAver10 + Long.parseLong(item.select("td").html().toString().replaceAll("&nbsp;", "").replaceAll(",", "").trim());
+//                                                        if (countRow == 10) {
+//                                                            averValue10 = valueAver10 / 10;
+//                                                            objInforVolumeValueStockIndex.setAverValue10(averValue10);
+//                                                        }
+//                                                    }
+//                                                    if (countRow <= 20) {
+//                                                        valueAver20 = valueAver20 + Long.parseLong(item.select("td").html().toString().replaceAll("&nbsp;", "").replaceAll(",", "").trim());
+//                                                        if (countRow == 19)
+//                                                            averValue20 = valueAver20 / 19;
+//                                                        objInforVolumeValueStockIndex.setAverValue20(averValue20);
+//                                                    }
+//                                                }
+//                                            }
+//                                        }
+//                                        Log.d("Volume 20: ", String.valueOf(volumeAver10) + " : " + String.valueOf(volumeAver20));
+//                                    }
+//
+//                                }
+//                            }
+
+//                            Singleton.getInstance().setObjInforVolumeValueStockIndex(objInforVolumeValueStockIndex);
+//                            final Long finalAverVolume1 = averVolume10;
+//                            final Long finalAverVolume2 = averVolume20;
+//                            final Long finalAverValue2 = averValue20;
+//                            final Long finalAverValue1 = averValue10;
+//                            objInforVolumeValueStockIndex.setAverVolume10(averVolume10);
+//                            objInforVolumeValueStockIndex.setAverValue10(averValue10);
+//                            objInforVolumeValueStockIndex.setAverValue20(averValue20);
+//                            objInforVolumeValueStockIndex.setAverAverVolume20(averVolume20);
+//                            getActivity().runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    txtDateTransit.setText(objInforVolumeValueStockIndex.getDateTransit());
+//                                    txtIndex.setText(objInforVolumeValueStockIndex.getPriceClose() + "  " + objInforVolumeValueStockIndex.getRate());
+//                                    if ("".equalsIgnoreCase(SharedPreference.getInstance().getString("averIndex", "")) || SharedPreference.getInstance().getString("averIndex", "").equalsIgnoreCase("10")) {
+//                                        String number = finalAverValue1.toString().substring(0, finalAverValue1.toString().length() - 9);
+//                                        double amount = Double.parseDouble(number);
+//                                        String valuerAver = String.format("%,.0f", amount);
+//                                        if (objInforVolumeValueStockIndex.getVolumeClose() != null) {
+//                                            txtVolume.setText(objInforVolumeValueStockIndex.getVolumeClose().substring(0, objInforVolumeValueStockIndex.getVolumeClose().length() - 9) + "-TB10: " + finalAverVolume1.toString().substring(0, finalAverVolume1.toString().length() - 6)); //+ " TB 20: "+ finalAverVolume2.toString().substring(0,finalAverVolume2.toString().length()-6)
+//                                        } else {
+//                                            txtVolume.setText("0");
+//                                        }
+//                                        if (objInforVolumeValueStockIndex.getVolumeClose() != null) {
+//                                            txtValue.setText(objInforVolumeValueStockIndex.getValueClose().substring(0, objInforVolumeValueStockIndex.getValueClose().length() - 13) + "-TB10: " + valuerAver.replace(".", ","));
+//                                        } else {
+//                                            txtValue.setText("0");
+//                                        }
+//                                    } else {
+//                                        String number = finalAverValue2.toString().substring(0, finalAverValue2.toString().length() - 9);
+//                                        double amount = Double.parseDouble(number);
+//                                        String valuerAver = String.format("%,.0f", amount);
+//                                        txtVolume.setText(objInforVolumeValueStockIndex.getVolumeClose().substring(0, objInforVolumeValueStockIndex.getVolumeClose().length() - 9) + "-TB20: " + finalAverVolume2.toString().substring(0, finalAverVolume2.toString().length() - 6)); //+ " TB 20: "+ finalAverVolume2.toString().substring(0,finalAverVolume2.toString().length()-6)
+//                                        txtValue.setText(objInforVolumeValueStockIndex.getValueClose().substring(0, objInforVolumeValueStockIndex.getValueClose().length() - 13) + "-TB20: " + valuerAver.replace(".", ","));
+//                                    }
+//                                    NumberFormat f = NumberFormat.getInstance(); // Gets a NumberFormat with the default locale, you can specify a Locale as first parameter (like Locale.FRENCH)
+//                                    double indexClose = 0;
+//                                    double indexOpen = 0;
+//                                    try {
+//                                        if (objInforVolumeValueStockIndex.getPriceClose() != null) {
+//                                            indexClose = f.parse(objInforVolumeValueStockIndex.getPriceClose().replaceAll(",", "").replace(".", ",")).doubleValue(); // myNumber now contains 20
+//                                        } else {
+//                                            indexClose = 0;
+//                                        }
+//                                        if (objInforVolumeValueStockIndex.getPriceOpen() != null) {
+//                                            indexOpen = f.parse(objInforVolumeValueStockIndex.getPriceOpen().replaceAll(",", "").replace(".", ",")).doubleValue();
+//                                        } else {
+//                                            indexOpen = 0;
+//                                        }
+//                                    } catch (ParseException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                    txtRateVolume.setText(objInforVolumeValueStockIndex.getVolumeRate());
+//                                    txtRateValue.setText(objInforVolumeValueStockIndex.getValueRate());
+////                    Log.d("Rate: ", objInforVolumeValueStockIndex.getRate() != null ? objInforVolumeValueStockIndex.getRate() :0);
+//                                    if (objInforVolumeValueStockIndex.getRate() != null && objInforVolumeValueStockIndex.getRate().contains("-")) {
+//                                        setColorIndex(Color.RED);
+//                                    } else if (indexClose < indexOpen) {
+//                                        setColorIndex(Color.GREEN);
+//                                    } else {
+//                                        setColorIndex(Color.GREEN);
+////                            setColorIndex(Color.YELLOW);
+//                                    }
+//
+//                                }
+//                            });
+////                            adapter.notifyDataSetChanged();
+                        }
+                    }
+            );
+        }
+    }
+
 
     private void setColorIndex(int color) {
         txtIndex.setTextColor(color);
@@ -411,6 +718,7 @@ public class PriceVolumeAgreement extends Fragment {
 
 
     public void onChangeHomeTab() {
+        initWebview();
         if (SharedPreference.getInstance().getBoolean("exchange", true)) { //Default
             priceVolumeAgrementAdapter = new PriceVolumeAgrementAdapter(getActivity(), listInforBuySellStockIndex);
             lnBuySellStockIndex.setVisibility(View.VISIBLE);

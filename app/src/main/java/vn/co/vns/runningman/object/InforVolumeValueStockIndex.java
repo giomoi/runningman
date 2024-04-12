@@ -24,6 +24,25 @@ public class InforVolumeValueStockIndex {
     private String volumeRate20;
     private String valueRate20;
 
+    public String getValueIndexClose() {
+        return valueIndexClose;
+    }
+
+    public void setValueIndexClose(String valueIndexClose) {
+        this.valueIndexClose = valueIndexClose;
+    }
+
+    public String getValueIndex() {
+        return valueIndex;
+    }
+
+    public void setValueIndex(String valueIndex) {
+        this.valueIndex = valueIndex;
+    }
+
+    private String valueIndexClose;
+    private String valueIndex;
+
     public String getDateTransit() {
         return dateTransit;
     }
