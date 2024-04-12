@@ -15,13 +15,13 @@ public class SensorStockUpdateBoardcastReceiver extends BaseBoardcastReceiver {
         Log.i(SensorStockUpdateBoardcastReceiver.class.getSimpleName(), "Update Stock Service! Oooooooooooooppppssssss!!!!");
         if (SharedPreference.getInstance(context).getInt("updatedStock", 0) != 1) {
             Log.i(SensorStockUpdateBoardcastReceiver.class.getSimpleName(), "Stop Running! Oooooooooooooppppssssss!!!!");
-            intentChangeValueIndexServices = new Intent(context, ChangeValueIndexService.class);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                if (intentChangeValueIndexServices != null)
-                    context.startForegroundService(intentChangeValueIndexServices);
-            } else {
-                context.startService(intentChangeValueIndexServices);
-            }
+//            intentChangeValueIndexServices = new Intent(context, ChangeValueIndexService.class);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                if (intentChangeValueIndexServices != null)
+//                    context.startForegroundService(intentChangeValueIndexServices);
+//            } else {
+//                context.startService(intentChangeValueIndexServices);
+//            }
         }
     }
 }

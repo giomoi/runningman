@@ -93,7 +93,7 @@ public class ChangeValueIndexService extends Service {
                 .setPriority(NotificationManager.IMPORTANCE_MIN)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .build();
-        startForeground(NOTIFICATION_ID, notification);
+//        startForeground(NOTIFICATION_ID, notification);
     }
 
     private Thread resetThread = new Thread(new Runnable() {

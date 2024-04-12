@@ -72,7 +72,7 @@ public class StockUpdateService extends Service {
                     .setContentText("SmartTracker Running")
                     .setAutoCancel(true);
             Notification notification = builder.build();
-            startForeground(NOTIFICATION_ID, notification);
+//            startForeground(NOTIFICATION_ID, notification);
         } else {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                     .setContentTitle(getString(R.string.app_name))
@@ -80,7 +80,7 @@ public class StockUpdateService extends Service {
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setAutoCancel(true);
             Notification notification = builder.build();
-            startForeground(NOTIFICATION_ID, notification);
+//            startForeground(NOTIFICATION_ID, notification);
         }
     }
 

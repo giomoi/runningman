@@ -56,7 +56,7 @@ public class StockOnlineServices extends Service {
     private WindowManager windowManager;
     private String TAG = StockOnlineServices.class.getSimpleName();
     private Handler mServiceHandler;
-    private int MAX_SECONDES = 10 * 60 * 1000; // 10 minutes
+    private int MAX_SECONDES = 1 * 60 * 1000; // 10 minutes
     private int TIME_LOAD_DELAY = 10 * 1000; //secons
     private Handler mHandlerWebView;
     private boolean isClear = false;
@@ -72,7 +72,7 @@ public class StockOnlineServices extends Service {
         mScreenWakeLock.acquire();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startMyOwnForeground();
+//            startMyOwnForeground();
         } else {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                     .setContentTitle(getString(R.string.app_name))
@@ -80,7 +80,7 @@ public class StockOnlineServices extends Service {
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setAutoCancel(true);
             Notification notification = builder.build();
-            startForeground(NOTIFICATION_ID, notification);
+//            startForeground(NOTIFICATION_ID, notification);
         }
     }
 
@@ -283,13 +283,13 @@ public class StockOnlineServices extends Service {
     }
 
     private void executeHtml() {
-//        isBindData = true;
         final ArrayList<StockObject> result = new ArrayList<>();
         final ArrayList<StockIndex> resultIndex = new ArrayList<>();
         try {
             Document doc = Jsoup.parse(fullHtml);
             if (SharedPreference.getInstance(getApplicationContext()).getString("priceTable", "cafef").equalsIgnoreCase("cafef")) {
-                Elements trTable = doc.select("table#myTable");
+                Elements trTable = doc.select("table#stock-price-table-fix");
+                Elements tbody = doc.select("tbody#stock-price-table-body");
                 if (trTable.size() > 0) {
                     for (Element s : trTable) {
                         Elements rowTable = s.getElementsByTag("tr");
@@ -403,7 +403,7 @@ public class StockOnlineServices extends Service {
         super.onDestroy();
         Log.i(TAG, "onDestroy!");
         if (windowManager != null) windowManager.removeView(wv);
-        isClear = true;
+//        isClear = true;
         if (mHandlerWebView != null) mHandlerWebView.removeCallbacks(null);
         if (mServiceHandler != null) mServiceHandler.removeCallbacks(runnableServices);
 //        Intent broadcastIntent = new Intent(this, SensorRestarterBroadcastReceiver.class);

@@ -19,10 +19,10 @@ public class SensorRestarterBroadcastReceiver extends BaseBoardcastReceiver {
             context.stopService(intentStockOnlneServices);
         intentStockOnlneServices = new Intent(context, StockOnlineServices.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if (intentStockOnlneServices != null)
-                context.startForegroundService(intentStockOnlneServices);
+//            if (intentStockOnlneServices != null)
+//                context.startForegroundService(intentStockOnlneServices);
         } else {
-            context.startService(intentStockOnlneServices);
+//            context.startService(intentStockOnlneServices);
         }
 
     }
