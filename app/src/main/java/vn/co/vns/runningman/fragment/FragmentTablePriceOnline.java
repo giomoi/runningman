@@ -150,7 +150,7 @@ public class FragmentTablePriceOnline extends Fragment {
                                 if (!"".equalsIgnoreCase(newObject.getCodeStock())) {
                                     showNotificationCode(newObject);
                                     //Filter only stock 3 character
-                                    if (newObject.getCodeStock().length() < 4)
+                                    if (newObject.getCodeStock().length() <= 4)
                                         result.add(newObject);
                                 }
                             }
@@ -199,6 +199,8 @@ public class FragmentTablePriceOnline extends Fragment {
                                 StockObject newObject = creatStockObject(colTable);
                                 if (!"".equalsIgnoreCase(newObject.getCodeStock())) {
                                     showNotificationCode(newObject);
+                                    //Filter only stock 3 character
+                                    if (newObject.getCodeStock().length() <= 4)
                                     result.add(newObject);
                                 }
 //                            }
@@ -237,7 +239,7 @@ public class FragmentTablePriceOnline extends Fragment {
                 int typIndex = (urlString != null && urlString.contains("Hnx")) ? 2 : 0;
                 setIndex(resultIndex, typIndex);
                 if (SharedPreference.getInstance().getInt("orderby", Constant.SORT_TIKER) == Constant.SORT_RATE) {
-//                    sortStockRate(result);
+                    sortStockRate(result);
                     txtCodeStock.setTextColor(getResources().getColor(R.color.white));
                     txtGapPrice.setTextColor(getResources().getColor(R.color.green));
                 } else if (SharedPreference.getInstance().getInt("orderby", Constant.SORT_TIKER) == Constant.SORT_PRIORITY) {
@@ -292,14 +294,24 @@ public class FragmentTablePriceOnline extends Fragment {
         txtRateIndex.setTextColor(color);
     }
 
-//    private void sortStockRate(ArrayList<StockObject> listStock) {
-//        Collections.sort(listStock, new Comparator<StockObject>() {
-//            @Override
-//            public int compare(StockObject o1, StockObject o2) {
-//                return Float.compare(o2.getRate(), o1.getRate());
-//            }
-//        });
-//    }
+    private void sortStockRate(ArrayList<StockObject> listStock) {
+        Collections.sort(listStock, new Comparator<StockObject>() {
+            @Override
+            public int compare(StockObject o1, StockObject o2) {
+                String rate1 = o1.getRate().replace("%", "");
+                String rate2 = o2.getRate().replace("%", "");
+                double floatRate1 = 0.0;
+                double floatRate2 = 0.0;
+                if(!rate1.isEmpty()){
+                    floatRate1 = Double.valueOf(rate1);
+                }
+                if(!rate2.isEmpty()){
+                    floatRate2 = Double.valueOf(rate2);
+                }
+                return Double.compare(floatRate2, floatRate1);
+            }
+        });
+    }
 
     private void sortStockPriority(ArrayList<StockObject> listStock) {
         Collections.sort(listStock, new Comparator<StockObject>() {
@@ -349,7 +361,7 @@ public class FragmentTablePriceOnline extends Fragment {
             } else {
                 optionPriceboard = "HostcStockBoard";
             }
-            if (mProgressDialog == null) {
+            if (mProgressDialog == null && getContext() != null) {
                 mProgressDialog = new ProgressDialog(getContext());
                 mProgressDialog.setMessage("Loading...");
                 mProgressDialog.setCancelable(false);
@@ -402,7 +414,7 @@ public class FragmentTablePriceOnline extends Fragment {
             @Override
             public void onClick(View view) {
                 SharedPreference.getInstance().putInt("orderby", Constant.SORT_RATE);
-//                sortStockRate(listStockTransition);
+                sortStockRate(listStockTransition);
                 mainAdapter.setListItem(listStockTransition, optionPriceboard);
                 txtCodeStock.setTextColor(getResources().getColor(R.color.white));
                 txtGapPrice.setTextColor(getResources().getColor(R.color.green));
@@ -485,14 +497,21 @@ public class FragmentTablePriceOnline extends Fragment {
         if (newObject.getTotalWeight().isEmpty() || newObject.getBuyingWeight1().isEmpty() || newObject.getBuyingWeight2().isEmpty() || newObject.getBuyingWeight3().isEmpty()) {
             return;
         }
+        double cePrice = 0.0;
+        double tcPrice = 0.0;
+        double amountTotal = 0.0;
         double buying1 = Double.valueOf(newObject.getBuyingPrice1().replaceAll(",", "."));
         double buying2 = Double.valueOf(newObject.getBuyingPrice2().replaceAll(",", "."));
         double buying3 = Double.valueOf(newObject.getBuyingPrice3().replaceAll(",", "."));
-        double tcPrice = Double.valueOf(newObject.getTCPrice().replaceAll(",", "."));
-        double cePrice = Double.valueOf(newObject.getTopPrice().replaceAll(",", "."));
+        // Loại bỏ các ký tự không hợp lệ
+        String tmpPrice = newObject.getTCPrice().replaceAll("[^0-9.-]", "");
+        if(!tmpPrice.isEmpty())
+            tcPrice = Double.valueOf(newObject.getTCPrice().replaceAll(",", "."));
+        if(""!=newObject.getTopPrice())
+            cePrice = Double.valueOf(newObject.getTopPrice().replaceAll(",", "."));
         double buyPrice1 = Double.valueOf(newObject.getBuyingPrice1().replaceAll(",", "."));
-
-        double amountTotal = Double.valueOf(newObject.getTotalWeight().replaceAll("\\.", "").replaceAll(",", ""));
+        if(""!=newObject.getTotalWeight())
+        amountTotal = Double.valueOf(newObject.getTotalWeight().replaceAll("\\.", "").replaceAll(",", ""));
         double amountSum = Double.valueOf(newObject.getBuyingWeight1().replaceAll("\\.", "").replaceAll(",", ""))
                 + Double.valueOf(newObject.getBuyingWeight2().replaceAll("\\.", "").replaceAll(",", ""))
                 + Double.valueOf(newObject.getBuyingWeight3().replaceAll("\\.", "").replaceAll(",", ""));

@@ -18,18 +18,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ngày: "/>
+                android:text="Ngày: " />
 
             <TextView
                 android:id="@+id/txtDateTransit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="Index: "/>
 
             <TextView
                 android:id="@+id/txtIndex"
@@ -43,37 +37,9 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="KL: "/>
-
-            <TextView
-                android:id="@+id/txtVolume"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text=" Triệu"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="GT: "/>
-
-            <TextView
                 android:id="@+id/txtValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text=" Tỷ"/>
 
         </LinearLayout>
 
@@ -84,7 +50,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tỷ lệ KL: "/>
+                android:text="Tỷ lệ KL: " />
 
             <TextView
                 android:id="@+id/txtRateVolume"
@@ -95,15 +61,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text=" Tỷ lệ giá trị: "/>
+                android:text=" Tỷ lệ giá trị: " />
 
 
             <TextView
                 android:id="@+id/txtRateValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-
-
 
         </LinearLayout>
 
@@ -115,54 +79,54 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/txtDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:background="@color/th_color"
+            android:gravity="center"
             android:text="Ngày"
-            android:textStyle="bold"
-            android:background="@color/th_color"
-            android:gravity="center"
-            android:layout_weight="2" />
+            android:textStyle="bold" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/txtRate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="11"
+            android:background="@color/th_color"
+            android:gravity="center"
             android:text="(+/-%)"
-            android:gravity="center"
-            android:background="@color/th_color"
-            android:textStyle="bold"
-            android:layout_weight="11" />
+            android:textStyle="bold" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/txtVolumeBuy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/th_color"
+            android:gravity="center"
             android:text="KL mua"
-            android:textStyle="bold"
-            android:background="@color/th_color"
-            android:gravity="center"
-            android:layout_weight="1" />
+            android:textStyle="bold" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/txtVolumeSell"
-            android:textStyle="bold"
-            android:text="KL bán"
-            android:gravity="center"
-            android:background="@color/th_color"
-            android:layout_weight="1" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/txtBuySell"
-            android:textStyle="bold"
-            android:text="Mua-Bán"
-            android:gravity="center"
+            android:layout_weight="1"
             android:background="@color/th_color"
-            android:layout_weight="1" />
+            android:gravity="center"
+            android:text="KL bán"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtBuySell"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/th_color"
+            android:gravity="center"
+            android:text="Mua-Bán"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -174,61 +138,59 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:background="@color/th_color"
+            android:gravity="center"
             android:text="Ngày"
-            android:textStyle="bold"
-            android:background="@color/th_color"
-            android:gravity="center"
-            android:layout_weight="2" />
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:background="@color/th_color"
+            android:gravity="center"
             android:text="Chỉ số"
-            android:gravity="center"
-            android:background="@color/th_color"
-            android:textStyle="bold"
-            android:layout_weight="2" />
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:background="@color/th_color"
+            android:gravity="center"
             android:text="Tỷ lệ"
-            android:textStyle="bold"
-            android:background="@color/th_color"
-            android:gravity="center"
-            android:layout_weight="4" />
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
+            android:layout_weight="1"
+            android:background="@color/th_color"
+            android:gravity="center"
             android:text="KL"
-            android:gravity="center"
-            android:background="@color/th_color"
-            android:layout_weight="1" />
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="Giá trị"
-            android:gravity="center"
+            android:layout_weight="2"
             android:background="@color/th_color"
-            android:layout_weight="2" />
+            android:gravity="center"
+            android:text="Giá trị"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/mSwipeRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycleTop"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clickable="true"
-            />
+            android:clickable="true" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </LinearLayout>
