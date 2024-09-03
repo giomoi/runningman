@@ -23,6 +23,7 @@ public class PriceStockeOnlineWorker extends Worker {
     private String TAG = PriceStockeOnlineWorker.class.getSimpleName();
     private static final String CHANNEL_ID = "example_channel_id";
     private Context mContext;
+    public static Intent intentStockOnlineServices;
 
     public PriceStockeOnlineWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -35,7 +36,7 @@ public class PriceStockeOnlineWorker extends Worker {
     public Result doWork() {
 
         Log.i(TAG, "Start Running! Oooooooooooooppppssssss!!!!");
-        Intent intentStockOnlineServices = new Intent(this.mContext, StockOnlineServices.class);
+        intentStockOnlineServices = new Intent(this.mContext, StockOnlineServices.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (intentStockOnlineServices != null)
             this.mContext.startForegroundService(intentStockOnlineServices);
