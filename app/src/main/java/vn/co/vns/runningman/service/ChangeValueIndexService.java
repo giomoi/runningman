@@ -7,9 +7,13 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
 import android.util.Log;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -22,9 +26,10 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import vn.co.vns.runningman.R;
+import vn.co.vns.runningman.object.InforBuySellStockIndex;
 import vn.co.vns.runningman.object.InforStockIndex;
 import vn.co.vns.runningman.object.InforVolumeValueStockIndex;
+import vn.co.vns.runningman.util.SharedPreference;
 import vn.co.vns.runningman.util.Singleton;
 import vn.co.vns.runningman.util.Utils;
 
@@ -33,32 +38,58 @@ public class ChangeValueIndexService extends Service {
     private ArrayList<InforStockIndex> listInforStockIndex = new ArrayList<>();
     private static final String ANDROID_CHANNEL_ID = "com.xxxx.Location.Channel";
     private static final int NOTIFICATION_ID = 555;
+    private WebView webView;
+    private HandlerThread handlerThread;
+    private Handler handler;
+    private final Handler uiHandler = new Handler();
+    private String urlString = "https://s.cafef.vn/lich-su-giao-dich-symbol-vnindex/trang-1-0-tab-1.chn";
+    private ArrayList<InforBuySellStockIndex> listInforBuySellStockIndex = new ArrayList<>();
 
     @Override
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreate");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startMyOwnForeground();
-        } else {
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                    .setContentTitle(getString(R.string.app_name))
-                    .setContentText("SmartTracker is Running...")
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setAutoCancel(true);
-            Notification notification = builder.build();
-            startForeground(NOTIFICATION_ID, notification);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            startMyOwnForeground();
+//        } else {
+//            NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+//                    .setContentTitle(getString(R.string.app_name))
+//                    .setContentText("SmartTracker is Running...")
+//                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+//                    .setAutoCancel(true);
+//            Notification notification = builder.build();
+//            startForeground(NOTIFICATION_ID, notification);
+//        }
+
+        handlerThread = new HandlerThread("WebViewServiceThread");
+        handlerThread.start();
+        handler = new Handler(handlerThread.getLooper());
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                webView = new WebView(ChangeValueIndexService.this);
+                webView.getSettings().setJavaScriptEnabled(true);
+                webView.addJavascriptInterface(new WebAppInterface(ChangeValueIndexService.this), "Android");
+                webView.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public void onPageFinished(WebView view, String url) {
+                        webView.loadUrl("javascript:window.Android.processHTML(document.documentElement.outerHTML);");
+                    }
+                });
+                webView.loadUrl(urlString);
+            }
+        });
 
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand");
-        if (resetThread.getState() == Thread.State.NEW) {
-            resetThread.start();
-        }
-        return super.onStartCommand(intent, flags, startId);
+//        if (resetThread.getState() == Thread.State.NEW) {
+//            resetThread.start();
+//        }
+        return START_STICKY;
     }
 
     @Override
@@ -66,6 +97,7 @@ public class ChangeValueIndexService extends Service {
         super.onDestroy();
         Log.d(TAG, "onDestroy");
         if (resetThread != null) resetThread.interrupt();
+        handlerThread.quit();
     }
 
     @Nullable
@@ -93,8 +125,9 @@ public class ChangeValueIndexService extends Service {
                 .setPriority(NotificationManager.IMPORTANCE_MIN)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .build();
-//        startForeground(NOTIFICATION_ID, notification);
+        startForeground(NOTIFICATION_ID, notification);
     }
+
 
     private Thread resetThread = new Thread(new Runnable() {
         @Override
@@ -216,9 +249,67 @@ public class ChangeValueIndexService extends Service {
                         + objInforVolumeValueStockIndex.getValueClose().substring(0, objInforVolumeValueStockIndex.getValueClose().length() - 13)
                         + " - TB10: " + valuerAver.replace(".", ",")
                         + " :Rate: " + objInforVolumeValueStockIndex.getValueRate();
+//                String content = "123";
                 Utils.pushNotification(getApplicationContext(), content);
                 stopSelf();
             }
         }
     });
+
+    public class WebAppInterface {
+        Context mContext;
+
+        WebAppInterface(Context c) {
+            mContext = c;
+        }
+
+        @JavascriptInterface
+        public void processHTML(String html) {
+            // Xử lý HTML ở đây
+            Log.d(TAG, html);
+            uiHandler.post(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            Document doc = Jsoup.parse(html);
+                            Elements trTable = doc.select("table[class=owner-contents-table]");
+                            if (trTable.size() > 0) {
+                                for (Element s : trTable) {
+                                    Elements rowTable = s.getElementsByTag("tr");
+                                    for (Element tr : rowTable) {
+
+                                        if (tr.toString().contains("class=\"oddOwner\"")
+                                                || tr.toString().contains("class=\"evenOwner\"")) {
+                                            Elements colTable = tr.getElementsByTag("td");
+                                                InforStockIndex objInforStockIndex = creatStockIndexObject(colTable);
+                                                listInforStockIndex.add(objInforStockIndex);
+                                                Log.d("Index value daily: ", colTable.toString());
+
+                                            Log.d("InforBuySell: ", colTable.toString());
+                                        }
+                                    }
+                                }
+                            }
+                            String content = "VN: "+ listInforStockIndex.get(0).getPriceClose()  + " - " + listInforStockIndex.get(0).getRate()
+                                            + "\nVol: " + listInforStockIndex.get(0).getVolume().substring(0, listInforStockIndex.get(0).getVolume().length() - 8) + "M -  Value: "
+                                            + listInforStockIndex.get(0).getValueTransit().substring(0, listInforStockIndex.get(0).getValueTransit().length() - 3) + " B";
+                            Utils.pushNotification(getApplicationContext(), content);
+                        }
+                    }
+            );
+            Log.d(TAG,"pushNotification");
+            Utils.pushNotification(getApplicationContext(), listInforStockIndex.get(0).getDateTransit() + ':' +listInforStockIndex.get(0).getRate() + ':' + listInforStockIndex.get(0).getPriceClose());
+        }
+    }
+
+    private InforStockIndex creatStockIndexObject(Elements td) {
+        InforStockIndex objInforStockIndex = new InforStockIndex();
+        for (int i = 0; i < td.size(); i++) {
+            Element item = td.get(i);
+            Log.d("Value:", item.select("td").toString());
+            objInforStockIndex.setValue(item.select("td").text(), i);
+        }
+        return objInforStockIndex;
+    }
+
 }

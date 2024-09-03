@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -22,8 +23,12 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 import vn.co.vns.runningman.R;
 import vn.co.vns.runningman.adapter.MainActivityAdapter;
@@ -46,6 +51,11 @@ import vn.co.vns.runningman.util.SharedPreference;
 import vn.co.vns.runningman.util.Singleton;
 import vn.co.vns.runningman.util.Utils;
 
+import static vn.co.vns.runningman.util.Constant.END_HOURS;
+import static vn.co.vns.runningman.util.Constant.END_MINUTES;
+import static vn.co.vns.runningman.util.Constant.START_HOURS;
+import static vn.co.vns.runningman.util.Constant.START_MINUTES;
+
 /**
  * Created by thanhnv on 11/25/16.
  */
@@ -67,18 +77,6 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
     private BroadcastReceiver updateUIReciver;
     private String TAG = MainActivity.class.getSimpleName();
 
-    private ICompleteDownloadTicker handleCompleteTicker = new ICompleteDownloadTicker() {
-        @Override
-        public void onSuccess() {
-//            setupTab();
-        }
-
-        @Override
-        public void onFailed() {
-
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,11 +88,12 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
+
         testData();
         installView();
         setupTab();
         //Show notification stock Start 09:15
-        notificationPeriodicalStockCeBigVolumn();
+//        notificationPeriodicalStockCeBigVolumn();
         //Show notification when change break out about value 40%
         if (!SharedPreference.getInstance(this).getBoolean("isChangeValue", false)) {
             periodicalChangeValueIndex();
@@ -102,9 +101,10 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         //Notification 16h:00 the value of increase or decrease of 40% compared to 10-day average
         //Update bigvolumn everyday
         periodicalUpdateStock();
-
         updateDataSucess();
     }
+
+
 
     private void updateDataSucess() {
         IntentFilter filter = new IntentFilter();
@@ -147,14 +147,15 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         PendingIntent pendingReceiverStart = PendingIntent.getBroadcast(this, 0, intenUpdateStock, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         //set timer you want alarm to work (here I have set it to 7.20pm)
         Calendar timeStart = Calendar.getInstance();
-        timeStart.set(Calendar.HOUR_OF_DAY, 16);
-        timeStart.set(Calendar.MINUTE, 45);
+        timeStart.set(Calendar.HOUR_OF_DAY, 21);
+        timeStart.set(Calendar.MINUTE, 23);
         timeStart.set(Calendar.SECOND, 0);
         //set that timer as a RTC Wakeup to alarm manager object
         alarmRecerverUpdateStock.setRepeating(AlarmManager.RTC_WAKEUP, timeStart.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingReceiverStart);
     }
 
     private void notificationPeriodicalStockCeBigVolumn() {
+        Log.d(TAG, "Start...");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:" + getPackageName()));
@@ -168,8 +169,8 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         PendingIntent pendingReceiverStart = PendingIntent.getBroadcast(this, 0, intent0, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         //set timer you want alarm to work (here I have set it to 7.20pm)
         Calendar timeStart = Calendar.getInstance();
-        timeStart.set(Calendar.HOUR_OF_DAY, 9);
-        timeStart.set(Calendar.MINUTE, 15);
+        timeStart.set(Calendar.HOUR_OF_DAY, 10);
+        timeStart.set(Calendar.MINUTE, 6);
         timeStart.set(Calendar.SECOND, 0);
         //set that timer as a RTC Wakeup to alarm manager object
         alarmRecerverStartNotification.setRepeating(AlarmManager.RTC_WAKEUP, timeStart.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingReceiverStart);
@@ -182,8 +183,8 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         PendingIntent pendingReceiverStop = PendingIntent.getBroadcast(this, 0, intentStopReceiver, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         //set timer you want alarm to work (here I have set it to 7.20pm)
         Calendar timeStop = Calendar.getInstance();
-        timeStop.set(Calendar.HOUR_OF_DAY, 11);
-        timeStop.set(Calendar.MINUTE, 30);
+        timeStop.set(Calendar.HOUR_OF_DAY, 10);
+        timeStop.set(Calendar.MINUTE, 8);
         timeStop.set(Calendar.SECOND, 0);
         alarmReceiverStopNotification.setInexactRepeating(AlarmManager.RTC_WAKEUP, timeStop.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingReceiverStop);
     }
@@ -244,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
                         if (SharedPreference.getInstance().getString("priceTable", "cafef").equalsIgnoreCase("cafef")) {
                             fg = new FragmentTablePriceOnline().newInstance(Constant.URL_DEFAULT_HNX);
                         } else {
-                            fg = new FragmentTablePriceOnline().newInstance(Constant.URL_OTHER_HSX);
+                            fg = new FragmentTablePriceOnline().newInstance(Constant.URL_OTHER_HNX);
                         }
                     } else {
                         SharedPreference.getInstance().putBoolean("ho", true);

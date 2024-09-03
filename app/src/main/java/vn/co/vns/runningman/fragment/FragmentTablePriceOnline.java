@@ -468,7 +468,7 @@ public class FragmentTablePriceOnline extends Fragment {
         Elements span = td.select("span");
         Elements div = td.select("div.price-change-pc");
         for (int i = 0; i < span.size(); i++) {
-            object.setValueCafef((i != 20) ? span.get(i).text() : div.text(), i);
+            object.setValueHSX1((i != 20) ? span.get(i).text() : div.text(), i);
         }
         return object;
     }

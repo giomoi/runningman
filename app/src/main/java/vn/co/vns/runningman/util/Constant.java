@@ -40,8 +40,6 @@ public class Constant {
     public static int MAIN_BIG_VOLUME = 3;
     public static final String nowDay = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH).format(new Date());
     public static final String beforeDay = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH).format(System.currentTimeMillis() - (1000 * 60 * 60 * 24));
-    //public static final String before30DayFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(System.currentTimeMillis() - (1000 * 60 * 60 * 24 * 30));
-//    public  static  final Date before30DayFormat=Utils.addMonths(new Date(),-1);
 
     public static final Date beforeDayFormat = Utils.addDays(new Date(), -365);
     public static String maxDay = "";
@@ -88,10 +86,18 @@ public class Constant {
 
     public static String URL_OTHER_HSX = "https://banggia.vndirect.com.vn/chung-khoan/hose";
     public static String URL_OTHER_HNX = "https://banggia.vndirect.com.vn/chung-khoan/hnx";
-//    public static String URL_OTHER_HSX = "https://banggia.dnse.com.vn/hsx";
-//    public static String URL_OTHER_HNX = "https://banggia.dnse.com.vn/hnx";
     public static String URL_DEFAULT_HSX = "https://banggia.vps.com.vn/chung-khoan/HOSE";
     public static String URL_DEFAULT_HNX = "https://banggia.vps.com.vn/chung-khoan/HNX";
 
+    //Report realtime stock
+    public static Integer START_HOURS = 21;
+    public static Integer START_MINUTES = 44;
+    public static Integer END_HOURS = 21;
+    public static Integer END_MINUTES = 46;
+    public static Integer DELAY_INTERVAL = 1; // minutes
+
+    //Daily report VN
+    public static Integer DAILY_REPORT_INDEX_HOURS = 15;
+    public static Integer DAILY_REPORT_INDEX_MINUTES = 15;
 }
 

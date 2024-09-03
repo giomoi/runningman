@@ -3,10 +3,8 @@ package vn.co.vns.runningman.activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.LoaderManager.LoaderCallbacks;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.CursorLoader;
@@ -20,6 +18,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,16 +32,31 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import vn.co.vns.runningman.R;
 import vn.co.vns.runningman.dialog.Dialog;
+import vn.co.vns.runningman.receiver.SensorRestarterBroadcastReceiver;
+import vn.co.vns.runningman.receiver.SensorStopBoardcastReceiver;
 import vn.co.vns.runningman.util.Utils;
+import vn.co.vns.runningman.worker.UpdatePriceAgreementWorker;
 
 import static android.Manifest.permission.READ_CONTACTS;
+import static vn.co.vns.runningman.util.Constant.DAILY_REPORT_INDEX_HOURS;
+import static vn.co.vns.runningman.util.Constant.DAILY_REPORT_INDEX_MINUTES;
+import static vn.co.vns.runningman.util.Constant.END_HOURS;
+import static vn.co.vns.runningman.util.Constant.END_MINUTES;
+import static vn.co.vns.runningman.util.Constant.START_HOURS;
+import static vn.co.vns.runningman.util.Constant.START_MINUTES;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -61,7 +75,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * TODO: remove after connecting to a real authentication system.
      */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world","hanoi@hanoi.com:345686"
+            "foo@example.com:hello", "bar@example.com:world", "hanoi@hanoi.com:345686"
     };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -73,77 +87,126 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private String TAG = LoginActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
-//        if(RunningApp.getInstance().isLauncherIconVisible()){
-//            finish();
-//            PackageManager pm = getApplicationContext().getPackageManager();
-//            pm.setComponentEnabledSetting(getComponentName(), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-//        }else{
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            setContentView(R.layout.activity_login);
-        //Check DB
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_login);
 
-        //The End
-//            View view = this.getCurrentFocus();
-//            if (view != null) {
-//                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-//            }
-//
+        scheduleDailyDataUpdate();
+        pushNotificationHaveGoodStock();
+        Log.d(TAG , "Start push notification");
+
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
-            if(getSupportActionBar()!=null) {
-                getSupportActionBar().hide();
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+        // Set up the login form.
+        mEmailView = findViewById(R.id.email);
+        mPasswordView = findViewById(R.id.password);
+        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                    attemptLogin();
+                    return true;
+                }
+                return false;
             }
-            // Set up the login form.
-            mEmailView = findViewById(R.id.email);
-//            populateAutoComplete();
-            mPasswordView = findViewById(R.id.password);
-            mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                    if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                        attemptLogin();
-                        return true;
-                    }
-                    return false;
+        });
+
+        Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
+        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Utils.isNetworkAvailable(getApplicationContext())) {
+                    attemptLogin();
+                } else {
+                    Dialog.showDialogCancel(LoginActivity.this, getResources().getString(R.string.content_disconnect_internet));
                 }
-            });
+            }
+        });
 
-            Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
-            mEmailSignInButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(Utils.isNetworkAvailable(getApplicationContext())) {
-                        attemptLogin();
-                    }else{
-                        Dialog.showDialogCancel(LoginActivity.this, getResources().getString(R.string.content_disconnect_internet));
-                    }
-                }
-            });
+        mLoginFormView = findViewById(R.id.login_form);
+        mProgressView = findViewById(R.id.login_progress);
 
-            mLoginFormView = findViewById(R.id.login_form);
-            mProgressView = findViewById(R.id.login_progress);
-            //new DownloadFileTask(getApplicationContext()).execute();
-//        }
+    }
 
+//    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void pushNotificationHaveGoodStock(){
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, SensorRestarterBroadcastReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // Lập lịch công việc bắt đầu lúc 09:15 sáng
+        Calendar startCalendar = Calendar.getInstance();
+        startCalendar.set(Calendar.HOUR_OF_DAY, START_HOURS);
+        startCalendar.set(Calendar.MINUTE, START_MINUTES);
+        startCalendar.set(Calendar.SECOND, 0);
+
+        // Lập lịch công việc kết thúc lúc 14:45 chiều
+        Calendar endCalendar = Calendar.getInstance();
+        endCalendar.set(Calendar.HOUR_OF_DAY, END_HOURS);
+        endCalendar.set(Calendar.MINUTE, END_MINUTES);
+        endCalendar.set(Calendar.SECOND, 0);
+
+        // Lập lịch công việc bắt đầu
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, startCalendar.getTimeInMillis(), pendingIntent);
+        } else {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, startCalendar.getTimeInMillis(), pendingIntent);
+        }
+
+        // Lập lịch công việc kết thúc
+        Intent stopIntent = new Intent(this, SensorStopBoardcastReceiver.class);
+        PendingIntent stopPendingIntent = PendingIntent.getBroadcast(this, 1, stopIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, endCalendar.getTimeInMillis(), stopPendingIntent);
+        } else {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, endCalendar.getTimeInMillis(), stopPendingIntent);
+        }
+        Log.d( TAG, "OK");
+    }
+
+    public void scheduleDailyDataUpdate() {
+        // Thiết lập thời gian cho công việc hàng ngày lúc 16:00
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, DAILY_REPORT_INDEX_HOURS);
+        calendar.set(Calendar.MINUTE, DAILY_REPORT_INDEX_MINUTES);
+        calendar.set(Calendar.SECOND, 0);
+
+        long initialDelay = calendar.getTimeInMillis() - System.currentTimeMillis();
+        if (initialDelay < 0) {
+            initialDelay += 24 * 60 * 60 * 1000; // Thêm 1 ngày nếu thời gian đã qua
+        }
+
+        PeriodicWorkRequest dataUpdateWorkRequest =
+                new PeriodicWorkRequest.Builder(UpdatePriceAgreementWorker.class, 24, TimeUnit.HOURS)
+                        .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
+                        .build();
+
+        WorkManager.getInstance(getApplicationContext()).enqueueUniquePeriodicWork(
+                "DataUpdateWork",
+                ExistingPeriodicWorkPolicy.REPLACE,
+                dataUpdateWorkRequest
+        );
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if(MainActivity.layoutPriceboard!=null)
+        if (MainActivity.layoutPriceboard != null)
             MainActivity.layoutPriceboard.setVisibility(View.GONE);
         hideSoftKeyboard(mPasswordView);
     }
 
     protected void hideSoftKeyboard(EditText input) {
-        if(input!=null) {
+        if (input != null) {
             input.setInputType(0);
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
@@ -192,7 +255,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
@@ -202,7 +264,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         View view = this.getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
 
@@ -369,19 +431,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-            boolean isExits=false;
+            boolean isExits = false;
             try {
                 // Simulate network access.
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
-                isExits=false;
+                isExits = false;
             }
 
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
                 if (pieces[0].equals(mEmail)) {
                     // Account exists, return true if the password matches.
-                    isExits= pieces[1].equals(mPassword);
+                    isExits = pieces[1].equals(mPassword);
                 }
             }
 
@@ -397,7 +459,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                Intent intentListTop5=new Intent(getApplicationContext(),MainActivity.class);
+                Intent intentListTop5 = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intentListTop5);
                 finish();
             } else {

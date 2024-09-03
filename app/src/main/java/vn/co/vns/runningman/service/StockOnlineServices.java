@@ -51,7 +51,7 @@ public class StockOnlineServices extends Service {
     private WebView wv = null;
     private ArrayList<String> listStock = new ArrayList<>();
     private PowerManager.WakeLock mScreenWakeLock;
-    private int transitUrl = 0;
+    private int transitUrl = 3;
     private boolean isRunningView = false;
     private WindowManager windowManager;
     private String TAG = StockOnlineServices.class.getSimpleName();
@@ -60,6 +60,7 @@ public class StockOnlineServices extends Service {
     private int TIME_LOAD_DELAY = 10 * 1000; //secons
     private Handler mHandlerWebView;
     private boolean isClear = false;
+    private String urlString = "";
 
     //    private WindowManager.LayoutParams params;
     @Override
@@ -72,7 +73,7 @@ public class StockOnlineServices extends Service {
         mScreenWakeLock.acquire();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            startMyOwnForeground();
+            startMyOwnForeground();
         } else {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                     .setContentTitle(getString(R.string.app_name))
@@ -80,7 +81,7 @@ public class StockOnlineServices extends Service {
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setAutoCancel(true);
             Notification notification = builder.build();
-//            startForeground(NOTIFICATION_ID, notification);
+            startForeground(NOTIFICATION_ID, notification);
         }
     }
 
@@ -198,16 +199,12 @@ public class StockOnlineServices extends Service {
         listStock = new ArrayList<>();
         if ((transitUrl % 2) == 0) {
             Log.d(TAG, "chan" + transitUrl);
-//            wv.reload();
-//            wv.loadUrl("javascript:document.open();document.close();");
             wv.loadUrl(Constant.URL_DEFAULT_HSX);
-//            wv.reload();
+            urlString = Constant.URL_DEFAULT_HSX;
         } else {
             Log.d(TAG, "le" + transitUrl);
-//            wv.reload();
-//            wv.loadUrl("javascript:document.open();document.close();");
             wv.loadUrl(Constant.URL_DEFAULT_HNX);
-//            wv.reload();
+            urlString = Constant.URL_DEFAULT_HNX;
         }
         transitUrl = transitUrl + 1;
         wv.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT");
@@ -242,6 +239,7 @@ public class StockOnlineServices extends Service {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
+                        Log.i(TAG, "Refreshing..." + urlString);
                         // this will run in the main thread
                         wv.getSettings().setJavaScriptEnabled(true);
                         wv.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
@@ -256,7 +254,6 @@ public class StockOnlineServices extends Service {
                 e.printStackTrace();
                 Thread.currentThread().interrupt();
             }
-
             Looper.loop();
         }
     };
@@ -288,26 +285,31 @@ public class StockOnlineServices extends Service {
         try {
             Document doc = Jsoup.parse(fullHtml);
             if (SharedPreference.getInstance(getApplicationContext()).getString("priceTable", "cafef").equalsIgnoreCase("cafef")) {
-                Elements trTable = doc.select("table#stock-price-table-fix");
+                Elements trTable = doc.select("table#stock-price-table");
                 Elements tbody = doc.select("tbody#stock-price-table-body");
                 if (trTable.size() > 0) {
-                    for (Element s : trTable) {
+                    for (Element s : tbody) {
                         Elements rowTable = s.getElementsByTag("tr");
                         for (Element tr : rowTable) {
-                            if (tr.toString().contains("rowspan=\"1\"")) {
-                                Log.d("OK: ", doc.select("span.idx_1").text());
-                            }
-                            if (tr.toString().contains("odd") || tr.toString().contains("even")) {
+                            if (tr.toString().contains("price-item stock")) {
                                 Elements colTable = tr.getElementsByTag("td");
-                                StockObject newObject = creatStockObjectCafef(colTable);
-                                if (!"".equalsIgnoreCase(newObject.getTopPrice())) {
+                                StockObject newObject = new StockObject();
+                                if(urlString.contains("HNX")){
+                                    newObject = creatStockObjectHNXOption1(colTable);
+                                } else {
+                                    newObject = creatStockObjectHSXOption1(colTable);
+                                }
+                                Log.d(TAG, newObject.getCodeStock());
+                                if (!"".equalsIgnoreCase(newObject.getCodeStock())) {
                                     showNotificationCode(newObject);
-                                    result.add(newObject);
+                                    //Filter only stock 3 character
+                                    if (newObject.getCodeStock().length() <= 4)
+                                        result.add(newObject);
                                 }
                             }
                         }
                     }
-
+                    Log.d(TAG, listStock.toString() + " ABC");
                     if (listStock.size() > 0) {
                         String strSpecial = "";
                         for (int i = 0; i < listStock.size(); i++) {
@@ -347,11 +349,20 @@ public class StockOnlineServices extends Service {
         }
     }
 
-    private StockObject creatStockObjectCafef(Elements td) {
+    private StockObject creatStockObjectHNXOption1(Elements td){
         StockObject object = new StockObject();
         for (int i = 0; i < td.size(); i++) {
             Element item = td.get(i);
-            object.setValueCafef(i == 0 ? item.select("label").text() : item.select("td").text(), i);
+            object.setValueHNX1(i == 0 ? item.select("span.tool-tip").text() : item.select("td").text(), i);
+        }
+        return object;
+    }
+
+    private StockObject creatStockObjectHSXOption1(Elements td) {
+        StockObject object = new StockObject();
+        for (int i = 0; i < td.size(); i++) {
+            Element item = td.get(i);
+            object.setValueHSX1(i == 0 ? item.select("label").text() : item.select("td").text(), i);
         }
         return object;
     }
@@ -362,6 +373,7 @@ public class StockOnlineServices extends Service {
      * @param newObject
      */
     public void showNotificationCode(final StockObject newObject) {
+        Log.d(TAG, newObject.toString());
         if (newObject.getBuyingPrice1().isEmpty() || newObject.getBuyingPrice2().isEmpty() || newObject.getBuyingPrice3().isEmpty() || newObject.getTCPrice().isEmpty()) {
             return;
         }
@@ -393,6 +405,7 @@ public class StockOnlineServices extends Service {
                 && amountSum >= amountTotal && cePrice == buyPrice1) {
             if (!listStock.contains(newObject.getCodeStock())) {
                 listStock.add(newObject.getCodeStock());
+                Log.d(TAG, listStock.toString());
             }
         }
     }
