@@ -146,7 +146,12 @@ public class FragmentTablePriceOnline extends Fragment {
                         for (Element tr : rowTable) {
                             if (tr.toString().contains("price-item stock")) {
                                 Elements colTable = tr.getElementsByTag("td");
-                                StockObject newObject = creatStockObjectCafef(colTable);
+                                StockObject newObject;
+//                                if(urlString.contains("HNX")){
+//                                    newObject = creatStockObjectHNXOption1(colTable);
+//                                } else {
+                                    newObject = creatStockObjectCafef(colTable);
+//                                }
                                 if (!"".equalsIgnoreCase(newObject.getCodeStock())) {
                                     showNotificationCode(newObject);
                                     //Filter only stock 3 character
@@ -160,6 +165,7 @@ public class FragmentTablePriceOnline extends Fragment {
                         }
                     }
                 }
+
                 //Index
 //                Elements trTableIndex = doc.select("table.dataTable");
                 StockIndex newObjectIndex;
@@ -303,10 +309,10 @@ public class FragmentTablePriceOnline extends Fragment {
                 double floatRate1 = 0.0;
                 double floatRate2 = 0.0;
                 if(!rate1.isEmpty()){
-                    floatRate1 = Double.valueOf(rate1);
+                    floatRate1 = Double.valueOf(rate1.replace(",", "."));
                 }
                 if(!rate2.isEmpty()){
-                    floatRate2 = Double.valueOf(rate2);
+                    floatRate2 = Double.valueOf(rate2.replace(",", "."));
                 }
                 return Double.compare(floatRate2, floatRate1);
             }
@@ -462,6 +468,24 @@ public class FragmentTablePriceOnline extends Fragment {
         }
         return object;
     }
+
+    private StockObject creatStockObjectHNXOption1(Elements td){
+        StockObject object = new StockObject();
+        for (int i = 0; i < td.size(); i++) {
+            Element item = td.get(i);
+            object.setValueHNX1(i == 0 ? item.select("span.tool-tip").text() : item.select("td").text(), i);
+        }
+        return object;
+    }
+
+//    private StockObject creatStockObjectHSXOption1(Elements td) {
+//        StockObject object = new StockObject();
+//        for (int i = 0; i < td.size(); i++) {
+//            Element item = td.get(i);
+//            object.setValueHSX1(i == 0 ? item.select("label").text() : item.select("td").text(), i);
+//        }
+//        return object;
+//    }
 
     private StockObject creatStockObjectCafef(Elements td) {
         StockObject object = new StockObject();

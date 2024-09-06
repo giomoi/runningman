@@ -379,6 +379,7 @@ public class StockObject {
                 BuyingWeight1 = valuePrice;
                 return;
             case 12:
+                Rate = valuePrice;
 //                if(valuePrice!="")
 //                    Rate=Float.valueOf(valuePrice);
 //                else
@@ -479,8 +480,7 @@ public class StockObject {
                 return;
             case 12:
                 Rate = valuePrice;
-                GapPrice = valuePrice;
-//                if(valuePrice!="")
+//                Rate = valuePrice.split(" ")[1];
 //                    Rate=Float.valueOf(valuePrice);
 //                else
 //                    Rate=0.0f;
