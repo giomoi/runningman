@@ -90,11 +90,11 @@ public class Constant {
     public static String URL_DEFAULT_HNX = "https://banggia.vps.com.vn/chung-khoan/HNX";
 
     //Report realtime stock
-    public static Integer START_HOURS = 22;
-    public static Integer START_MINUTES = 10;
-    public static Integer END_HOURS = 22;
-    public static Integer END_MINUTES = 15;
-    public static Integer DELAY_INTERVAL = 1; // minutes
+    public static Integer START_HOURS = 9;
+    public static Integer START_MINUTES = 16;
+    public static Integer END_HOURS = 14;
+    public static Integer END_MINUTES = 46;
+    public static Integer DELAY_INTERVAL = 10; // minutes
 
     //Daily report VN
     public static Integer DAILY_REPORT_INDEX_HOURS = 15;

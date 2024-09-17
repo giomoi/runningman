@@ -85,14 +85,14 @@ public class PriceVolumeAgreement extends Fragment {
         lnBuySellStockIndex = mMainView.findViewById(R.id.lnBuySellStockIndex);
         mSwipeRefresh = mMainView.findViewById(R.id.mSwipeRefresh);
         mSwipeRefresh.setEnabled(false);
-        initWebview();
         priceVolumeAgrementAdapter = new PriceVolumeAgrementAdapter(getActivity(), listInforBuySellStockIndex);
+        recyclerView.setAdapter(priceVolumeAgrementAdapter);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(priceVolumeAgrementAdapter);
-        linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+//        linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        initWebview();
         return mMainView;
     }
 
