@@ -510,9 +510,8 @@ public class FragmentTablePriceOnline extends Fragment {
      * @param newObject
      */
     public void showNotificationCode(final StockObject newObject) {
-        if (newObject.getBuyingPrice1().isEmpty() || newObject.getBuyingPrice2().isEmpty() || newObject.getBuyingPrice3().isEmpty() || newObject.getTCPrice().isEmpty()) {
+        if (newObject.getBuyingPrice1().isEmpty() || newObject.getBuyingPrice2().isEmpty() || newObject.getBuyingPrice3().isEmpty() || newObject.getTCPrice().isEmpty())
             return;
-        }
         if (newObject.getBuyingPrice1().equals("ATO") || newObject.getBuyingPrice1().equals("ATC") ||
                 newObject.getBuyingPrice2().equals("ATO") || newObject.getBuyingPrice2().equals("ATC") ||
                 newObject.getBuyingPrice3().equals("ATO") || newObject.getBuyingPrice3().equals("ATC")) {
