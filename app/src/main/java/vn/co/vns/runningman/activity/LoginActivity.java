@@ -172,21 +172,29 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         endCalendar.set(Calendar.MINUTE, END_MINUTES);
         endCalendar.set(Calendar.SECOND, 0);
 
-        // Lập lịch công việc bắt đầu
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, startCalendar.getTimeInMillis(), pendingIntent);
-        } else {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, startCalendar.getTimeInMillis(), pendingIntent);
+        // current time > start time and curent time <= end time
+        long currentTime = System.currentTimeMillis();
+        if (currentTime >= startCalendar.getTimeInMillis() && currentTime <= endCalendar.getTimeInMillis()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, startCalendar.getTimeInMillis(), pendingIntent);
+            } else {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, startCalendar.getTimeInMillis(), pendingIntent);
+            }
         }
+
+        // Đặt lại báo thức hàng ngày
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, startCalendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
 
         // Lập lịch công việc kết thúc
         Intent stopIntent = new Intent(this, SensorStopBoardcastReceiver.class);
         PendingIntent stopPendingIntent = PendingIntent.getBroadcast(this, 1, stopIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, endCalendar.getTimeInMillis(), stopPendingIntent);
-        } else {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, endCalendar.getTimeInMillis(), stopPendingIntent);
-        }
+        // Đặt lại báo thức hàng ngày
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, endCalendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, stopPendingIntent);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, endCalendar.getTimeInMillis(), stopPendingIntent);
+//        } else {
+//            alarmManager.setExact(AlarmManager.RTC_WAKEUP, endCalendar.getTimeInMillis(), stopPendingIntent);
+//        }
         Log.d( TAG, "OK");
     }
 
