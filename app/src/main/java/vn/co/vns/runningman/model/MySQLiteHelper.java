@@ -683,7 +683,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
      */
     public ArrayList<StockVolumePriceAgreement> getListStockVolumePriceAgreement() {
         ArrayList<StockVolumePriceAgreement> arrStockVolumePriceAgreements = null;
-        String strSQL = "SELECT * FROM " + TABLE_STOCK_VOLUME_PRICE_AGREEMENT + " ORDER BY " + CL_RATE + " DESC LIMIT 30";
+        String strSQL = "SELECT * FROM " + TABLE_STOCK_VOLUME_PRICE_AGREEMENT + " ORDER BY " + CL_INC_DES + " DESC LIMIT 30";
         SQLiteDatabase db = this.getReadableDatabase();
         try {
             Log.d("VolumePriceAgreement", strSQL);
