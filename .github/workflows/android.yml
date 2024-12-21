@@ -13,7 +13,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: set up JDK 8
+    - name: Setup Java JDK
       uses: actions/setup-java@v4
       with:
         java-version: '8'
