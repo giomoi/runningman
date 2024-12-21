@@ -1,8 +1,9 @@
 package vn.co.vns.runningman.adapter;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 
@@ -27,15 +28,15 @@ public class MainActivityAdapter extends FragmentStatePagerAdapter {
         items.add(FragmentHome.newInstance());
         if (SharedPreference.getInstance().getBoolean("ho", true)) { //Default
             if (SharedPreference.getInstance().getString("priceTable", "cafef").equalsIgnoreCase("cafef")) {
-                items.add(FragmentTablePriceOnline.newInstance(Constant.URL_CAFFEF_HSX));
+                items.add(FragmentTablePriceOnline.newInstance(Constant.URL_DEFAULT_HSX));
             } else {
-                items.add(FragmentTablePriceOnline.newInstance(Constant.URL_SSI_HSX));
+                items.add(FragmentTablePriceOnline.newInstance(Constant.URL_OTHER_HSX));
             }
         } else {
             if (SharedPreference.getInstance().getString("priceTable", "cafef").equalsIgnoreCase("cafef")) {
-                items.add(FragmentTablePriceOnline.newInstance(Constant.URL_CAFFEF_HNX));
+                items.add(FragmentTablePriceOnline.newInstance(Constant.URL_DEFAULT_HNX));
             } else {
-                items.add(FragmentTablePriceOnline.newInstance(Constant.URL_SSI_HNX));
+                items.add(FragmentTablePriceOnline.newInstance(Constant.URL_OTHER_HNX));
             }
         }
 //        items.add(FragmentAnalytic.newInstance());

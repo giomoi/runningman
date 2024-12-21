@@ -7,15 +7,13 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.PowerManager;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.WindowManager;
@@ -26,6 +24,10 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -43,21 +45,23 @@ import vn.co.vns.runningman.object.StockIndex;
 import vn.co.vns.runningman.object.StockObject;
 import vn.co.vns.runningman.util.Constant;
 import vn.co.vns.runningman.util.SharedPreference;
+import vn.co.vns.runningman.util.Utils;
 
 public class StockOnlineServices extends Service {
     private String fullHtml = "";
     private WebView wv = null;
-    private ArrayList<String> listStock = new ArrayList<>();
+    private ArrayList<String> listStock;
     private PowerManager.WakeLock mScreenWakeLock;
-    private int transitUrl = 0;
+    private int transitUrl = 2;
     private boolean isRunningView = false;
     private WindowManager windowManager;
     private String TAG = StockOnlineServices.class.getSimpleName();
     private Handler mServiceHandler;
-    private int MAX_SECONDES = 10 * 60 * 1000; // 10 minutes
+    private int MAX_SECONDES = 5 * 60 * 1000; // 10 minutes
     private int TIME_LOAD_DELAY = 10 * 1000; //secons
     private Handler mHandlerWebView;
     private boolean isClear = false;
+    private String urlString = "";
 
     //    private WindowManager.LayoutParams params;
     @Override
@@ -70,12 +74,7 @@ public class StockOnlineServices extends Service {
         mScreenWakeLock.acquire();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Notification.Builder builder = new Notification.Builder(this, ANDROID_CHANNEL_ID)
-                    .setContentTitle(getString(R.string.app_name))
-                    .setContentText("SmartTracker Running")
-                    .setAutoCancel(true);
-            Notification notification = builder.build();
-            startForeground(NOTIFICATION_ID, notification);
+            startMyOwnForeground();
         } else {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                     .setContentTitle(getString(R.string.app_name))
@@ -87,6 +86,27 @@ public class StockOnlineServices extends Service {
         }
     }
 
+    private void startMyOwnForeground() {
+        String NOTIFICATION_CHANNEL_ID = "com.example.simpleapp";
+        String channelName = "My Background Service";
+        NotificationChannel chan = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
+            chan.setLightColor(Color.BLUE);
+            chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            assert manager != null;
+            manager.createNotificationChannel(chan);
+        }
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+        Notification notification = notificationBuilder.setOngoing(true)
+//                .setSmallIcon(R.drawable.icon_1)
+                .setContentTitle("App is running in background")
+                .setPriority(NotificationManager.IMPORTANCE_MIN)
+                .setCategory(Notification.CATEGORY_SERVICE)
+                .build();
+        startForeground(NOTIFICATION_ID, notification);
+    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -105,17 +125,24 @@ public class StockOnlineServices extends Service {
     }
 
     private void repeatPushNotification() {
+        int LAYOUT_FLAG;
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-                android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
-                android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
-                Build.VERSION.SDK_INT < Build.VERSION_CODES.O ?
-                        WindowManager.LayoutParams.TYPE_PHONE :
-                        WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                        | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                PixelFormat.TRANSLUCENT
-        );
+        WindowManager.LayoutParams params;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            params = new WindowManager.LayoutParams(
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                    PixelFormat.TRANSLUCENT);
+        } else {
+            params = new WindowManager.LayoutParams(
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    WindowManager.LayoutParams.TYPE_PHONE,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                    PixelFormat.TRANSLUCENT);
+        }
 
         params.gravity = Gravity.TOP | Gravity.START;
         params.x = 0;
@@ -142,8 +169,7 @@ public class StockOnlineServices extends Service {
                 Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
-                        Log.d(TAG, "Toi day");
-                        wv.loadUrl("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');");
+                            wv.loadUrl("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');");
                     }
                 };
                 if (!isClear) {
@@ -177,26 +203,22 @@ public class StockOnlineServices extends Service {
             }
         });
 
-        listStock = new ArrayList<>();
+//        listStock = new ArrayList<>();
         if ((transitUrl % 2) == 0) {
             Log.d(TAG, "chan" + transitUrl);
-//            wv.reload();
-//            wv.loadUrl("javascript:document.open();document.close();");
-            wv.loadUrl("http://liveboard.cafef.vn/");
-//            wv.reload();
+            wv.loadUrl(Constant.URL_DEFAULT_HSX);
+            urlString = Constant.URL_DEFAULT_HSX;
         } else {
             Log.d(TAG, "le" + transitUrl);
-//            wv.reload();
-//            wv.loadUrl("javascript:document.open();document.close();");
-            wv.loadUrl("https://liveboard.cafef.vn/?center=2");
-//            wv.reload();
+            wv.loadUrl(Constant.URL_DEFAULT_HNX);
+            urlString = Constant.URL_DEFAULT_HNX;
         }
         transitUrl = transitUrl + 1;
         wv.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT");
         windowManager.getDefaultDisplay();
         windowManager.addView(wv, params);
 
-        mServiceHandler.postDelayed(runnableServices, MAX_SECONDES);
+//        mServiceHandler.postDelayed(runnableServices, MAX_SECONDES); // Quan trọng có thể kích hoạt ở đây để chạy 10 phút gửi notification 1 lần.
     }
 
     private static final String ANDROID_CHANNEL_ID = "com.xxxx.Location.Channel";
@@ -224,6 +246,7 @@ public class StockOnlineServices extends Service {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
+                        Log.i(TAG, "Refreshing..." + urlString);
                         // this will run in the main thread
                         wv.getSettings().setJavaScriptEnabled(true);
                         wv.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
@@ -238,7 +261,6 @@ public class StockOnlineServices extends Service {
                 e.printStackTrace();
                 Thread.currentThread().interrupt();
             }
-
             Looper.loop();
         }
     };
@@ -265,42 +287,51 @@ public class StockOnlineServices extends Service {
     }
 
     private void executeHtml() {
-//        isBindData = true;
         final ArrayList<StockObject> result = new ArrayList<>();
         final ArrayList<StockIndex> resultIndex = new ArrayList<>();
+        listStock = new ArrayList<>();
         try {
+            isRunningView = true;
             Document doc = Jsoup.parse(fullHtml);
             if (SharedPreference.getInstance(getApplicationContext()).getString("priceTable", "cafef").equalsIgnoreCase("cafef")) {
-                Elements trTable = doc.select("table#myTable");
+                Elements trTable = doc.select("table#stock-price-table");
+                Elements tbody = doc.select("tbody#stock-price-table-body");
                 if (trTable.size() > 0) {
-                    for (Element s : trTable) {
+                    for (Element s : tbody) {
                         Elements rowTable = s.getElementsByTag("tr");
                         for (Element tr : rowTable) {
-                            if (tr.toString().contains("rowspan=\"1\"")) {
-                                Log.d("OK: ", doc.select("span.idx_1").text());
-                            }
-                            if (tr.toString().contains("odd") || tr.toString().contains("even")) {
+                            if (tr.toString().contains("price-item stock")) {
                                 Elements colTable = tr.getElementsByTag("td");
-                                StockObject newObject = creatStockObjectCafef(colTable);
-                                if (!"".equalsIgnoreCase(newObject.getTopPrice())) {
+                                StockObject newObject = new StockObject();
+                                if (urlString.contains("HNX")) {
+                                    newObject = creatStockObjectHNXOption1(colTable);
+                                } else {
+                                    newObject = creatStockObjectHSXOption1(colTable);
+                                }
+                                Log.d(TAG, newObject.getCodeStock());
+                                isRunningView = false;
+                                if (!"".equalsIgnoreCase(newObject.getCodeStock())) {
                                     showNotificationCode(newObject);
-                                    result.add(newObject);
+                                    //Filter only stock 3 character
+                                    if (newObject.getCodeStock().length() <= 4)
+                                        result.add(newObject);
                                 }
                             }
                         }
                     }
-
+                    Log.d(TAG, listStock.toString() + " ABC");
                     if (listStock.size() > 0) {
                         String strSpecial = "";
                         for (int i = 0; i < listStock.size(); i++) {
                             strSpecial = strSpecial.equalsIgnoreCase("") ? listStock.get(i) : strSpecial + "," + listStock.get(i);
                         }
                         pushNotification(strSpecial);
+//                        Utils.pushNotification(getApplicationContext(), strSpecial);
 //                    } else {
 //                        pushNotification("Ok");
                     }
                 }
-
+                Log.d(TAG, "End ...");
             } else {
                 Elements trTable = doc.select("table#table-table-scroll");
                 if (trTable.size() > 0) {
@@ -329,11 +360,20 @@ public class StockOnlineServices extends Service {
         }
     }
 
-    private StockObject creatStockObjectCafef(Elements td) {
+    private StockObject creatStockObjectHNXOption1(Elements td) {
         StockObject object = new StockObject();
         for (int i = 0; i < td.size(); i++) {
             Element item = td.get(i);
-            object.setValueCafef(i == 0 ? item.select("label").text() : item.select("td").text(), i);
+            object.setValueHNX1(i == 0 ? item.select("span.tool-tip").text() : item.select("td").text(), i);
+        }
+        return object;
+    }
+
+    private StockObject creatStockObjectHSXOption1(Elements td) {
+        StockObject object = new StockObject();
+        for (int i = 0; i < td.size(); i++) {
+            Element item = td.get(i);
+            object.setValueHSX1(i == 0 ? item.select("span.tool-tip").text() : item.select("td").text(), i);
         }
         return object;
     }
@@ -344,6 +384,7 @@ public class StockOnlineServices extends Service {
      * @param newObject
      */
     public void showNotificationCode(final StockObject newObject) {
+        Log.d(TAG, newObject.toString());
         if (newObject.getBuyingPrice1().isEmpty() || newObject.getBuyingPrice2().isEmpty() || newObject.getBuyingPrice3().isEmpty() || newObject.getTCPrice().isEmpty()) {
             return;
         }
@@ -375,6 +416,7 @@ public class StockOnlineServices extends Service {
                 && amountSum >= amountTotal && cePrice == buyPrice1) {
             if (!listStock.contains(newObject.getCodeStock())) {
                 listStock.add(newObject.getCodeStock());
+                Log.d(TAG, listStock.toString());
             }
         }
     }
@@ -385,7 +427,7 @@ public class StockOnlineServices extends Service {
         super.onDestroy();
         Log.i(TAG, "onDestroy!");
         if (windowManager != null) windowManager.removeView(wv);
-        isClear = true;
+//        isClear = true;
         if (mHandlerWebView != null) mHandlerWebView.removeCallbacks(null);
         if (mServiceHandler != null) mServiceHandler.removeCallbacks(runnableServices);
 //        Intent broadcastIntent = new Intent(this, SensorRestarterBroadcastReceiver.class);
@@ -393,14 +435,14 @@ public class StockOnlineServices extends Service {
     }
 
     public void pushNotification(String strContent) {
-
+        Log.d(TAG, strContent);
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         String CHANNEL_ID = "MYCHANNEL";
         NotificationChannel notificationChannel = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationChannel = new NotificationChannel(CHANNEL_ID, "name", NotificationManager.IMPORTANCE_HIGH);
         }
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 1, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 1, intent, PendingIntent.FLAG_IMMUTABLE);
         Notification notification = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notification = new Notification.Builder(getApplicationContext(), CHANNEL_ID)

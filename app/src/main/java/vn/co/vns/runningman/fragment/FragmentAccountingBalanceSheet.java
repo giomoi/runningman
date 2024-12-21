@@ -1,13 +1,14 @@
 package vn.co.vns.runningman.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ListView;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 
@@ -19,7 +20,7 @@ import vn.co.vns.runningman.object.StockVolumePriceAgreement;
 /**
  * Created by thanhnv on 11/28/16.
  */
-public class FragmentAccountingBalanceSheet extends Fragment{
+public class FragmentAccountingBalanceSheet extends Fragment {
     private View mMainView;
     private WebView webAccountBalanceSheet;
 

@@ -2,11 +2,12 @@ package vn.co.vns.runningman.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
@@ -99,8 +100,9 @@ public class PriceVolumeAgrementAdapter extends RecyclerView.Adapter<PriceVolume
             holder.txtDate.setText(inforStockIndex.getDateTransit().substring(0, 5));
             holder.txtRateIndex.setText(inforStockIndex.getRate());
             holder.txtPriceClose.setText(inforStockIndex.getPriceClose());
-            holder.txtValue.setText(inforStockIndex.getValueTransit().substring(0, inforStockIndex.getValueTransit().length() - 13));
-            holder.txtVolume.setText(inforStockIndex.getVolume().substring(0, inforStockIndex.getVolume().length() - 9));
+            holder.txtValue.setText(inforStockIndex.getValueTransit().substring(0, inforStockIndex.getValueTransit().length() - 3));
+//            holder.txtValue.setText(inforStockIndex.getValueTransit());
+            holder.txtVolume.setText(inforStockIndex.getVolume().substring(0, inforStockIndex.getVolume().length() - 8));
         }
     }
 

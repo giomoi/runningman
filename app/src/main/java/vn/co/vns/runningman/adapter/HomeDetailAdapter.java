@@ -1,10 +1,11 @@
 package vn.co.vns.runningman.adapter;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.view.View;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 
 import vn.co.vns.runningman.activity.MainActivity;
 import vn.co.vns.runningman.fragment.FragmentBigVolume;
@@ -16,7 +17,7 @@ import vn.co.vns.runningman.fragment.PriceVolumeAgreement;
 /**
  * Created by thanhnv on 11/28/16.
  */
-public class HomeDetailAdapter extends FragmentPagerAdapter{
+public class HomeDetailAdapter extends FragmentPagerAdapter {
     private Context mContext=null;
 
     public HomeDetailAdapter(Context context, FragmentManager fm) {
@@ -35,7 +36,7 @@ public class HomeDetailAdapter extends FragmentPagerAdapter{
      * @param position
      */
     @Override
-    public  Fragment getItem(int position) {
+    public Fragment getItem(int position) {
         MainActivity.layoutPriceboard.setVisibility(View.GONE);
         switch (position) {
             case 0:

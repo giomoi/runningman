@@ -248,7 +248,103 @@ public class StockObject {
 
     public void setValue(String valuePrice, int i) {
         //valuePrice = valuePrice.replaceAll(",","");
-        if (i > 28) return;
+        if (i > 36) return;
+        switch (i) {
+            case 0:
+                CodeStock = valuePrice;
+                if (SharedPreference.getInstance().getString("list_priority", "").contains(valuePrice))
+                    priorityOrder = 1;
+                return;
+            case 2:
+                TopPrice = valuePrice;
+                return;
+            case 3:
+                BottomPrice = valuePrice;
+                return;
+            case 1:
+                TCPrice = valuePrice;
+                return;
+            case 8:
+                BuyingPrice3 = valuePrice;
+                return;
+            case 9:
+                BuyingWeight3 = valuePrice;
+                return;
+            case 10:
+                BuyingPrice2 = valuePrice;
+                return;
+            case 11:
+                BuyingWeight2 = valuePrice;
+                return;
+            case 12:
+                BuyingPrice1 = valuePrice;
+                return;
+            case 13:
+                BuyingWeight1 = valuePrice;
+                return;
+            case 14:
+                KhopLenhPrice = valuePrice;
+                return;
+            case 15:
+                KhopLenhWeight = valuePrice;
+//                Rate = valuePrice;
+//                Rate = ((Float.valueOf(("".equalsIgnoreCase(KhopLenhPrice)) ? "0" : KhopLenhPrice) - Float.valueOf(("".equalsIgnoreCase(TCPrice)) ? "0" : TCPrice)) * 100) / (Float.valueOf(("".equalsIgnoreCase(TCPrice) ? "0" : TCPrice)));
+                return;
+            case 16:
+                GapPrice = valuePrice;
+                return;
+            case 18:
+                GapPrice = valuePrice;
+                Rate = valuePrice;
+                return;
+            case 20:
+                SellingPrice1 = valuePrice;
+                return;
+            case 21:
+                SellingWeight1 = valuePrice;
+                return;
+            case 22:
+                SellingPrice2 = valuePrice;
+                return;
+            case 23:
+                SellingWeight2 = valuePrice;
+                return;
+            case 24:
+                SellingPrice3 = valuePrice;
+                return;
+            case 25:
+                SellingWeight3 = valuePrice;
+                return;
+            case 26:
+                HighPrice = valuePrice;
+                return;
+            case 28:
+                LowPrice = valuePrice;
+                return;
+//            case 24:
+//                return;
+            case 4:
+                TotalWeight = valuePrice;
+                return;
+            case 32:
+                NNBuying = valuePrice;
+                return;
+            case 33:
+                NNSelling = valuePrice;
+                return;
+//            case 27:
+//                NNBuying = valuePrice;
+//                return;
+//            case 28:
+//                NNSelling = valuePrice;
+            default:
+                break;
+        }
+    }
+
+    public void setValueHSX1(String valuePrice, int i) {
+        //valuePrice = valuePrice.replaceAll(",","");
+        if (i > 42) return;
         switch (i) {
             case 0:
                 CodeStock = valuePrice;
@@ -256,19 +352,19 @@ public class StockObject {
                     priorityOrder = 1;
                 return;
             case 1:
-                TopPrice = valuePrice;
+                TCPrice = valuePrice;
                 return;
             case 2:
-                BottomPrice = valuePrice;
+                TopPrice = valuePrice;
                 return;
             case 3:
-                TCPrice = valuePrice;
+                BottomPrice = valuePrice;
                 return;
             case 4:
                 BuyingPrice3 = valuePrice;
                 return;
             case 5:
-                BuyingWeight3 = valuePrice;
+                BuyingWeight3 = valuePrice; //String.valueOf(Integer.parseInt(valuePrice)*100);
                 return;
             case 6:
                 BuyingPrice2 = valuePrice;
@@ -282,63 +378,71 @@ public class StockObject {
             case 9:
                 BuyingWeight1 = valuePrice;
                 return;
+            case 12:
+                Rate = valuePrice;
+//                if(valuePrice!="")
+//                    Rate=Float.valueOf(valuePrice);
+//                else
+//                    Rate=0.0f;
+//                Rate = ((Float.valueOf(("".equalsIgnoreCase(KhopLenhPrice)) ? "0" : KhopLenhPrice) - Float.valueOf(("".equalsIgnoreCase(TCPrice)) ? "0" : TCPrice)) * 100) / (Float.valueOf(("".equalsIgnoreCase(TCPrice) ? "0" : TCPrice)));
+//                Rate = (("".equalsIgnoreCase(valuePrice)) ? "0" : valuePrice);
+//                -0.30 -2.82%
+                return;
             case 10:
                 KhopLenhPrice = valuePrice;
+//                Rate = ((Float.valueOf(("".equalsIgnoreCase(KhopLenhPrice)) ? "0" : KhopLenhPrice) - Float.valueOf(("".equalsIgnoreCase(TCPrice)) ? "0" : TCPrice)) * 100) / (Float.valueOf(("".equalsIgnoreCase(TCPrice) ? "0" : TCPrice)));
                 return;
             case 11:
                 KhopLenhWeight = valuePrice;
-                Rate = valuePrice;
 //                Rate = ((Float.valueOf(("".equalsIgnoreCase(KhopLenhPrice)) ? "0" : KhopLenhPrice) - Float.valueOf(("".equalsIgnoreCase(TCPrice)) ? "0" : TCPrice)) * 100) / (Float.valueOf(("".equalsIgnoreCase(TCPrice) ? "0" : TCPrice)));
                 return;
-            case 12:
-                GapPrice = valuePrice;
-                return;
-            case 14:
-                SellingPrice1 = valuePrice;
-                return;
-            case 15:
-                SellingWeight1 = valuePrice;
-                return;
-            case 16:
-                SellingPrice2 = valuePrice;
-                return;
-            case 17:
-                SellingWeight2 = valuePrice;
-                return;
-            case 18:
-                SellingPrice3 = valuePrice;
-                return;
             case 19:
-                SellingWeight3 = valuePrice;
-                return;
-            case 22:
-                HighPrice = valuePrice;
-                return;
-            case 23:
-                LowPrice = valuePrice;
-                return;
-//            case 24:
-//                return;
-            case 20:
                 TotalWeight = valuePrice;
                 return;
+            case 13:
+                SellingPrice1 = valuePrice;
+                return;
+            case 14:
+                SellingWeight1 = valuePrice;
+                return;
+            case 15:
+                SellingPrice2 = valuePrice;
+                return;
+            case 16:
+                SellingWeight2 = valuePrice;
+                return;
+            case 17:
+                SellingPrice3 = valuePrice;
+                return;
+            case 18:
+                SellingWeight3 = valuePrice;
+                return;
+            case  20:
+                Rate = valuePrice;
+                GapPrice = valuePrice;
+                return;
+            case 23:
+                HighPrice = valuePrice;
+                return;
             case 24:
+                LowPrice = valuePrice;
+                return;
+//            case 23:
+//                TotalWeight = valuePrice;
+//                GapPrice = valuePrice;
+//                return;
+            case 25:
                 NNBuying = valuePrice;
                 return;
-            case 25:
+            case 26:
                 NNSelling = valuePrice;
                 return;
-//            case 27:
-//                NNBuying = valuePrice;
-//                return;
-//            case 28:
-//                NNSelling = valuePrice;
             default:
                 break;
         }
     }
 
-    public void setValueCafef(String valuePrice, int i) {
+    public void setValueHNX1(String valuePrice, int i) {
         //valuePrice = valuePrice.replaceAll(",","");
         if (i > 28) return;
         switch (i) {
@@ -374,13 +478,16 @@ public class StockObject {
             case 9:
                 BuyingWeight1 = valuePrice;
                 return;
-//            case 10:
-//                if(valuePrice!="")
+            case 12:
+                Rate = valuePrice;
+//                Rate = valuePrice.split(" ")[1];
 //                    Rate=Float.valueOf(valuePrice);
 //                else
 //                    Rate=0.0f;
 //                Rate = ((Float.valueOf(("".equalsIgnoreCase(KhopLenhPrice)) ? "0" : KhopLenhPrice) - Float.valueOf(("".equalsIgnoreCase(TCPrice)) ? "0" : TCPrice)) * 100) / (Float.valueOf(("".equalsIgnoreCase(TCPrice) ? "0" : TCPrice)));
-//                return;
+//                Rate = (("".equalsIgnoreCase(valuePrice)) ? "0" : valuePrice);
+//                -0.30 -2.82%
+                return;
             case 10:
                 KhopLenhPrice = valuePrice;
 //                Rate = ((Float.valueOf(("".equalsIgnoreCase(KhopLenhPrice)) ? "0" : KhopLenhPrice) - Float.valueOf(("".equalsIgnoreCase(TCPrice)) ? "0" : TCPrice)) * 100) / (Float.valueOf(("".equalsIgnoreCase(TCPrice) ? "0" : TCPrice)));
@@ -389,7 +496,7 @@ public class StockObject {
                 KhopLenhWeight = valuePrice;
 //                Rate = ((Float.valueOf(("".equalsIgnoreCase(KhopLenhPrice)) ? "0" : KhopLenhPrice) - Float.valueOf(("".equalsIgnoreCase(TCPrice)) ? "0" : TCPrice)) * 100) / (Float.valueOf(("".equalsIgnoreCase(TCPrice) ? "0" : TCPrice)));
                 return;
-            case 12:
+            case 19:
                 TotalWeight = valuePrice;
                 return;
             case 13:
@@ -410,27 +517,26 @@ public class StockObject {
             case 18:
                 SellingWeight3 = valuePrice;
                 return;
-            case 19:
+            case  20:
+//                Rate = valuePrice;
+//                GapPrice = valuePrice;
+                return;
+            case 23:
                 HighPrice = valuePrice;
                 return;
-            case 22:
+            case 24:
                 LowPrice = valuePrice;
                 return;
 //            case 23:
 //                TotalWeight = valuePrice;
 //                GapPrice = valuePrice;
 //                return;
-            case 23:
+            case 25:
                 NNBuying = valuePrice;
                 return;
-            case 24:
+            case 26:
                 NNSelling = valuePrice;
                 return;
-//            case 25:
-//                NNBuying = valuePrice;
-//                return;
-//            case 26:
-//                NNSelling = valuePrice;
             default:
                 break;
         }

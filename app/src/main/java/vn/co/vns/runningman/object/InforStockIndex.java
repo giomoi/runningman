@@ -69,7 +69,7 @@ public class InforStockIndex {
             case 1:
                 priceClose = value;
                 return;
-            case 2:
+            case 3:
                 rate = value;
                 return;
             case 4:

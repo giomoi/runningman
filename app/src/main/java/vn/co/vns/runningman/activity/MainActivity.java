@@ -10,8 +10,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +21,14 @@ import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 import vn.co.vns.runningman.R;
 import vn.co.vns.runningman.adapter.MainActivityAdapter;
@@ -46,7 +51,10 @@ import vn.co.vns.runningman.util.SharedPreference;
 import vn.co.vns.runningman.util.Singleton;
 import vn.co.vns.runningman.util.Utils;
 
-//import android.support.v7.app.AppCompatActivity;
+import static vn.co.vns.runningman.util.Constant.END_HOURS;
+import static vn.co.vns.runningman.util.Constant.END_MINUTES;
+import static vn.co.vns.runningman.util.Constant.START_HOURS;
+import static vn.co.vns.runningman.util.Constant.START_MINUTES;
 
 /**
  * Created by thanhnv on 11/25/16.
@@ -67,52 +75,36 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
     private PriceVolumeAgreement fragment;
     private FrameLayout frmBaseBody;
     private BroadcastReceiver updateUIReciver;
-    private String TAG=MainActivity.class.getSimpleName();
-//    public static Intent intentStockOnlineServices;
-
-    private ICompleteDownloadTicker handleCompleteTicker = new ICompleteDownloadTicker() {
-        @Override
-        public void onSuccess() {
-//            setupTab();
-        }
-
-        @Override
-        public void onFailed() {
-
-        }
-    };
+    private String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        setTheme(R.style.Theme_AppCompat);
         super.onCreate(savedInstanceState);
         //this.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         SharedPreference.getInstance(getApplicationContext());
         SharedPreference.getInstance(getApplicationContext()).putString("list_priority", "");
-        //createCalendarOnlinePrice();
-//        if (this instanceof PriceAgreementCallback) {
-//            callback = (PriceAgreementCallback) this;
-//        }
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
+
         testData();
         installView();
         setupTab();
         //Show notification stock Start 09:15
-        notificationPeriodicalStockCeBigVolumn();
+//        notificationPeriodicalStockCeBigVolumn();
         //Show notification when change break out about value 40%
-        if(!SharedPreference.getInstance(this).getBoolean("isChangeValue",false)) {
+        if (!SharedPreference.getInstance(this).getBoolean("isChangeValue", false)) {
             periodicalChangeValueIndex();
         }
         //Notification 16h:00 the value of increase or decrease of 40% compared to 10-day average
         //Update bigvolumn everyday
         periodicalUpdateStock();
-
         updateDataSucess();
     }
+
+
 
     private void updateDataSucess() {
         IntentFilter filter = new IntentFilter();
@@ -133,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         AlarmManager alarmRecerverChangeValueIndex = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         //Create pending intent & register it to your alarm notifier class
         Intent intentChangeValueIndex = new Intent(this, SensorChangeValueIndexBoardcastReceiver.class);
-        PendingIntent pendingReceiverStart = PendingIntent.getBroadcast(this, 0, intentChangeValueIndex, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingReceiverStart = PendingIntent.getBroadcast(this, 0, intentChangeValueIndex, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         //set timer you want alarm to work (here I have set it to 7.20pm)
         Calendar timeStart = Calendar.getInstance();
         timeStart.setTimeInMillis(System.currentTimeMillis());
@@ -143,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         //set that timer as a RTC Wakeup to alarm manager object
         alarmRecerverChangeValueIndex.setRepeating(AlarmManager.RTC_WAKEUP, timeStart.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingReceiverStart);
 //        alarmRecerverChangeValueIndex.setInexactRepeating(AlarmManager.RTC_WAKEUP, timeStart.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingReceiverStart);
-        SharedPreference.getInstance(this).putBoolean("isChangeValue",true);
+        SharedPreference.getInstance(this).putBoolean("isChangeValue", true);
     }
 
     private void periodicalUpdateStock() {
@@ -152,17 +144,18 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         AlarmManager alarmRecerverUpdateStock = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         //Create pending intent & register it to your alarm notifier class
         Intent intenUpdateStock = new Intent(this, SensorStockUpdateBoardcastReceiver.class);
-        PendingIntent pendingReceiverStart = PendingIntent.getBroadcast(this, 0, intenUpdateStock, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingReceiverStart = PendingIntent.getBroadcast(this, 0, intenUpdateStock, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         //set timer you want alarm to work (here I have set it to 7.20pm)
         Calendar timeStart = Calendar.getInstance();
-        timeStart.set(Calendar.HOUR_OF_DAY, 16);
-        timeStart.set(Calendar.MINUTE, 45);
+        timeStart.set(Calendar.HOUR_OF_DAY, 21);
+        timeStart.set(Calendar.MINUTE, 23);
         timeStart.set(Calendar.SECOND, 0);
         //set that timer as a RTC Wakeup to alarm manager object
         alarmRecerverUpdateStock.setRepeating(AlarmManager.RTC_WAKEUP, timeStart.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingReceiverStart);
     }
 
     private void notificationPeriodicalStockCeBigVolumn() {
+        Log.d(TAG, "Start...");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:" + getPackageName()));
@@ -173,11 +166,11 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         AlarmManager alarmRecerverStartNotification = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         //Create pending intent & register it to your alarm notifier class
         Intent intent0 = new Intent(this, SensorRestarterBroadcastReceiver.class);
-        PendingIntent pendingReceiverStart = PendingIntent.getBroadcast(this, 0, intent0, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingReceiverStart = PendingIntent.getBroadcast(this, 0, intent0, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         //set timer you want alarm to work (here I have set it to 7.20pm)
         Calendar timeStart = Calendar.getInstance();
-        timeStart.set(Calendar.HOUR_OF_DAY, 9);
-        timeStart.set(Calendar.MINUTE, 15);
+        timeStart.set(Calendar.HOUR_OF_DAY, 10);
+        timeStart.set(Calendar.MINUTE, 6);
         timeStart.set(Calendar.SECOND, 0);
         //set that timer as a RTC Wakeup to alarm manager object
         alarmRecerverStartNotification.setRepeating(AlarmManager.RTC_WAKEUP, timeStart.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingReceiverStart);
@@ -187,11 +180,11 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         AlarmManager alarmReceiverStopNotification = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         //Create pending intent & register it to your alarm notifier class
         Intent intentStopReceiver = new Intent(this, SensorStopBoardcastReceiver.class);
-        PendingIntent pendingReceiverStop = PendingIntent.getBroadcast(this, 0, intentStopReceiver, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingReceiverStop = PendingIntent.getBroadcast(this, 0, intentStopReceiver, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
         //set timer you want alarm to work (here I have set it to 7.20pm)
         Calendar timeStop = Calendar.getInstance();
-        timeStop.set(Calendar.HOUR_OF_DAY, 11);
-        timeStop.set(Calendar.MINUTE, 30);
+        timeStop.set(Calendar.HOUR_OF_DAY, 10);
+        timeStop.set(Calendar.MINUTE, 8);
         timeStop.set(Calendar.SECOND, 0);
         alarmReceiverStopNotification.setInexactRepeating(AlarmManager.RTC_WAKEUP, timeStop.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingReceiverStop);
     }
@@ -250,18 +243,18 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
                         btnExchange.setText("V");
                         appTitle.setText(getResources().getString(R.string.txt_title_nhat));
                         if (SharedPreference.getInstance().getString("priceTable", "cafef").equalsIgnoreCase("cafef")) {
-                            fg = new FragmentTablePriceOnline().newInstance(Constant.URL_CAFFEF_HNX);
+                            fg = new FragmentTablePriceOnline().newInstance(Constant.URL_DEFAULT_HNX);
                         } else {
-                            fg = new FragmentTablePriceOnline().newInstance("https://iboard.ssi.com.vn/bang-gia/hnx");
+                            fg = new FragmentTablePriceOnline().newInstance(Constant.URL_OTHER_HNX);
                         }
                     } else {
                         SharedPreference.getInstance().putBoolean("ho", true);
                         btnExchange.setText("N");
                         appTitle.setText(getResources().getString(R.string.txt_title_vuong));
                         if (SharedPreference.getInstance().getString("priceTable", "cafef").equalsIgnoreCase("cafef")) {
-                            fg = new FragmentTablePriceOnline().newInstance(Constant.URL_CAFFEF_HSX);
+                            fg = new FragmentTablePriceOnline().newInstance(Constant.URL_DEFAULT_HSX);
                         } else {
-                            fg = new FragmentTablePriceOnline().newInstance(Constant.URL_SSI_HSX);
+                            fg = new FragmentTablePriceOnline().newInstance(Constant.URL_OTHER_HSX);
                         }
                     }
                     if (SharedPreference.getInstance().getString("priceTable", "cafef").equalsIgnoreCase("cafef")) {
@@ -286,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         int hourofday = cal.get(Calendar.HOUR_OF_DAY);
         dayJP = (hourofday > 14) ? Constant.nowDay : Constant.beforeDay;
         dayVN = Utils.convertDate(dayJP);
-        String urlDay = Constant.URI+"/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
+        String urlDay = Constant.URI + "/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
         String dateDownload = Constant.maxDay;
         Constant.dateTransition = Constant.maxDay;
         if (dateDownload != null) {
@@ -303,7 +296,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
                 }
                 dayJP = Utils.getDateJP(Utils.addDays(Utils.convertStringToDateString(dayJP), -1));
                 dayVN = Utils.convertDate(dayJP);
-                urlDay = Constant.URI+"/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
+                urlDay = Constant.URI + "/" + dayJP + "/CafeF.SolieuGD." + dayVN + ".zip";
             }
             if (SharedPreference.getInstance().getInt("updatedStock", 0) == 1) {
                 btnUnit.setText(getString(R.string.txt_updating));

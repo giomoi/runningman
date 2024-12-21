@@ -9,10 +9,11 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import java.io.File;
 import java.util.Calendar;
@@ -71,7 +72,7 @@ public class StockUpdateService extends Service {
                     .setContentText("SmartTracker Running")
                     .setAutoCancel(true);
             Notification notification = builder.build();
-            startForeground(NOTIFICATION_ID, notification);
+//            startForeground(NOTIFICATION_ID, notification);
         } else {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                     .setContentTitle(getString(R.string.app_name))
@@ -79,7 +80,7 @@ public class StockUpdateService extends Service {
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setAutoCancel(true);
             Notification notification = builder.build();
-            startForeground(NOTIFICATION_ID, notification);
+//            startForeground(NOTIFICATION_ID, notification);
         }
     }
 

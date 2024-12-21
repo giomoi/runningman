@@ -2,12 +2,7 @@ package vn.co.vns.runningman.fragment;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
@@ -36,8 +31,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.regex.Pattern;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 import vn.co.vns.runningman.R;
 import vn.co.vns.runningman.activity.MainActivity;
 import vn.co.vns.runningman.adapter.PriceOnlineAdapter;
@@ -48,6 +41,11 @@ import vn.co.vns.runningman.util.Constant;
 import vn.co.vns.runningman.util.SharedPreference;
 
 import static vn.co.vns.runningman.util.Constant.optionPriceboard;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by thanhnv on 12/9/16.
@@ -68,7 +66,7 @@ public class FragmentTablePriceOnline extends Fragment {
     private boolean isRunningView = false;
     private boolean isBindData = false;
     private PriceOnlineAdapter mainAdapter;
-    private String urlString = Constant.URL_SSI_HSX;
+    private String urlString = Constant.URL_OTHER_HSX;
     private ArrayList<StockObject> listStockTransition = new ArrayList<>();
     private String strSpecial = "";
 
@@ -146,19 +144,18 @@ public class FragmentTablePriceOnline extends Fragment {
                     for (Element s : tbody) {
                         Elements rowTable = s.getElementsByTag("tr");
                         for (Element tr : rowTable) {
-                            if (tr.toString().contains("rowspan=\"1\"")) {
-                                Log.d("OK: ", doc.select("span.idx_1").text());
-                                //Da lam toi day
-//                                StockIndex newObjectIndex = new StockIndex(colTableIndex.get(0).text(), colTableIndex.get(1).text(), colTableIndex.get(2).text(), colTableIndex.get(3).text(), colTableIndex.get(4).text(), colTableIndex.get(5).text(), colTableIndex.get(6).text(), colTableIndex.get(7).text());
-//                                resultIndex.add(newObjectIndex);
-                            }
-                            if (tr.toString().contains("odd") || tr.toString().contains("even")) {
+                            if (tr.toString().contains("price-item stock")) {
                                 Elements colTable = tr.getElementsByTag("td");
-                                StockObject newObject = creatStockObjectCafef(colTable);
-                                if (!"".equalsIgnoreCase(newObject.getTopPrice())) {
+                                StockObject newObject;
+//                                if(urlString.contains("HNX")){
+//                                    newObject = creatStockObjectHNXOption1(colTable);
+//                                } else {
+                                    newObject = creatStockObjectCafef(colTable);
+//                                }
+                                if (!"".equalsIgnoreCase(newObject.getCodeStock())) {
                                     showNotificationCode(newObject);
                                     //Filter only stock 3 character
-                                    if (newObject.getCodeStock().length() < 4)
+                                    if (newObject.getCodeStock().length() <= 4)
                                         result.add(newObject);
                                 }
                             }
@@ -168,6 +165,7 @@ public class FragmentTablePriceOnline extends Fragment {
                         }
                     }
                 }
+
                 //Index
 //                Elements trTableIndex = doc.select("table.dataTable");
                 StockIndex newObjectIndex;
@@ -196,21 +194,22 @@ public class FragmentTablePriceOnline extends Fragment {
                 }
                 resultIndex.add(newObjectIndex);
             } else {
-                Elements trTable = doc.select("table#priceboardContentTable");
-                Elements tbody = trTable.select("tbody#priceboardContentTableBody");
+                Elements trTable = doc.select("table#banggia-khop-lenh");
                 if (trTable.size() > 0) {
                     for (Element s : trTable) {
                         Elements rowTable = s.getElementsByTag("tr");
                         for (Element tr : rowTable) {
 //                            if (tr.toString().contains("class=\"invisible\"")) {
-                            if (tr.toString().contains("style=\"\" role=\"row\"")) {
+//                            if (tr.toString().contains("ListItem")) {
                                 Elements colTable = tr.getElementsByTag("td");
                                 StockObject newObject = creatStockObject(colTable);
-                                if (!"".equalsIgnoreCase(newObject.getTopPrice())) {
+                                if (!"".equalsIgnoreCase(newObject.getCodeStock())) {
                                     showNotificationCode(newObject);
+                                    //Filter only stock 3 character
+                                    if (newObject.getCodeStock().length() <= 4)
                                     result.add(newObject);
                                 }
-                            }
+//                            }
                         }
                         if (listStockTransition.size() == 0) {
                             listStockTransition = result;
@@ -246,7 +245,7 @@ public class FragmentTablePriceOnline extends Fragment {
                 int typIndex = (urlString != null && urlString.contains("Hnx")) ? 2 : 0;
                 setIndex(resultIndex, typIndex);
                 if (SharedPreference.getInstance().getInt("orderby", Constant.SORT_TIKER) == Constant.SORT_RATE) {
-//                    sortStockRate(result);
+                    sortStockRate(result);
                     txtCodeStock.setTextColor(getResources().getColor(R.color.white));
                     txtGapPrice.setTextColor(getResources().getColor(R.color.green));
                 } else if (SharedPreference.getInstance().getInt("orderby", Constant.SORT_TIKER) == Constant.SORT_PRIORITY) {
@@ -301,14 +300,24 @@ public class FragmentTablePriceOnline extends Fragment {
         txtRateIndex.setTextColor(color);
     }
 
-//    private void sortStockRate(ArrayList<StockObject> listStock) {
-//        Collections.sort(listStock, new Comparator<StockObject>() {
-//            @Override
-//            public int compare(StockObject o1, StockObject o2) {
-//                return Float.compare(o2.getRate(), o1.getRate());
-//            }
-//        });
-//    }
+    private void sortStockRate(ArrayList<StockObject> listStock) {
+        Collections.sort(listStock, new Comparator<StockObject>() {
+            @Override
+            public int compare(StockObject o1, StockObject o2) {
+                String rate1 = o1.getRate().replace("%", "");
+                String rate2 = o2.getRate().replace("%", "");
+                double floatRate1 = 0.0;
+                double floatRate2 = 0.0;
+                if(!rate1.isEmpty()){
+                    floatRate1 = Double.valueOf(rate1.replace(",", "."));
+                }
+                if(!rate2.isEmpty()){
+                    floatRate2 = Double.valueOf(rate2.replace(",", "."));
+                }
+                return Double.compare(floatRate2, floatRate1);
+            }
+        });
+    }
 
     private void sortStockPriority(ArrayList<StockObject> listStock) {
         Collections.sort(listStock, new Comparator<StockObject>() {
@@ -358,7 +367,7 @@ public class FragmentTablePriceOnline extends Fragment {
             } else {
                 optionPriceboard = "HostcStockBoard";
             }
-            if (mProgressDialog == null) {
+            if (mProgressDialog == null && getContext() != null) {
                 mProgressDialog = new ProgressDialog(getContext());
                 mProgressDialog.setMessage("Loading...");
                 mProgressDialog.setCancelable(false);
@@ -379,12 +388,12 @@ public class FragmentTablePriceOnline extends Fragment {
         mainWebview.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
-                if (resetThread.getState() == Thread.State.NEW) {
-                    resetThread.start();
-                }
-//                if(!resetThread.isAlive()) {
+//                if (resetThread.getState() == Thread.State.NEW) {
 //                    resetThread.start();
 //                }
+                if (!resetThread.isAlive()) {
+                    resetThread.start();
+                }
             }
         });
         mainWebview.loadUrl(urlString);
@@ -393,16 +402,12 @@ public class FragmentTablePriceOnline extends Fragment {
         //
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         listPriceOnline.setLayoutManager(mLayoutManager);
-//        listOrderFragment.setItemAnimator(new DefaultItemAnimator());
-//        listPriceOnline.setHasFixedSize(true);
-//        listPriceOnline.setItemViewCacheSize(20);
         mainAdapter = new PriceOnlineAdapter(getContext());
         listPriceOnline.setAdapter(mainAdapter);
 
         txtCodeStock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                new DialogTickTicker(getContext(),getResources().getString(R.string.title_tick_ticker),"HAR").show();
                 SharedPreference.getInstance().putInt("orderby", Constant.SORT_TIKER);
                 sortStockName(listStockTransition);
                 mainAdapter.setListItem(listStockTransition, optionPriceboard);
@@ -415,7 +420,7 @@ public class FragmentTablePriceOnline extends Fragment {
             @Override
             public void onClick(View view) {
                 SharedPreference.getInstance().putInt("orderby", Constant.SORT_RATE);
-//                sortStockRate(listStockTransition);
+                sortStockRate(listStockTransition);
                 mainAdapter.setListItem(listStockTransition, optionPriceboard);
                 txtCodeStock.setTextColor(getResources().getColor(R.color.white));
                 txtGapPrice.setTextColor(getResources().getColor(R.color.green));
@@ -456,18 +461,38 @@ public class FragmentTablePriceOnline extends Fragment {
 
     private StockObject creatStockObject(Elements td) {
         StockObject object = new StockObject();
-        for (int i = 0; i < td.size(); i++) {
-            Element item = td.get(i);
-            object.setValue(item.select("td").text(), i);
+        Elements span = td.select("span");
+        for (int i = 0; i < span.size(); i++) {
+//            Element item = td.get(i);
+            object.setValue(span.get(i).text(), i);
         }
         return object;
     }
 
-    private StockObject creatStockObjectCafef(Elements td) {
+    private StockObject creatStockObjectHNXOption1(Elements td){
         StockObject object = new StockObject();
         for (int i = 0; i < td.size(); i++) {
             Element item = td.get(i);
-            object.setValueCafef(i == 0 ? item.select("label").text() : item.select("td").text(), i);
+            object.setValueHNX1(i == 0 ? item.select("span.tool-tip").text() : item.select("td").text(), i);
+        }
+        return object;
+    }
+
+//    private StockObject creatStockObjectHSXOption1(Elements td) {
+//        StockObject object = new StockObject();
+//        for (int i = 0; i < td.size(); i++) {
+//            Element item = td.get(i);
+//            object.setValueHSX1(i == 0 ? item.select("label").text() : item.select("td").text(), i);
+//        }
+//        return object;
+//    }
+
+    private StockObject creatStockObjectCafef(Elements td) {
+        StockObject object = new StockObject();
+        Elements span = td.select("span");
+        Elements div = td.select("div.price-change-pc");
+        for (int i = 0; i < span.size(); i++) {
+            object.setValueHSX1((i != 20) ? span.get(i).text() : div.text(), i);
         }
         return object;
     }
@@ -485,9 +510,8 @@ public class FragmentTablePriceOnline extends Fragment {
      * @param newObject
      */
     public void showNotificationCode(final StockObject newObject) {
-        if (newObject.getBuyingPrice1().isEmpty() || newObject.getBuyingPrice2().isEmpty() || newObject.getBuyingPrice3().isEmpty() || newObject.getTCPrice().isEmpty()) {
+        if (newObject.getBuyingPrice1().isEmpty() || newObject.getBuyingPrice2().isEmpty() || newObject.getBuyingPrice3().isEmpty() || newObject.getTCPrice().isEmpty())
             return;
-        }
         if (newObject.getBuyingPrice1().equals("ATO") || newObject.getBuyingPrice1().equals("ATC") ||
                 newObject.getBuyingPrice2().equals("ATO") || newObject.getBuyingPrice2().equals("ATC") ||
                 newObject.getBuyingPrice3().equals("ATO") || newObject.getBuyingPrice3().equals("ATC")) {
@@ -496,22 +520,24 @@ public class FragmentTablePriceOnline extends Fragment {
         if (newObject.getTotalWeight().isEmpty() || newObject.getBuyingWeight1().isEmpty() || newObject.getBuyingWeight2().isEmpty() || newObject.getBuyingWeight3().isEmpty()) {
             return;
         }
-        double checkedPrice = Constant.valueToCompare * Double.valueOf(newObject.getTopPrice().replaceAll(",", "."));
+        double cePrice = 0.0;
+        double tcPrice = 0.0;
+        double amountTotal = 0.0;
         double buying1 = Double.valueOf(newObject.getBuyingPrice1().replaceAll(",", "."));
         double buying2 = Double.valueOf(newObject.getBuyingPrice2().replaceAll(",", "."));
         double buying3 = Double.valueOf(newObject.getBuyingPrice3().replaceAll(",", "."));
-        double tcPrice = Double.valueOf(newObject.getTCPrice().replaceAll(",", "."));
-        double cePrice = Double.valueOf(newObject.getTopPrice().replaceAll(",", "."));
+        // Loại bỏ các ký tự không hợp lệ
+        String tmpPrice = newObject.getTCPrice().replaceAll("[^0-9.-]", "");
+        if(!tmpPrice.isEmpty())
+            tcPrice = Double.valueOf(newObject.getTCPrice().replaceAll(",", "."));
+        if(""!=newObject.getTopPrice())
+            cePrice = Double.valueOf(newObject.getTopPrice().replaceAll(",", "."));
         double buyPrice1 = Double.valueOf(newObject.getBuyingPrice1().replaceAll(",", "."));
-
-//        double amountTotal = Constant.valueToCompare*Double.valueOf(newObject.getTotalWeight().replaceAll("\\.", "").replaceAll(",", ""));
-        double amountTotal = Double.valueOf(newObject.getTotalWeight().replaceAll("\\.", "").replaceAll(",", ""));
+        if(""!=newObject.getTotalWeight())
+        amountTotal = Double.valueOf(newObject.getTotalWeight().replaceAll("\\.", "").replaceAll(",", ""));
         double amountSum = Double.valueOf(newObject.getBuyingWeight1().replaceAll("\\.", "").replaceAll(",", ""))
                 + Double.valueOf(newObject.getBuyingWeight2().replaceAll("\\.", "").replaceAll(",", ""))
                 + Double.valueOf(newObject.getBuyingWeight3().replaceAll("\\.", "").replaceAll(",", ""));
-//        double amountSum=Double.valueOf(newObject.getBuyingWeight1().replaceAll("\\.", "").replaceAll(",", ""));
-//        if((newObject.getBuyingPrice1().equals(newObject.getTopPrice())) && (buying1>checkedPrice && buying2>checkedPrice && buying3>checkedPrice) && (buying1 > tcPrice && buying2 > tcPrice && buying3 > tcPrice)
-        //Log.d(newObject.getCodeStock(),newObject.getBuyingPrice1()+":"+newObject.getTopPrice()+":"+buying1+":"+buying2+":"+buying3+":"+tcPrice);
         if ((newObject.getBuyingPrice1().equals(newObject.getTopPrice())) && (buying1 > tcPrice && buying2 > tcPrice && buying3 > tcPrice)
                 && amountSum >= amountTotal && cePrice == buyPrice1) {
             getActivity().runOnUiThread(new Runnable() {
@@ -540,7 +566,6 @@ public class FragmentTablePriceOnline extends Fragment {
                             Log.d("Special: ", SharedPreference.getInstance().getString("listSpecial", ""));
                             setAsLink(txtTopCK, strHTML);
                             Log.d("Top CK", strHTML);
-//                            txtTopCK.setText("Top CK: " + listCK.toString());
                             txtTopCK.setVisibility(View.VISIBLE);
                         } else {
                             txtTopCK.setVisibility(View.GONE);
@@ -584,7 +609,6 @@ public class FragmentTablePriceOnline extends Fragment {
         @SuppressWarnings("unused")
         public void processHTML(final String html) {
             // process the html as needed by the app
-//            if(html.length()>0 && html.contains("extraBuyVol") && !isRunningView) {
             if (html.length() > 0 && !isRunningView) {
                 //Log.i("HTML Length", html);
                 fullHtml = html;

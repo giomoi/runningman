@@ -40,8 +40,6 @@ public class Constant {
     public static int MAIN_BIG_VOLUME = 3;
     public static final String nowDay = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH).format(new Date());
     public static final String beforeDay = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH).format(System.currentTimeMillis() - (1000 * 60 * 60 * 24));
-    //public static final String before30DayFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(System.currentTimeMillis() - (1000 * 60 * 60 * 24 * 30));
-//    public  static  final Date before30DayFormat=Utils.addMonths(new Date(),-1);
 
     public static final Date beforeDayFormat = Utils.addDays(new Date(), -365);
     public static String maxDay = "";
@@ -85,12 +83,21 @@ public class Constant {
     public static final String TICK_DELETE_RESOURCE = "%1$sdeleteTickTicker/%2$s";
     public static String STOCK_DATE_TRANSITION_RESOURCE = "%1$sgetDateTransition";
 
-    public static String URL_SSI_HSX = "http://priceboard.bsc.com.vn/chi-so/hose";
-    public static String URL_SSI_HNX = "http://priceboard.bsc.com.vn/chi-so/hnx";
-    public static String URL_CAFFEF_HSX = "https://banggia.vps.com.vn/chung-khoan/HOSE";
-    public static String URL_CAFFEF_HNX = "https://banggia.vps.com.vn/chung-khoan/HNX";
 
-//    public static String URL_CAFFEF_HSX = "http://liveboard.cafef.vn/";
-//    public static String URL_CAFFEF_HNX = "http://liveboard.cafef.vn/?center=2";
+    public static String URL_OTHER_HSX = "https://banggia.vndirect.com.vn/chung-khoan/hose";
+    public static String URL_OTHER_HNX = "https://banggia.vndirect.com.vn/chung-khoan/hnx";
+    public static String URL_DEFAULT_HSX = "https://banggia.vps.com.vn/chung-khoan/HOSE";
+    public static String URL_DEFAULT_HNX = "https://banggia.vps.com.vn/chung-khoan/HNX";
+
+    //Report realtime stock
+    public static Integer START_HOURS = 9;
+    public static Integer START_MINUTES = 16;
+    public static Integer END_HOURS = 14;
+    public static Integer END_MINUTES = 46;
+    public static Integer DELAY_INTERVAL = 10; // minutes
+
+    //Daily report VN
+    public static Integer DAILY_REPORT_INDEX_HOURS = 15;
+    public static Integer DAILY_REPORT_INDEX_MINUTES = 15;
 }
 

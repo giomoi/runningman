@@ -1,15 +1,15 @@
 package vn.co.vns.runningman.fragment;
 
 import android.os.Bundle;
-import android.provider.DocumentsContract;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ListView;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -27,7 +27,7 @@ import vn.co.vns.runningman.object.StockVolumePriceAgreement;
 /**
  * Created by thanhnv on 11/28/16.
  */
-public class FragmentBusinessResult extends Fragment{
+public class FragmentBusinessResult extends Fragment {
     private View mMainView;
     private String urlString="https://www.vndirect.com.vn/portal/bang-can-doi-ke-toan/tdh.shtml";
     private ListView lvBigVolume;

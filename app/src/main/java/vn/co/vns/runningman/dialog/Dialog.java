@@ -1,9 +1,8 @@
 package vn.co.vns.runningman.dialog;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
-
 /**
  * Created by Thanh on 5/7/2017.
  */

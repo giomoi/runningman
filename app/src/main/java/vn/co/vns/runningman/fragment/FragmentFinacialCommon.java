@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +18,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -44,7 +45,7 @@ import vn.co.vns.runningman.util.Utils;
 /**
  * Created by thanhnv on 11/25/16.
  */
-public class FragmentFinacialCommon extends Fragment{
+public class FragmentFinacialCommon extends Fragment {
     private View mMainView;
     private String listTicker="";
     private WebView mainWebview;
@@ -187,16 +188,6 @@ public class FragmentFinacialCommon extends Fragment{
             e.printStackTrace();
         }
         return stockValue;
-    }
-
-    private void buildView() {
-        ArrayList<Stock> listStock = Singleton.getInstance().getListStock();
-        for(int i=0; i<listStock.size(); i++){
-            String tickerItem = listStock.get(i).getTicker();
-            if(!listTicker.contains(tickerItem)) {
-                new LoginHandler().execute(tickerItem);
-            }
-        }
     }
 
     private void getDataTicker(int position){

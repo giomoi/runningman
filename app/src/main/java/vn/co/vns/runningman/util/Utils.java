@@ -14,6 +14,8 @@ import android.os.StrictMode;
 import android.preference.PreferenceGroup;
 import android.util.Log;
 
+import androidx.core.app.NotificationCompat;
+
 import com.google.gson.Gson;
 
 import java.net.HttpURLConnection;
@@ -312,9 +314,12 @@ public class Utils {
         }
         PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 1, intent, 0);
         Notification notification = null;
+        String notificationContent = "Example1\nExample2\nExample3";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notification = new Notification.Builder(mContext, CHANNEL_ID)
+            notification = new NotificationCompat.Builder(mContext, CHANNEL_ID)
                     .setContentText(strContent)
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .bigText(strContent))
                     .setContentTitle("Notice")
                     .setContentIntent(pendingIntent)
                     .setChannelId(CHANNEL_ID)
